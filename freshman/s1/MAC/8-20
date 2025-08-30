@@ -1,0 +1,35 @@
+# Preview of Calculus
+
+## Two Main Concepts
+	- rate of change
+	- accumulation of area
+
+## Rate of change
+	1. y=2x-1
+	- slope is 2
+	- Every time y coordinate goes up 2 units, the x coordinate goes right 0 unit.
+ 
+	1. y=x^2
+	- The rate of change for the equation is x2 
+    - The rate of change for a singular point is found through (y2-y1)/(x2-x1). This the m_secant-line
+    - The slope of the tangent line at point is the limit
+
+## Another Connection 
+    - If f(t) is the horizontal position of an object at time t, what is that average velocity over the period [x1,x2]
+    - lim{t_1->t_2}(f(t_1)-f(t_0))/(t_1-t_0)
+
+## Accumulation of Area
+    - Finding the area under the curve..
+    - Using Riemann sums: left, right, middle, & trapezoidal 
+        - b * (h_1 + h_n) 
+    - Orrrr just normal calculus smh
+        - Good ol' integral; a to b
+
+## Limit of a function (using graphs)
+    - Plug limit number into each equation on the numerator and denominator.
+    - Hole in the graph mean that a limit 'DNE'
+    - Make sure to properly model asempetopes
+    - Lines have '0' as their limits
+    - With fractions and complex equations algebra is more efficient
+    - If cannot get definitive answer like osculations then the limit is 'DNE'
+        - lim{x->0} {1/x} = DNE

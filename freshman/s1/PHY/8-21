@@ -1,0 +1,13 @@
+Density = m/v
+    - Mass over volume
+# Sig Figs
+ - When numbers are added or subtracted the number of decimal places in the result should equals the smallest number of decimal places of any term in the sum or difference.
+
+ - Area is m^2 or cm^2 and SA is m or cm
+
+# Vectors
+    - Have magnitude and direction
+    - Arrows are used to represent vectors
+    - Vectors are only equal when their direction and magnitude are the same.
+    - Arrows 180 opposite are antiparallel
+    - When subtracting vectors just flip their values.
