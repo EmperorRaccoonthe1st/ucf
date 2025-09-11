@@ -14,7 +14,7 @@ int main(void) {
     };
     double watts, bill;
 
-    // Input
+    // Some user input
     printf("Enter Usage (kWh): ");
     scanf("%lf", &watts);
 
