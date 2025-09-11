@@ -16,7 +16,7 @@
 
 ## (G)  God Exists, omnipotent & completely good
 
-> \(E\) There is evil
+>  There is evil
 >
 > In other words, Mackie accepts the following conditional:
 
@@ -47,45 +47,41 @@
 >   - Can eliminate every evil.
 >
 > (B3) An omniscient being:
->   - 
+>   - Can do any thing
 
 
-# Argument from Evil (AE)
+## Argument from Evil (AE)
 
-> (AE1) A perfectly good being eliminates every evil it can eliminate.
+> (AE01) A perfectly good being eliminates every evil it can eliminate.
 >
-> (AE2)
+> (AE02) If God exists then God is perfectly good.
 >
-> (AE3)
+> (AE03) Therefore if God exists, God eliminates every evil that it can.
 >
-> (AE4)
-
-## 
-
-## (AE5) 
-
-> (AE6) Therefore,
+> (AE04) An omnipotant being can eliminate every evil.
+> 
+> (AE05) If God exists then God is omnipotent
 >
-> (AE7) Therefore,
+> (AE06) Therefore, if God exists then God can eliminate every evil.
 >
-> (AE8) Therefore, if God exists, then there is no evil.
+> (AE07) Therefore, if God exists then God does eliminate every evil
 >
-> (AE9) There is evil.
-
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
-
+> (AE08) Therefore, if God exists, then there is no evil.
+>
+> (AE09) There is evil.
+>
 > (AE10) Therefore, God does not exist.
 
--   Counterexamples to AE1
+## Counterexamples to AE1
 
-##  (B1)
-
+> (B1) Perfectly good doctor...
+> 
 > ( )
 >
 > ( )
-
-## (B2)
-
+> 
+> (B2)
+> 
 > ( )
 >
 > ( )
@@ -97,16 +93,18 @@
 > ( )
 >
 > (AE1) A perfectly good being eliminates every evil it can eliminate.
+>
+>   - Describe a **counterexample** to AE1:
+>
+>   - Lesson: a perfectly good being eliminates *some but not all* evils
+>     it can eliminate. Which evils, specifically, does a perfectly good
+>     being eliminate?
 
--   Describe a **counterexample** to AE1:
+##  Revision of AE1
 
--   Lesson: a perfectly good being eliminates *some but not all* evils
-    it can eliminate. Which evils, specifically, does a perfectly good
-    being eliminate?
-
-```{=html}
-<!-- -->
-```
--   Revision of AE1
-
-(RE1) A perfectly good being eliminates every evil it can eliminate
+> (RE1) A perfectly good being eliminates every evil it can eliminate without either causing more evil or eliminating equal or greater good.
+>
+> (RE4) An omnipotent being evil can eliminate every evil that can be eliminated w/o causing more damage 
+>
+>
+>
