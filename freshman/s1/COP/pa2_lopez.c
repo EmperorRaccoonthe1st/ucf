@@ -17,6 +17,7 @@ int main(void) {
     // Input
     printf("Enter Usage (kWh): ");
     scanf("%lf", &watts);
+
     // And its validation..
     if (watts < 0) {
         printf("Invalid Input\n");
