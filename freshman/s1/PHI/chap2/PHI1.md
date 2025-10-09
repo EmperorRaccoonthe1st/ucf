@@ -4,9 +4,9 @@
 ##  Psychological Egoism
 
 > -  Two ways of desiring something:
->        -1: For the sake of obtaining something _else_.
+>        - 1: For the sake of obtaining something _else_.
 >           - ex: Money or rare materials
->        -2: For their _own_ sake.
+>        - 2: For their _own_ sake.
 >           - ex: Pure pleasure, Drugs, Sex
 >
 > **Psychological Egoism** (PE): "....the only thing anyone is capable
