@@ -45,6 +45,13 @@ void populate_array(int arr[], int size, int num) {
         }
         int powN = (int)(pow(10, cSize));
         d = (num)/((int)pow(10, cSize));
+        if (d == 10) {
+            arr[i] = 1;
+            arr[i+1] = 0;
+            num = (num)%(int)(pow(10, cSize));
+            i++;
+            continue;
+        }
         num = (num)%(int)(pow(10, cSize));
 
         arr[i] = d;
