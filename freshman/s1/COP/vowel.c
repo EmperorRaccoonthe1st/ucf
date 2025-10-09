@@ -6,14 +6,13 @@ int main(void) {
     int count = 0;
     printf("Input two characters:");
     scanf("%c%c", &a, &b);
-    printf("The first character is: %c\n", a);
-    printf("The second character is: %c\n", b);
     a = tolower(a);
     b = tolower(b);
 
     if (a > b) {
-        b = a;
+        char t = a;
         a = b;
+        b = t;
     }
    
     if (a <= 'a' && b >= 'a') {
