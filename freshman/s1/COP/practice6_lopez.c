@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 void print_array(int arr[], int size);
 int compress_array(int arr[], int size);
 int shift_array(int arr[], int size, int index);
@@ -10,30 +9,22 @@ int main(void) {
     scanf("%d", &runs);
     
     for (int i = 0; i < runs; i++) {
+        int arr[10];
         int size = 0;
-        int arr[0];
-        int *arrAddr = arr;
-        int num = 1;
-        
-        while (num != 0) {
+
+        for (int i = 0; i < 10; i++) {
+            arr[i] = 0; 
+        }
+
+        for (int i = 0; i < 11; i++, size++) {
+            int num = 1;
             scanf("%d", &num);
-            if (num == 0) {
-                break;
-            }
-
-            size++;
-            int arrTmp[size];
-            for (int i = 0; i < size; i++) {
-                arrTmp[i] = 0;
-            } 
-            for (int i = 0; i < size-1; i++) {
-                arrTmp[i] = arrAddr[i];
-            } 
-            arrTmp[size-1] = num;
-            arrAddr = arrTmp;
-        } 
-
-        print_array(arrAddr, size);
+            if (num == 0) break;
+            arr[i] = num;
+        }
+        size = compress_array(arr, size);
+        printf("%d: ", i+1);
+        print_array(arr, size);
     }
     return 0;
 }
@@ -46,20 +37,20 @@ void print_array(int arr[], int size) {
 }
 
 int compress_array(int arr[], int size) {
-
+    for (int j = 0; j < size; j++) {
+        for (int i = 0; i < size; i++) {
+            if (arr[i] == arr[i+1]) {
+                size = shift_array(arr, size, i);
+            }
+        }
+    }
+    return size;
 }
 
 int shift_array(int arr[], int size, int index) {
-   int arrTmp[size-1];
-
-    for (int i = 0; i < size; i++) {
-    if (i < index) {
-            arrTmp[i] = arr[i];
-        } else {
-            arrTmp[i] = arr[i+1];
-        }
+    for (int i = index; i < size; i++) {
+        arr[i] = arr[i+1];
     }
-
-    return size - 1;
+    return size-1;
 }
 
