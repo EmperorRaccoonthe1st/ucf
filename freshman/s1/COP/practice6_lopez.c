@@ -10,7 +10,30 @@ int main(void) {
     scanf("%d", &runs);
     
     for (int i = 0; i < runs; i++) {
-          
+        int size = 0;
+        int arr[0];
+        int *arrAddr = arr;
+        int num = 1;
+        
+        while (num != 0) {
+            scanf("%d", &num);
+            if (num == 0) {
+                break;
+            }
+
+            size++;
+            int arrTmp[size];
+            for (int i = 0; i < size; i++) {
+                arrTmp[i] = 0;
+            } 
+            for (int i = 0; i < size-1; i++) {
+                arrTmp[i] = arrAddr[i];
+            } 
+            arrTmp[size-1] = num;
+            arrAddr = arrTmp;
+        } 
+
+        print_array(arrAddr, size);
     }
     return 0;
 }
@@ -30,11 +53,11 @@ int shift_array(int arr[], int size, int index) {
    int arrTmp[size-1];
 
     for (int i = 0; i < size; i++) {
-        if (i >= index) {
+    if (i < index) {
+            arrTmp[i] = arr[i];
+        } else {
             arrTmp[i] = arr[i+1];
-            continue;
         }
-        arrTmp[i] = arr[i];
     }
 
     return size - 1;
