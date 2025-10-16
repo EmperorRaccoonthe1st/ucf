@@ -32,16 +32,17 @@ int main(void) {
 void print_array(int arr[], int size) {
     for (int i = 0; i < size; i++) {
         printf("%d", arr[i]);
+        printf(" ");
     }
     printf("\n");
 }
 
 int compress_array(int arr[], int size) {
-    for (int j = 0; j < size; j++) {
-        for (int i = 0; i < size; i++) {
-            if (arr[i] == arr[i+1]) {
-                size = shift_array(arr, size, i);
-            }
+    for (int i = 0; i < size;) {
+        if (arr[i] == arr[i+1]) {
+            size = shift_array(arr, size, i);
+        } else {
+            i++;
         }
     }
     return size;
