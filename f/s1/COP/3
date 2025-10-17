@@ -39,9 +39,10 @@ int main(void) {
         for (int j = 0; j < MAX_COUNT; j++) {
             scanf("%d", &nums[j]);
         }
-
+        printf("Mode: %d\n",  get_mode(nums, MAX_COUNT));
+        
         // Print the secret code for the test case
-        printf("%d: %d\n", i, compute_secret(nums, MAX_COUNT));
+        //printf("%d: %d\n", i, compute_secret(nums, MAX_COUNT));
     }
     
     return 0;
@@ -65,7 +66,7 @@ int get_mode(int arr[], int size) {
         int count = 1;
         for (int j = (i == 9) ? 0 : i+1; j != i;) {
             if (arr[i] == arr[j]) count++;
-            if (j == 9) {
+            if ( j == 9) {
                 j = 0;
             } else {
                 j++;
@@ -81,35 +82,29 @@ int get_mode(int arr[], int size) {
         } 
     } 
     return arr[hPos];
-
     // TODO 1 END
 }
 
 int count_unique(int arr[], int size) {
     // TODO 2 BEGIN
-
-    int tmp[MAX_COUNT];
+    int tmp[MAX_COUNT]
     int count = 0;
     for (int i = 0; i < MAX_COUNT; i++) {
         tmp[i] = 0;
 	}
 
     for (int i = 0; i < MAX_COUNT; i++) {
-        for (int j = 0; j <= MAX_COUNT; j++) {
-            if (j == MAX_COUNT) {
+        for (int j = 0; j <= MAX_COUNT; i++) {
+            if ( j == MAX_COUNT) {
                 count++; 
-                for (int k = 0; k < MAX_COUNT; k++) {
-                    if (tmp[k] == 0) {
-                        tmp[k] = arr[i];     
-                        break;
-                    }
+               for (int k = 0; k < MAX_COUNT; k++) {
+                    
                 }  
-                break;
             }
-            if (arr[i] == tmp[j]) break;
+            if ( arr[i] = tmp[j]) break;
         } 
     }
-    return count;
+
     
     // TODO 2 END
 }
@@ -117,12 +112,7 @@ int count_unique(int arr[], int size) {
 int get_min(int arr[], int size) {
     // TODO 3 BEGIN
 
-    int hNum = arr[0];    
-    
-    for (int i = 0; i < MAX_COUNT; i++) {
-        if (arr[i] < hNum) hNum = arr[i];
-    }
-    return hNum;
+
 
     // TODO 3 END
 }
@@ -130,20 +120,15 @@ int get_min(int arr[], int size) {
 int get_max(int arr[], int size) {
     // TODO 4 BEGIN
 
-    int hNum = arr[0];    
-    
-    for (int i = 0; i < MAX_COUNT; i++) {
-        if (arr[i] > hNum) hNum = arr[i];
-    }
-    return hNum;
+
 
     // TODO 4 END
 }
 
 int get_range(int arr[], int size) {
     // TODO 5 BEGIN
-    
-    return  get_max(arr, MAX_COUNT)-get_min(arr, MAX_COUNT);
+
+
 
     // TODO 5 END
 }
