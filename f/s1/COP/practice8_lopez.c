@@ -17,26 +17,24 @@ int main(void) {
     fscanf(ifile, "%d%d", &R, &C); 
     reset_art(canvas, R, C);
     print_art(canvas, R, C);
+
+
+    fclose(ifile);
     
     return 0;
 }
 
 void reset_art(char canvas[MAX_SIZE][MAX_SIZE], int R, int C) {
-    for (int x = 0; x <= C+2; x++) {
-        for (int y = 0; y < R; y++) {
-            canvas[x][y] = ' ';
-            if (y == 0) canvas[x][y] = '*';
-            if (y == R+1) canvas[x][y] = '*';
-            if (x == 0) canvas[x][y] = '*';
-            if (x == C+1) canvas[x][y] = '*';
-            if (x == C+2) canvas[x][y] = '\n';
+    for (int i = 0; i < R+2; i++) {
+        for (int j = 0; j < C+3; j++) {
+            if (i == 0 || i == R+1) canvas[i][j] = '*';
         }
     }
 }
 
 void print_art(char canvas[MAX_SIZE][MAX_SIZE], int R, int C) {
     for (int x = 0; x <= C+2; x++) {
-        for (int y = 0; y < R; y++) {
+        for (int y = 0; y <= R+1; y++) {
             printf("%c", canvas[x][y]);
         }
     }
