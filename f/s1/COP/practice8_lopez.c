@@ -18,7 +18,6 @@ int main(void) {
     reset_art(canvas, R, C);
 
     while (fscanf(ifile, "%d %d %c", &y, &x, &S) != EOF) {
-        printf("%d, %d: %c\n", y, x, S);
         draw_art(canvas, R, C, x, y, S); 
     }
 
