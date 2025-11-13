@@ -71,8 +71,8 @@ char *trim_string(char *str) {
     // TODO 1 BEGIN
     int pos;
     pos = strcspn(str, "\n");
-    
     str[pos] = '\0';
+    
     return str;
     // TODO 1 END
 }
@@ -82,15 +82,9 @@ char *to_lower(char *str) {
     // TODO 2 BEGIN
     int count = 0;
     while (true) {
-        printf("%d: %s\n", str);
-        if (str[count] == '\n' || str[count] == '\0') {
-            printf("%d: %c\n", count, str[count]);
-            str[count] = tolower(str[count]);
-            printf("%d.a: %c\n", count, str[count]);
-            count++;
-        } else {
-            break;
-        }
+        if (str[count] == '\n' || str[count] == '\0') break;
+        str[count] = tolower(str[count]);
+        count++;
     }
     
      return str;
@@ -112,9 +106,8 @@ int populate_list(char list[MAX_WORDS][MAX_LEN], int *size, int max_size, char *
         fgets(buff, MAX_LEN, rfile);
         trim_string(buff);
         to_lower(buff);
-        printf("%d: %s\n", count, buff);
         strcpy(list[count], buff); 
-        printf("%d: list[%d] - %s\n", count, count, list[count]);
+        printf("%s\n", list[count]);
         count++;
     }
 
