@@ -22,12 +22,12 @@
 char *trim_string(char *str);
 char *to_lower(char *str);
 int populate_list(char list[MAX_WORDS][MAX_LEN], int *size,
-int max_size, char *fname);
+                  int max_size, char *fname);
 void print_list(char words[MAX_WORDS][MAX_LEN], int size);
 int contains_word(char words[MAX_WORDS][MAX_LEN], int size, char *query);
 void combine_lists(char list1[MAX_WORDS][MAX_LEN], int list1_size,
-char list2[MAX_WORDS][MAX_LEN], int list2_size,
-char list3[MAX_WORDS][MAX_LEN], int *list3_size);
+                   char list2[MAX_WORDS][MAX_LEN], int list2_size,
+                   char list3[MAX_WORDS][MAX_LEN], int *list3_size);
 void selection_sort(char words[MAX_WORDS][MAX_LEN], int size);
 
 
@@ -45,7 +45,8 @@ int main(void) {
     int flag2 = populate_list(list2, &list2_size, MAX_WORDS, FILE_NAME_2);
     
     // terminate the program if unsuccessful in loading either list
-    if( !flag1 || !flag2 ) return 0;
+    if( !flag1 || !flag2 )
+         return 0;
     
     print_list(list1, list1_size);    // test if read correctly
     print_list(list2, list2_size);    // test if read correctly
@@ -55,7 +56,6 @@ int main(void) {
      
     // sort the list in ascending order
     selection_sort(list3, list3_size);
-    print_list(list3, list3_size);    // test if read correctly
     
     // print the output list
     print_list(list3, list3_size);
@@ -82,17 +82,19 @@ char *to_lower(char *str) {
     // TODO: Complete this function
     // TODO 2 BEGIN
     int count = 0;
-    while (true) {
+    while (1) {
         if (str[count] == '\n' || str[count] == '\0') break;
         str[count] = tolower(str[count]);
         count++;
     }
     
      return str;
+
     // TODO 2 END 
 }
 
-int populate_list(char list[MAX_WORDS][MAX_LEN], int *size, int max_size, char *fname) {
+int populate_list(char list[MAX_WORDS][MAX_LEN], int *size,
+                  int max_size, char *fname) {
     // TODO: Complete this function
     // TODO 3 BEGIN
     FILE *rfile = NULL;
@@ -102,7 +104,7 @@ int populate_list(char list[MAX_WORDS][MAX_LEN], int *size, int max_size, char *
     rfile = fopen(fname, "r");
     if (rfile == NULL) return 0;
 
-    while (buff) {
+    while (1) {
         if (fgets(buff, MAX_LEN, rfile) == NULL) break;
         trim_string(buff);
         to_lower(buff);
@@ -115,6 +117,7 @@ int populate_list(char list[MAX_WORDS][MAX_LEN], int *size, int max_size, char *
     *size = count;
 
     return 1;
+
     // TODO 3 END
 }
 
@@ -154,7 +157,6 @@ void combine_lists(char list1[MAX_WORDS][MAX_LEN], int list1_size,
             }
         }
     }
-
  
     // TODO 6 END 
 }
