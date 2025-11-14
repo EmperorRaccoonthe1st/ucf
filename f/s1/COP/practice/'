@@ -47,18 +47,17 @@ int main(void) {
     // terminate the program if unsuccessful in loading either list
     if( !flag1 || !flag2 ) return 0;
     
-    print_list(list1, list1_size);    // test if read correctly
-    print_list(list2, list2_size);    // test if read correctly
+    //print_list(list1, list1_size);    // test if read correctly
+    //print_list(list2, list2_size);    // test if read correctly
     
     // combine list1 and list2 and put the result in list3
-    combine_lists(list1, list1_size, list2, list2_size, list3, &list3_size);
+    //combine_lists(list1, list1_size, list2, list2_size, list3, &list3_size);
      
     // sort the list in ascending order
-    selection_sort(list3, list3_size);
-    print_list(list3, list3_size);    // test if read correctly
+    //selection_sort(list3, list3_size);
     
     // print the output list
-    print_list(list3, list3_size);
+    //print_list(list3, list3_size);
     
     return 0;
 }
@@ -101,19 +100,19 @@ int populate_list(char list[MAX_WORDS][MAX_LEN], int *size, int max_size, char *
     
     rfile = fopen(fname, "r");
     if (rfile == NULL) return 0;
+    printf("rfile: %p\n", rfile);
 
     while (buff) {
         if (fgets(buff, MAX_LEN, rfile) == NULL) break;
+        printf("%d: %s", count, buff);
         trim_string(buff);
         to_lower(buff);
         strcpy(list[count], buff); 
+        printf("%s\n", list[count]);
         count++;
     }
 
     fclose(rfile);
-    
-    *size = count;
-
     return 1;
     // TODO 3 END
 }
@@ -121,9 +120,10 @@ int populate_list(char list[MAX_WORDS][MAX_LEN], int *size, int max_size, char *
 void print_list(char words[MAX_WORDS][MAX_LEN], int size) {
     // TODO: Complete this function
     // TODO 4 BEGIN
-    for (int i = 0; i < size; i++) {
-        printf("%s\n", words[i]);
-    }  
+
+
+
+
 
     // TODO 4 END
 }
@@ -131,11 +131,10 @@ void print_list(char words[MAX_WORDS][MAX_LEN], int size) {
 int contains_word(char words[MAX_WORDS][MAX_LEN], int size, char *query) {
     // TODO: Complete this function
     // TODO 5 BEGIN
-    for (int i = 0; i < size; i++) {
-        if (strcmp(words[i], query) == 0) return 1;
-    }
 
-    return 0;
+
+
+
 
     // TODO 5 END
 }
@@ -146,14 +145,8 @@ void combine_lists(char list1[MAX_WORDS][MAX_LEN], int list1_size,
     // TODO: Complete this function
     // TODO 6 BEGIN
 
-    for (int i = 0; i < list1_size; i++) {
-        for (int j = 0; j < list2_size; j++) {
-            if (strcmp(list1[i], list2[j]) == 0 && contains_word(list3, *list3_size, list1[i]) == 0) {
-                strcpy(list3[*list3_size], list1[i]);
-                (*list3_size)++;
-            }
-        }
-    }
+
+
 
  
     // TODO 6 END 
@@ -163,20 +156,9 @@ void selection_sort(char words[MAX_WORDS][MAX_LEN], int size) {
     // TODO: Complete this function
     // TODO 7 BEGIN
     
-    for (int i = 0; i < size-1; i++) {
-        int lPos = i;
-        char tmp[MAX_LEN];
-
-        for (int j = i+1; j < size; j++) {
-            if (strcmp(words[j], words[lPos]) < 0) {
-                lPos = j;
-            }
-        }
-
-        strcpy(tmp, words[i]);
-        strcpy(words[i], words[lPos]);
-        strcpy(words[lPos], tmp);
-    }
+    
+    
+    
     
     // TODO 7 END
 }
