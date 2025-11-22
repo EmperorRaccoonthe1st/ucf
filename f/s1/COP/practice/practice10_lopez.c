@@ -168,7 +168,7 @@ int populate_list(WordList *list, const char *filename) {
 
     ifile = fopen(filename, "r");
 
-    if (filename == NULL) return 0;
+    if (ifile == NULL) return 0;
     
     fscanf(ifile, "%d", &num);
     clear_buffer(ifile);
