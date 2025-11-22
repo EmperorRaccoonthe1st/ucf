@@ -56,6 +56,7 @@ int main(void) {
     // Load words from the text file and build the frequency list
     if( !populate_list(&words, FILE_NAME) )
         return 0;
+
     
     // Sort by frequency (descending), breaking ties alphabetically
     selection_sort(&words);
@@ -74,11 +75,13 @@ int main(void) {
 WordFreq create_word(const char *word) {
     // TODO: Complete this function
     // TODO 1 BEGIN
+    WordFreq newWord;
     
+    strcpy(newWord.word, word);
+    newWord.freq = 1;
     
-    
-    
-    
+    return newWord; 
+
     // TODO 1 END
 }
 
@@ -86,9 +89,11 @@ WordList create_list(int capacity) {
     // TODO: Complete this function
     // TODO 2 BEGIN
     
+    WordList list;
+    list.size = 0; 
+    list.capacity = capacity; 
     
-    
-    
+    return list;
     
     // TODO 2 END
 }
@@ -97,9 +102,11 @@ WordFreq *get_word(WordList *list, const char *query) {
     // TODO: Complete this function
     // TODO 3 BEGIN
     
+    for (int i = 0; i < list->size; i++) {
+        if (strcmp(list->words[i].word, query) == 0) return &list->words[i];
+    }
     
-    
-    
+    return NULL; 
     
     // TODO 3 END
 }
@@ -108,9 +115,7 @@ void increment_count(WordFreq *word) {
     // TODO: Complete this function
     // TODO 4 BEGIN
     
-    
-    
-    
+    word->freq += 1; 
     
     // TODO 4 END
 }
@@ -119,9 +124,11 @@ void add_word(WordList *list, const char *word) {
     // TODO: Complete this function
     // TODO 5 BEGIN
     
+    WordFreq newWord = create_word(word);
     
-    
-    
+    list->words[list->size] = newWord;
+
+    list->size += 1;
     
     // TODO 5 END
 }
@@ -129,10 +136,15 @@ void add_word(WordList *list, const char *word) {
 void process_word(WordList *list, char *line) {
     // TODO: Complete this function
     // TODO 6 BEGIN
+
+    to_lower(line);
+    trim_string(line);
     
-    
-    
-    
+    if (get_word(list, line) == NULL) {
+        add_word(list, line);
+    } else {
+        get_word(list, line)->freq += 1;
+    }
     
     // TODO 6 END
 }
@@ -141,9 +153,9 @@ void print_list(const WordList *list) {
     // TODO: Complete this function
     // TODO 7 BEGIN
     
-    
-    
-    
+    for (int i = 0; i < list->size; i++) {
+        printf("%d %s\n", list->words[i].freq, list->words[i].word);
+    }
     
     // TODO 7 END
 }
@@ -151,10 +163,25 @@ void print_list(const WordList *list) {
 int populate_list(WordList *list, const char *filename) {
     // TODO: Complete this function
     // TODO 8 BEGIN
+    int num;
+    FILE *ifile = NULL;
+
+    ifile = fopen(filename, "r");
+
+    if (filename == NULL) return 0;
     
+    fscanf(ifile, "%d", &num);
+    clear_buffer(ifile);
+
+    for (int i = 0; i < num; i++) {
+        char buff[MAX_LEN];
     
-    
-    
+        fgets(buff, MAX_LEN, ifile);
+        
+        process_word(list, buff);
+    }    
+
+    return 1;
     
     // TODO 8 END
 }
@@ -163,9 +190,22 @@ void selection_sort(WordList *list) {
     // TODO: Complete this function
     // TODO 9 BEGIN
     
+    for (int i = 0; i < list->size; i++) {
+        int hpos = i;
+        WordFreq tmp;
     
-    
-    
+        for (int j = i+1; j < list->size; j++) {
+            if (list->words[j].freq > list->words[hpos].freq) {
+                hpos = j;
+            } else if (list->words[j].freq == list->words[hpos].freq) {
+               if (strcmp(list->words[j].word, list->words[hpos].word) < 0) hpos = j;
+            }
+        }
+
+        tmp = list->words[i];
+        list->words[i] = list->words[hpos];
+        list->words[hpos] = tmp;
+    }
     
     // TODO 9 END
 }
@@ -197,4 +237,3 @@ char *trim_string(char *str) {
     str[pos] = '\0';
     return str;
 }
-
