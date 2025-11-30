@@ -3,9 +3,9 @@ Hard Incompatibilism
 
 ## The Argument from Bad Consequences
 
-    BC1: 
+    BC1: Belief in hard incompatibilism has bad consequences.
 
-    BC2:
+    BC2: We should not hold beliefs that have bad consequences.
 
     BC3: Therefore, we should not believe hard incompatibilism.
 
@@ -15,11 +15,11 @@ Hard Incompatibilism
 
     The belief that no one is morally responsible leads to additional "dangerous" ideas:
 
-    - The belief that 
+    - The belief that nothing is morally wrong.
 
-    - The belief that 
+    - The belief that criminal punishment is unjustifiable.
 
-    - The belief that 
+    - The belief that there are no genuine personal successes.
 
 
 ## Punishment w/o Moral Responsibility
@@ -27,7 +27,7 @@ Hard Incompatibilism
     Theory of Punishment gives a  general justification for punishing wrongdoers:
         
         - Retributivist Theory:
-            
+            Criminal punishment is justified because criminals deserve to be punished for their crimes.
 
         - Moral Education:
             "Criminal punishment educates criminals morally"
@@ -36,4 +36,4 @@ Hard Incompatibilism
             "Punishing criminals is justified b/c it deters future crime"
 
         - Contagion Theory:
-            
+            Criminal punishment is justified because like quarantine, it prevents the criminal from further harming society.

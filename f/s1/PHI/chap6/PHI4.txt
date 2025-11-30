@@ -5,15 +5,15 @@ The Paradox of Free Will
 
     FW1: We have free will.
 
-    FW2:
+    FW2: If Determinism is true, then we have no Free Will. 
 
-    FW3:
+    FW3: If determinism is false, then we have no Free Will.
 
     Why is this a paradox? F1 to F3 are:
         Jointly Inconsistent and Individually Plausible
 
         - Why is F1 Plausible?
-            
+            It seems that way perceptually to a individual.
        
         - Why is F2 Plausible?
             The Consequence Argument
@@ -23,9 +23,9 @@ The Paradox of Free Will
    
     Paradox:
         Set of propositions that are:
-            - (i) 
+            - (i) Individually plausible
                 but
-            - (ii) 
+            - (ii) jointly inconsistent
 
 ## Opinions on the Free Will Debate
 
