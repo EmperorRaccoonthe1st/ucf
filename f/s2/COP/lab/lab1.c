@@ -81,10 +81,8 @@ int main(void) {
 void playlist_init(Playlist *list, int id) {
     // TODO: Complete this function
     // TODO 1 BEGIN
-
-
-
-
+    list->list_id = id;
+    list->count = 0;
 
     // TODO 1 END
 }
@@ -92,10 +90,11 @@ void playlist_init(Playlist *list, int id) {
 void playlist_print(Playlist *list) {
     // TODO: Complete this function
     // TODO 2 BEGIN
+    printf("Playlist ID: %d\n", list->list_id);
 
-
-
-
+    for (int i = 0; i < list->count; i++) {
+        song_print(&(list->songs[i]));
+    }
 
     // TODO 2 END
 }
@@ -104,9 +103,14 @@ void playlist_add_song(Playlist *list, int s_id, char *s_title, int s_len) {
     // TODO: Complete this function
     // TODO 3 BEGIN
 
+    Song s;
 
+    s.song_id = s_id;
+    s.length = s_len;
+    strcpy(s.title, s_title);
 
-
+    list->songs[list->count+1] = s;
+    list->count += 1;
 
     // TODO 3 END
 }
@@ -114,10 +118,25 @@ void playlist_add_song(Playlist *list, int s_id, char *s_title, int s_len) {
 Song *playlist_find_longest_song(Playlist *list) {
     // TODO: Complete this function
     // TODO 4 BEGIN
+    
+    if (list->count == 0) return NULL;
+
+    int longestSong = 0;
 
 
+    for (int i = 0; i < list->count; i++) {
+        for (int y = i + 1; y < list->count; y++) {
+            if (list->songs[y].length > list->songs[longestSong].length) {
+                longestSong = y;
+            }
+            Song tmp;
+            tmp = list->songs[i];
+            list->songs[i] = list->songs[y];
+            list->songs[y] = tmp;
+        }
+    }
 
-
+    return &(list->songs[longestSong]);
 
     // TODO 4 END
 }
@@ -126,9 +145,7 @@ void song_print(Song *s) {
     // TODO: Complete this function
     // TODO 5 BEGIN
 
-
-
-
+    printf("%s - %d\n", s->title, s->length);
 
     // TODO 5 END
 }
