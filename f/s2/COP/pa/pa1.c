@@ -116,13 +116,13 @@ char **readBreeds(FILE *ifile, int *count) {
     char **breeds = malloc(tmpC * sizeof(char *));
 
     for (int i = 0; i < tmpC; i++) {
-        // Make large-buffer and grab breed
-        char tmpBreed[100];
-        fscanf(ifile, "%s", tmpBreed);
+        // Make Tmp Buffer and grab breed
+        char buff[100];
+        fscanf(ifile, "%s", buff);
 
         // Make small sized buffer and copy over
-        char *breed = malloc(strlen(tmpBreed) * sizeof(char)); 
-        strcpy(breed, tmpBreed);
+        char *breed = malloc(strlen(buff) * sizeof(char)); 
+        strcpy(breed, buff);
         breeds[i] = breed;
     }
 
@@ -152,9 +152,16 @@ CatStore *createStore(FILE *ifile, int kennelCount, char **dictionary, int breed
     // TODO: Complete this function
     // TODO 3 BEGIN
 
+    CatStore *store = malloc(sizeof(CatStore));
 
+    store->numKennels = kennelCount;
 
+    int **constraints = malloc(kennelCount * (breedCount * sizeof(int)));
+    store->capacities = constraints;
+    Kennel *kennels = createKennels(ifile, kennelCount, dictionary, breedCount, constraints);
+    store->kennels = kennels;
 
+    return store;
 
     // TODO 3 END
 }
@@ -163,9 +170,55 @@ Kennel *createKennels(FILE *ifile, int kennelCount, char **dictionary, int breed
     // TODO: Complete this function
     // TODO 4 BEGIN
 
+    // Create Kennel Array
+    Kennel *kennels = malloc(kennelCount * sizeof(Kennel));
+    
+    // Populate Constraints
+    for (int i = 0; i < kennelCount; i++) {
+        for (int x = 0; x < breedCount; x++) {
+            int num;
+            fscanf(ifile, "%d", &num); 
+            constraints[i][x] = num;
+        }
+    }
 
+    // Populate Kennels Array
+    for (int i = 0; i < kennelCount; i++) {
+        Kennel kennel;
+        int occupancy;
+        int maxCapacity;
 
+        //Per Kennel Input
 
+        // Make Tmp Input Buff
+        char buff[100];
+        fscanf(ifile, "%s", buff);
+        
+        // Copy from tmp to correct sized char array
+        char *location = malloc(strlen(buff) * sizeof(char));
+        kennel.location = location;
+
+        fscanf(ifile, "%d", &occupancy);
+        kennel.occupancy = occupancy;
+
+        //Cat Array Creation
+        Cat **cats = createCats(ifile, dictionary, breedCount, occupancy);
+        kennel.cats = cats;
+
+        //Calculate Max Capacity
+        kennel.maxCapacity = maxCapacity;
+        for (int x = 0; x < kennelCount; x++) {
+            if (x == i) {
+                for (int y = 0; y < breedCount; y++) {
+                    maxCapacity += constraints[x][y];
+                } 
+            }
+        }
+
+        kennels[i] = kennel;
+      }
+
+    return kennels;
 
     // TODO 4 END
 }
