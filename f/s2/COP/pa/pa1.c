@@ -134,10 +134,16 @@ char **readBreeds(FILE *ifile, int *count) {
 char *lookupBreed(char **dictionary, int breedCount, char *breedName) {
     // TODO: Complete this function
     // TODO 2 BEGIN
+    
+    char *breed;
 
+    for (int i = 0; i < breedCount; i++) {
+        if (strcmp(dictionary[i], breedName) == 0) {
+            breed = dictionary[i];
+        }
+    }
 
-
-
+    return breed;
 
     // TODO 2 END
 }
