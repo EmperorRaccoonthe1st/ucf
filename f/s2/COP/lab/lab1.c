@@ -109,7 +109,7 @@ void playlist_add_song(Playlist *list, int s_id, char *s_title, int s_len) {
     s.length = s_len;
     strcpy(s.title, s_title);
 
-    list->songs[list->count+1] = s;
+    list->songs[list->count] = s;
     list->count += 1;
 
     // TODO 3 END
@@ -121,22 +121,22 @@ Song *playlist_find_longest_song(Playlist *list) {
     
     if (list->count == 0) return NULL;
 
-    int longestSong = 0;
-
+    int longestSong;
 
     for (int i = 0; i < list->count; i++) {
+        longestSong = i;
         for (int y = i + 1; y < list->count; y++) {
             if (list->songs[y].length > list->songs[longestSong].length) {
                 longestSong = y;
             }
-            Song tmp;
-            tmp = list->songs[i];
-            list->songs[i] = list->songs[y];
-            list->songs[y] = tmp;
         }
+        Song tmp;
+        tmp = list->songs[i];
+        list->songs[i] = list->songs[longestSong];
+        list->songs[longestSong] = tmp;
     }
 
-    return &(list->songs[longestSong]);
+    return &(list->songs[0]);
 
     // TODO 4 END
 }

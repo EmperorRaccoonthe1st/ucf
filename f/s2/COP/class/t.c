@@ -1,27 +1,37 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#define MAX_LEN 101
-
-typedef struct Card_s {
-  int value;  
-  char suit[MAX_LEN];
-} Card;
-
-void print_card(Card *c);
-
 int main(void) {
-    Card exampleCard;
-
-    exampleCard.value = 3;
-    strcpy(exampleCard.suit, "Spade");
-
-    print_card(&exampleCard);
+    FILE *ifile = NULL;
     
+    ifile = fopen("t.txt", "r");
+    if (ifile == NULL) return 1;
+
+    printf("File opened!\n");
+
+    int arr[10000];
+    int i = 0;
+
+    while (1) {
+        if (fscanf(ifile, "%d", &arr[i]) == -1) break;
+        i++;
+    }
+
+    for (int i = 2; i < 10000; i++) {
+        int key = arr[i];
+        int j = i-1;
+
+        while (j > 0 && arr[i] > key) {
+            arr[j+1] = arr[j];
+            j--;
+            arr[j+1] = key;
+        }
+    }
+
+    for (int i = 0; i < 10000; i++) {
+        printf("%d\n", arr[i]);
+    }
+
     return 0;
-}
-
-
-void print_card(Card *c) {
-    printf("%d %s\n", c->value, c->suit);
 }
