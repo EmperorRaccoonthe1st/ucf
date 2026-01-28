@@ -116,9 +116,17 @@ char **readBreeds(FILE *ifile, int *count) {
     char **breeds = malloc(tmpC * sizeof(char *));
 
     for (int i = 0; i < tmpC; i++) {
-        char breed[100];
-        fscanf(ifile, "%s", breed);
+        // Make large-buffer and grab breed
+        char tmpBreed[100];
+        fscanf(ifile, "%s", tmpBreed);
+
+        // Make small sized buffer and copy over
+        char *breed = malloc(strlen(tmpBreed) * sizeof(char)); 
+        strcpy(breed, tmpBreed);
+        breeds[i] = breed;
     }
+
+    return breeds;
 
     // TODO 1 END
 }
