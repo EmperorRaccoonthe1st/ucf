@@ -135,15 +135,11 @@ char *lookupBreed(char **dictionary, int breedCount, char *breedName) {
     // TODO: Complete this function
     // TODO 2 BEGIN
     
-    char *breed;
-
     for (int i = 0; i < breedCount; i++) {
         if (strcmp(dictionary[i], breedName) == 0) {
-            breed = dictionary[i];
+            return dictionary[i];
         }
     }
-
-    return breed;
 
     // TODO 2 END
 }
@@ -226,11 +222,15 @@ Kennel *createKennels(FILE *ifile, int kennelCount, char **dictionary, int breed
 Cat **createCats(FILE *ifile, char **dictionary, int breedCount, int catCount) {
     // TODO: Complete this function
     // TODO 5 BEGIN
+    
+    Cat **cats = malloc(catCount * sizeof(Cat *));
+      
+    for (int i = 0; i < catCount; i++) {
+        Cat *cat = createSingleCat(ifile, dictionary, breedCount);
+        cats[i] = cat;
+    }
 
-
-
-
-
+    return cats;
     // TODO 5 END
 }
 
@@ -238,9 +238,29 @@ Cat *createSingleCat(FILE *ifile, char **dictionary, int breedCount) {
     // TODO: Complete this function
     // TODO 6 BEGIN
 
+    Cat *cat = malloc(sizeof(Cat));
 
+    int age;
+    fscanf(ifile, "%d", &age);
+    cat->age = age;
 
+    float weight;
+    fscanf(ifile, "%f", &weight);
+    cat->weight = weight;
+    
+    char breedBuff[100];
+    fscanf(ifile, "%s", breedBuff);
+    char *breed = lookupBreed(dictionary, breedCount, breedBuff);
+    cat->breed = breed;
+    
 
+    char buff[100];
+    fscanf(ifile, "%s", breedBuff);
+    char *name = malloc(strlen(buff) * sizeof(char));
+    strcpy(name, buff);
+    cat->name = name;
+
+    return cat; 
 
     // TODO 6 END
 }
