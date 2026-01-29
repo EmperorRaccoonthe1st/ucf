@@ -152,7 +152,10 @@ CatStore *createStore(FILE *ifile, int kennelCount, char **dictionary, int breed
 
     store->numKennels = kennelCount;
 
-    int **constraints = malloc(kennelCount * (breedCount * sizeof(int)));
+    int **constraints = malloc(kennelCount * (sizeof(int *)));
+    for (int i = 0; i < kennelCount; i++) {
+        constraints[i] = malloc(breedCount * sizeof(int));
+    }
     store->capacities = constraints;
     Kennel *kennels = createKennels(ifile, kennelCount, dictionary, breedCount, constraints);
     store->kennels = kennels;
