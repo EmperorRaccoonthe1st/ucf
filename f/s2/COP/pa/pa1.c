@@ -52,7 +52,8 @@ void freeStore(CatStore *store);
 
 // You may add more functions if necessary
 
-
+int getBreedIndex(char **dictionary, int breedCount, char *breedName);
+int findBreedAmt(char **dictionary, char *breedName, Kennel *k);
 
 // BEGIN: DO NOT MODIFY THE MAIN FUNCTION
 #ifndef MAIN_FUNCTION
@@ -272,9 +273,16 @@ int canMoveTo(CatStore *s, char *location, char *breed, char **dictionary, int b
     // TODO: Complete this function
     // TODO 7 BEGIN
 
+    for (int i = 0; i < s->numKennels; i++) {
+        if (strcmp(s->kennels[i].location, location) == 0) {
+            if (s->kennels[i].occupancy == s->kennels[i].maxCapacity) return 0;
+            int amtCats = findBreedAmt(dictionary, breed, &(s->kennels[i]));
+            if (s->capacities[i][getBreedIndex(dictionary, breedCount, breed)] == amtCats) return 0; 
+            return 0;
+       }
+    }
 
-
-
+    return 0;
 
     // TODO 7 END
 }
@@ -358,3 +366,26 @@ void freeStore(CatStore *store) {
 
 // You may add more functions if necessary
 
+int getBreedIndex(char **dictionary, int breedCount, char *breedName) {
+    int index = 0;
+    
+    for (int i = 0; i < breedCount; i++) {
+        if (strcmp(dictionary[i], breedName) == 0) {
+            index = i;
+            break;
+        }
+    }
+    
+    return index;
+}
+
+
+int findBreedAmt(char **dictionary, char *breedName, Kennel *k) {
+    int amt;
+    
+    for (int i = 0; i < k->occupancy; i++) {
+        if (strcmp(k->cats[i]->breed, breedName) == 0) amt++;
+    }
+    
+    return amt;
+}
