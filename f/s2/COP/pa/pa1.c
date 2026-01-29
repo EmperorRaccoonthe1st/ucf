@@ -278,7 +278,7 @@ int canMoveTo(CatStore *s, char *location, char *breed, char **dictionary, int b
             if (s->kennels[i].occupancy == s->kennels[i].maxCapacity) return 0;
             int amtCats = findBreedAmt(dictionary, breed, &(s->kennels[i]));
             if (s->capacities[i][getBreedIndex(dictionary, breedCount, breed)] == amtCats) return 0; 
-            return 0;
+            return 1;
        }
     }
 
@@ -291,9 +291,13 @@ Kennel *getKennelByCat(CatStore *s, Cat *cat) {
     // TODO: Complete this function
     // TODO 8 BEGIN
 
+    for (int i = 0; i < s->numKennels; i++) {
+        for (int x = 0; x < s->kennels[i].occupancy; x++) {
+            if (cat == s->kennels[i].cats[x]) return &(s->kennels[i]);
+        }
+    } 
 
-
-
+    return NULL;
 
     // TODO 8 END
 }
