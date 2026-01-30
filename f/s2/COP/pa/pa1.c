@@ -448,13 +448,15 @@ void query1(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
             continue;
         }
 
+        printf("Location: |");
+        printf("%s|\n", s->kennels[i].location);
+
         for (int x = 0; x < s->kennels[i].occupancy; x++) {
             if (strcmp(s->kennels[i].cats[x]->breed, breed) == 0) {
                 printf("%s ", s->kennels[i].cats[x]->name);
                 printf("%.2f ", s->kennels[i].cats[x]->weight);
                 printf("%d ", s->kennels[i].cats[x]->age);
-                printf("Location: |");
-                printf("%s| ", s->kennels[i].location);
+                printf("%s ", s->kennels[i].location);
                 printf("%s\n", CAT_STATUS[s->kennels[i].cats[x]->status]);
             }
         }
