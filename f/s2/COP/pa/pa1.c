@@ -115,6 +115,7 @@ char **readBreeds(FILE *ifile, int *count) {
     // TODO 1 BEGIN
 
     fscanf(ifile, "%d", count);
+    printf("%d\n", *count);
     int tmpC = *count;
 
     char **breeds = malloc(tmpC * sizeof(char *));
@@ -123,6 +124,7 @@ char **readBreeds(FILE *ifile, int *count) {
         // Make Tmp Buffer and grab breed
         char buff[100];
         fscanf(ifile, "%s", buff);
+        printf("%s\n", buff);
 
         // Make small sized buffer and copy over
         char *breed = malloc(strlen(buff) * sizeof(char)); 
@@ -152,19 +154,19 @@ CatStore *createStore(FILE *ifile, int kennelCount, char **dictionary, int breed
     // TODO: Complete this function
     // TODO 3 BEGIN
 
-    CatStore *store = malloc(sizeof(CatStore));
+    CatStore *s = malloc(sizeof(CatStore));
 
-    store->numKennels = kennelCount;
+    s->numKennels = kennelCount;
 
     int **constraints = malloc(kennelCount * (sizeof(int *)));
     for (int i = 0; i < kennelCount; i++) {
         constraints[i] = malloc(breedCount * sizeof(int));
     }
-    store->capacities = constraints;
+    s->capacities = constraints;
     Kennel *kennels = createKennels(ifile, kennelCount, dictionary, breedCount, constraints);
-    store->kennels = kennels;
+    s->kennels = kennels;
 
-    return store;
+    return s;
 
     // TODO 3 END
 }
@@ -181,8 +183,10 @@ Kennel *createKennels(FILE *ifile, int kennelCount, char **dictionary, int breed
         for (int x = 0; x < breedCount; x++) {
             int num;
             fscanf(ifile, "%d", &num); 
+            printf("%d ", num);
             constraints[i][x] = num;
         }
+        printf("\n");
     }
 
     // Populate Kennels Array
@@ -196,12 +200,14 @@ Kennel *createKennels(FILE *ifile, int kennelCount, char **dictionary, int breed
         // Make Tmp Input Buff
         char buff[100];
         fscanf(ifile, "%s", buff);
+        printf("%s ", buff);
         
         // Copy from tmp to correct sized char array
         char *location = malloc(strlen(buff) * sizeof(char));
         kennel.location = location;
 
         fscanf(ifile, "%d", &occupancy);
+        printf("%d\n", occupancy);
         kennel.occupancy = occupancy;
 
         //Cat Array Creation
@@ -247,25 +253,28 @@ Cat *createSingleCat(FILE *ifile, char **dictionary, int breedCount) {
 
     Cat *cat = malloc(sizeof(Cat));
 
+    char buff[100];
+    fscanf(ifile, "%s", buff);
+    printf("%s ", buff);
+    char *name = malloc(strlen(buff) * sizeof(char));
+    strcpy(name, buff);
+    cat->name = name;
+
     int age;
     fscanf(ifile, "%d", &age);
+    printf("%d ", age);
     cat->age = age;
 
     float weight;
-    fscanf(ifile, "%f", &weight);
+    fscanf(ifile, "%f ", &weight);
+    printf("%.2f ", weight);
     cat->weight = weight;
     
     char breedBuff[100];
     fscanf(ifile, "%s", breedBuff);
+    printf("%s\n", breedBuff);
     char *breed = lookupBreed(dictionary, breedCount, breedBuff);
     cat->breed = breed;
-    
-
-    char buff[100];
-    fscanf(ifile, "%s", breedBuff);
-    char *name = malloc(strlen(buff) * sizeof(char));
-    strcpy(name, buff);
-    cat->name = name;
 
     return cat; 
 
@@ -354,7 +363,7 @@ void runQueries(FILE *ifile, CatStore *s, char **dictionary, int breedCount, int
     // TODO: Complete this function
     // TODO 12 BEGIN
 
-    printf("In Function:\n");
+    printf("###\nIn Function:\n");
     printf("NumQueries: %d\n", numQueries);
     for (int z = 0; z < numQueries; z++) {
         int queryType = 0;
@@ -442,7 +451,7 @@ void query1(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
         for (int x = 0; x < s->kennels[i].occupancy; x++) {
             if (strcmp(s->kennels[i].cats[x]->breed, breed) == 0) {
                 printf("%s ", s->kennels[i].cats[x]->name);
-                printf("%f ", s->kennels[i].cats[x]->weight);
+                printf("%.2f ", s->kennels[i].cats[x]->weight);
                 printf("%d ", s->kennels[i].cats[x]->age);
                 printf("%s ", s->kennels[i].location);
                 printf("%s\n", CAT_STATUS[s->kennels[i].cats[x]->status]);
@@ -462,7 +471,7 @@ void query2(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
     Cat *cat = getCatByName(s, name);
     cat->status = status;
     
-    printf("%s is now %s\n", name, CAT_STATUS[status]);
+    printf("%s is now %s!\n", name, CAT_STATUS[status]);
 }
 
 
