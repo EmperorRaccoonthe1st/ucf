@@ -54,6 +54,9 @@ void freeStore(CatStore *store);
 
 int getBreedIndex(char **dictionary, int breedCount, char *breedName);
 int findBreedAmt(char **dictionary, char *breedName, Kennel *k);
+void query1(FILE *ifile, CatStore *s, char **dictionary, int breedCount);
+void query2(FILE *ifile, CatStore *s, char **dictionary, int breedCount);
+void query3(FILE *ifile, CatStore *s, char **dictionary, int breedCount);
 
 // BEGIN: DO NOT MODIFY THE MAIN FUNCTION
 #ifndef MAIN_FUNCTION
@@ -333,10 +336,16 @@ Cat *getCatByName(CatStore *s, char *catName) {
 void removeCatFromKennel(Kennel *k, Cat *cat) {
     // TODO: Complete this function
     // TODO 11 BEGIN
+    
+    for (int i = 0; i < k->occupancy; i++) {
+        if (k->cats[i] == cat) {
+            for (int x = i; x < k->occupancy - 1; x++) {
+                k->cats[x] = k->cats[x+1];
+            }
+        } 
+    }  
 
-     
-
-
+    k->occupancy -= 1;
 
     // TODO 11 END
 }
@@ -345,9 +354,27 @@ void runQueries(FILE *ifile, CatStore *s, char **dictionary, int breedCount, int
     // TODO: Complete this function
     // TODO 12 BEGIN
 
+    printf("In Function:\n");
+    printf("NumQueries: %d\n", numQueries);
+    for (int z = 0; z < numQueries; z++) {
+        int queryType = 0;
+        fscanf(ifile, "%d", &queryType);
+        printf("%d\n", queryType);
 
+        switch (queryType) {
+            case 1:
+                query1(ifile, s, dictionary, breedCount);
+                break;
 
+            case 2:
+                query2(ifile, s, dictionary, breedCount);
+                break;
 
+            case 3:
+                query3(ifile, s, dictionary, breedCount);
+                break;
+        }
+    }
 
     // TODO 12 END
 }
@@ -398,4 +425,66 @@ int findBreedAmt(char **dictionary, char *breedName, Kennel *k) {
     }
     
     return amt;
+}
+
+
+void query1(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
+    char buff[100];
+    fscanf(ifile, "%s", buff);
+    char *breed = lookupBreed(dictionary, breedCount, buff);
+
+    for (int i = 0; i < s->numKennels; i++) {
+        if (findBreedAmt(dictionary, breed, &(s->kennels[i])) == 0) {
+            printf("No cat with breed %s\n", breed);
+            continue;
+        }
+
+        for (int x = 0; x < s->kennels[i].occupancy; x++) {
+            if (strcmp(s->kennels[i].cats[x]->breed, breed) == 0) {
+                printf("%s ", s->kennels[i].cats[x]->name);
+                printf("%f ", s->kennels[i].cats[x]->weight);
+                printf("%d ", s->kennels[i].cats[x]->age);
+                printf("%s ", s->kennels[i].location);
+                printf("%s\n", CAT_STATUS[s->kennels[i].cats[x]->status]);
+            }
+        }
+    }                
+}
+
+
+void query2(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
+    int status;
+    fscanf(ifile, "%d",  &status);
+
+    char name[100];
+    fscanf(ifile, "%s", name);
+
+    Cat *cat = getCatByName(s, name);
+    cat->status = status;
+    
+    printf("%s is now %s\n", name, CAT_STATUS[status]);
+}
+
+
+void query3(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
+    char name[100];
+    fscanf(ifile, "%s", name);
+    
+    char location[100];
+    fscanf(ifile, "%s", location);
+
+    Cat *cat = getCatByName(s, name);
+    Kennel *k = getKennelByCat(s, cat);
+
+    if (canMoveTo(s, location, cat->breed, dictionary, breedCount) == 1) {
+         for (int i = 0; i < s->numKennels; i++) {
+            if (strcmp(s->kennels[i].location, location) == 0) {
+                s->kennels[i].cats[s->kennels[i].occupancy] = cat;
+                removeCatFromKennel(k, cat);
+            }
+        }         
+        printf("%s moved successfully to %s\n", name, location);
+    } else {
+        printf("%s cannot take a %s cat!\n", location, cat->breed);
+    } 
 }
