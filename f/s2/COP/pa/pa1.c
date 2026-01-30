@@ -306,10 +306,12 @@ int getCatIndex(Kennel *home, Cat *cat) {
     // TODO: Complete this function
     // TODO 9 BEGIN
 
+    for (int i = 0; i < home->occupancy; i++) {
+        if (home->cats[i] == cat) return i;
+    }
 
-
-
-
+    return -1;
+       
     // TODO 9 END
 }
 
@@ -317,9 +319,13 @@ Cat *getCatByName(CatStore *s, char *catName) {
     // TODO: Complete this function
     // TODO 10 BEGIN
 
+    for (int i = 0; i < s->numKennels; i++) {
+        for (int x = 0; x < s->kennels[i].occupancy; x++) {
+            if (strcmp(s->kennels[i].cats[x]->name, catName) == 0) return s->kennels[i].cats[x];
+        }
+    } 
 
-
-
+    return NULL;
 
     // TODO 10 END
 }
@@ -328,7 +334,7 @@ void removeCatFromKennel(Kennel *k, Cat *cat) {
     // TODO: Complete this function
     // TODO 11 BEGIN
 
-
+     
 
 
 
