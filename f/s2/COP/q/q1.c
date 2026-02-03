@@ -34,7 +34,7 @@ Point **transform_points(int *arr1, int *arr2, int size) {
     for (int i = 0; i < size; i++) {
         Point *p = malloc(sizeof(Point));
         p->x = arr1[i];
-        p->y = arry[i];
+        p->y = arr2[i];
         points[i] = p;
     }
 
@@ -59,11 +59,14 @@ Student *create_student(char *name, char courses[][101], int count, int year) {
 
     char **cs = malloc(count * sizeof(char *)); 
     for (int i = 0; i < count; i++) {
-        char *course = ((strlen(courses[i]) + 1 ) * sizeof(char *));
-        strcpy(course, &courses[i]) 
+        char *course = malloc((strlen(courses[i]) + 1 ) * sizeof(char));
+        strcpy(course, courses[i]); 
         cs[i] = course;
     }
     s->courses = cs;
+
+    s->courseCount = count;
+    s->yearLevel = year;
 
     return s;
 
@@ -77,9 +80,14 @@ void destroy_student(Student *s) {
     // TODO: Complete this function
     // TODO 3 BEGIN
 
+    free(s->name);
 
+    for( int i = 0; i < s->courseCount; i++) {
+        free(s->courses[i]);
+    } 
+    free(s->courses);
 
-
+    free(s);
 
     // TODO 3 END
 }
@@ -91,9 +99,20 @@ Account *merge_accounts(const Account *a1, const Account *a2) {
     // TODO: Complete this function
     // TODO 4 BEGIN
 
+    Account *a = malloc(sizeof(Account));
 
+    char *name = malloc((strlen(a1->name) + strlen(a2->name) + 6) * sizeof(char));
+    name[0] = '\0';    
+    strcat(name, a1->name);
+    strcat(name, " and ");
+    strcat(name, a2->name);
+    a->name = name;
 
+    a->amount = a1->amount + a2->amount;
 
+    a->id = a2->id;
+
+    return a;
 
     // TODO 4 END
 }
