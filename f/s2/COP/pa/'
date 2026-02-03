@@ -58,6 +58,9 @@ void query1(FILE *ifile, CatStore *s, char **dictionary, int breedCount);
 void query2(FILE *ifile, CatStore *s, char **dictionary, int breedCount);
 void query3(FILE *ifile, CatStore *s, char **dictionary, int breedCount);
 
+void listCatsB(CatStore *s);
+void listCatsA(CatStore *s);
+
 // BEGIN: DO NOT MODIFY THE MAIN FUNCTION
 #ifndef MAIN_FUNCTION
 int main(void) {    
@@ -91,6 +94,7 @@ int main(void) {
     fscanf(ifile, "%d", &numQueries);
     
     // Run the queries
+    listCatsB(s);
     runQueries(ifile, s, dictionary, breedCount, numQueries);
 
     // Close the file
@@ -125,7 +129,7 @@ char **readBreeds(FILE *ifile, int *count) {
         fscanf(ifile, "%s", buff);
 
         // Make small sized buffer and copy over
-        char *breed = malloc((strlen(buff) + 1) * sizeof(char)); 
+        char *breed = malloc(strlen(buff) * sizeof(char)); 
         strcpy(breed, buff);
         breeds[i] = breed;
     }
@@ -198,7 +202,7 @@ Kennel *createKennels(FILE *ifile, int kennelCount, char **dictionary, int breed
         fscanf(ifile, "%s", buff);
         
         // Copy from tmp to correct sized char array
-        char *location = malloc((strlen(buff) + 1) * sizeof(char));
+        char *location = malloc(strlen(buff) * sizeof(char));
         strcpy(location, buff);
         kennel.location = location;
 
@@ -250,7 +254,7 @@ Cat *createSingleCat(FILE *ifile, char **dictionary, int breedCount) {
 
     char buff[100];
     fscanf(ifile, "%s", buff);
-    char *name = malloc((strlen(buff) + 1) * sizeof(char));
+    char *name = malloc(strlen(buff) * sizeof(char));
     strcpy(name, buff);
     cat->name = name;
 
@@ -280,6 +284,7 @@ int canMoveTo(CatStore *s, char *location, char *breed, char **dictionary, int b
 
     for (int i = 0; i < s->numKennels; i++) {
         if (strcmp(s->kennels[i].location, location) == 0) {
+            printf("\nChecking canMove:\n%s has %d %s cats currently and it's max is %d\n", s->kennels[i].location, findBreedAmt(dictionary, breed, &(s->kennels[i])), breed, s->capacities[i][getBreedIndex(dictionary, breedCount, breed)]);
             if (s->kennels[i].occupancy == s->kennels[i].maxCapacity) return 0;
             int amtCats = findBreedAmt(dictionary, breed, &(s->kennels[i]));
             if (s->capacities[i][getBreedIndex(dictionary, breedCount, breed)] == amtCats) return 0; 
@@ -339,17 +344,21 @@ void removeCatFromKennel(Kennel *k, Cat *cat) {
     // TODO: Complete this function
     // TODO 11 BEGIN
     
-    Cat **cats = malloc(((k->occupancy) - 1) * sizeof(Cat *));
-    for (int i = 0; i < k->occupancy-1; i++) {
+    Cat **cats = malloc(k->occupancy-1 * sizeof(Cat *));
+    //cats[0] = k->cats[0];
+    printf("%p\n", k->cats[0]);
+    for (int i = 0; i < k->occupancy; i++) {
+        printf("i:%d\n", i);
         cats[i] = k->cats[i];
         if (k->cats[i] == cat) {
             for (int x = i; x < k->occupancy - 1; x++) {
+                printf("x:%d\n", x);
                 k->cats[x] = k->cats[x+1];
                 cats[x] = k->cats[x];
             }
         } 
     }  
-    free(k->cats);
+
     k->cats = cats;
     k->occupancy -= 1;
 
@@ -364,17 +373,21 @@ void runQueries(FILE *ifile, CatStore *s, char **dictionary, int breedCount, int
         int queryType = 0;
         fscanf(ifile, "%d", &queryType);
 
+        listCatsB(s);
         switch (queryType) {
             case 1:
                 query1(ifile, s, dictionary, breedCount);
+                listCatsA(s);
                 break;
 
             case 2:
                 query2(ifile, s, dictionary, breedCount);
+                listCatsA(s);
                 break;
 
             case 3:
                 query3(ifile, s, dictionary, breedCount);
+                listCatsA(s);
                 break;
         }
     }
@@ -399,21 +412,26 @@ void freeStore(CatStore *store) {
     // TODO: Complete this function
     // TODO 14 BEGIN
 
+    printf("###\nIn Function:\n");
 
     for (int i = 0; i < store->numKennels; i++) {
+        printf("Kennel %d: %s has %d cats\n", i, store->kennels[i].location, store->kennels[i].occupancy);
         for (int x = 0; x < store->kennels[i].occupancy; x++) {
-            free(store->kennels[i].cats[x]->name);
-            free(store->kennels[i].cats[x]);
+            printf("Freeing %s\n", store->kennels[x].cats[x]->name);
+            free(store->kennels[x].cats[x]->name);
+            free(store->kennels[x].cats[x]);
+            printf("Cat %d freed\n", x);
         }
         free(store->kennels[i].cats);
         free(store->kennels[i].location);
+        free(&(store->kennels[i]));
+        printf("Kennel %d freed\n", i);
     }
 
     for (int i = 0; i < store->numKennels; i++) {
         free(store->capacities[i]);
     }
 
-    free(store->capacities);
     free(store->kennels);
     free(store);
 
@@ -507,19 +525,8 @@ void query3(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
     if (canMoveTo(s, location, cat->breed, dictionary, breedCount) == 1) {
          for (int i = 0; i < s->numKennels; i++) {
             if (strcmp(s->kennels[i].location, location) == 0) {
-
-                removeCatFromKennel(k, cat);
-
-                s->kennels[i].occupancy += 1;
-
-                Cat **cats = malloc(s->kennels[i].occupancy * sizeof(Cat *));
-                for (int x = 0; x < s->kennels[i].occupancy - 1; x++) {
-                   cats[x] = s->kennels[i].cats[x]; 
-                }
-                cats[s->kennels[i].occupancy - 1] = cat;
-                free(s->kennels[i].cats);
-
-                s->kennels[i].cats = cats;
+                printf("%s wants to go to %s, and will be removed from %s\n", cat->name, s->kennels[i].location, k->location);
+                s->kennels[i].cats[s->kennels[i].occupancy] = cat;
             }
         }         
         printf("%s moved successfully to %s\n", name, location);
@@ -527,4 +534,29 @@ void query3(FILE *ifile, CatStore *s, char **dictionary, int breedCount) {
     } else {
         printf("%s cannot take a %s cat!\n", location, cat->breed);
     } 
+}
+
+
+void listCatsB(CatStore *s) {
+    for (int x = 0; x < s->numKennels; x++) {
+        printf("\x1B[32m%s now has %d cats: ", s->kennels[x].location, s->kennels[x].occupancy);
+        for (int i = 0; i < s->kennels[x].occupancy; i++) {
+            printf("%s ", s->kennels[x].cats[i]->name);
+        }
+        printf("\n");
+    }
+    printf("\x1B[0m\n");
+}
+
+
+void listCatsA(CatStore *s) {
+
+    for (int x = 0; x < s->numKennels; x++) {
+        printf("\x1B[34m%s now has %d cats: ", s->kennels[x].location, s->kennels[x].occupancy);
+        for (int i = 0; i < s->kennels[x].occupancy; i++) {
+            printf("%s ", s->kennels[x].cats[i]->name);
+        }
+        printf("\n");
+    }
+    printf("\x1B[0m\n##########################\n");
 }
