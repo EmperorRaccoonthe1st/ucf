@@ -207,10 +207,12 @@ void subset_print(int *solution, int size, const Song *actual) {
     for (int i = 0; i < size; i++) {
         if (solution[i]) {
             song_print(&actual[i]);
-        }
-
-        if (i < size-1) {
-            if (solution[i+1]) printf(" | ");    
+            for (int x = i + 1; x < size; x++) {
+                if (solution[x]) {
+                    printf(" | ");
+                    break;
+                 }
+            }
         }
     }
     
