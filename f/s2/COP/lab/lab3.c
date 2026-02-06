@@ -89,7 +89,7 @@ void permutation_init(const Song *songs, int n) {
     permutation_fill(solution, n, 0, songs, is_used);
     
     free(is_used);
-    free(permutations);
+    free(solution);
     
     // TODO 1 END
 }
@@ -99,17 +99,20 @@ void permutation_fill(Song *solution, int size, int pos,
     // TODO: Complete this function
     // TODO 2 BEGIN
     
-    if () {
-
+    if (pos == size) {
+        permutation_print(solution, size); 
         return;
     }    
     
-    for (int i = 0; i < n; i++) {
-        int num = i;
+    int num;
 
-        for (int x = i + 1; i < n; i++) {
-            num++;
-            if (is_used[i] == 1) break;
+    for (int x = 0; x < size; x++) {
+        if (is_used[x] == 0) {
+            num = x;
+            solution[pos] = actual[num];
+            is_used[num] = 1;
+            permutation_fill(solution, size, pos+1, actual, is_used);
+            is_used[num] = 0;
         }
     }
         
@@ -120,9 +123,12 @@ void permutation_print(const Song *solution, int size) {
     // TODO: Complete this function
     // TODO 3 BEGIN
     
-    
-    
-    
+    for (int i = 0; i < size; i++) {
+        song_print(&solution[i]);
+        
+        if ( i < size-1) printf(" | ");
+    }
+    printf("\n");
     
     // TODO 3 END
 }
@@ -131,10 +137,20 @@ void subset_init(const Song *songs, int n) {
     // TODO: Complete this function
     // TODO 4 BEGIN
     
+    int *solution = malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        solution[i] = 0;
+    }
+
+    int amt;
+    amt = subset_fill(solution, n, 0, songs);
+
+    printf("%d\n", amt);
+
+     
     
-    
-    
-    
+    free(solution);
+
     // TODO 4 END
 }
 
@@ -142,10 +158,24 @@ int subset_fill(int *solution, int size, int pos, const Song *actual) {
     // TODO: Complete this function
     // TODO 5 BEGIN
     
+    int amt = 0; 
+
+    for (int i = 1; i >= 0; i--) {
+        if (pos == size) {
+            if (subset_check(solution, size, actual)) {
+                subset_print(solution, size, actual);
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     
-    
-    
-    
+        solution[pos] = i;
+        amt += subset_fill(solution, size, pos+1, actual);
+    }
+
+    return amt;
+
     // TODO 5 END
 }
 
@@ -153,9 +183,17 @@ int subset_check(int *solution, int size, const Song *actual) {
     // TODO: Complete this function
     // TODO 6 BEGIN
     
+    int sum = 0;    
     
+    for (int i = 0; i < size; i++) {
+        if (solution[i]) {
+            sum += actual[i].length;
+        }
+    }
+
+    if (sum > 0 && sum <= 600) return 1;
     
-    
+    return 0;
     
     // TODO 6 END
 }
@@ -164,9 +202,19 @@ void subset_print(int *solution, int size, const Song *actual) {
     // TODO: Complete this function
     // TODO 7 BEGIN
     
+    char buff[100];
+
+    for (int i = 0; i < size; i++) {
+        if (solution[i]) {
+            song_print(&actual[i]);
+        }
+
+        if (i < size-1) {
+            if (solution[i+1]) printf(" | ");    
+        }
+    }
     
-    
-    
+    printf("\n"); 
     
     // TODO 7 END
 }
