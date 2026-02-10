@@ -202,17 +202,22 @@ void subset_print(int *solution, int size, const Song *actual) {
     // TODO: Complete this function
     // TODO 7 BEGIN
     
-    char buff[100];
-
     for (int i = 0; i < size; i++) {
         if (solution[i]) {
             song_print(&actual[i]);
+<<<<<<< HEAD
             for (int x = i + 1; x < size; x++) {
                 if (solution[x]) {
                     printf(" | ");
                     break;
                  }
             }
+=======
+        }
+
+        if (i < size-2) {
+            if (solution[i+1]) printf(" | ");    
+>>>>>>> 51748e6 (completed quiz 2. Recursion is not that hard, but getting these quiz\'s right the first try is so tricky man)
         }
     }
     
