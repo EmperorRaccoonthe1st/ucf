@@ -172,7 +172,7 @@ SLList *add(SLList *num1, SLList *num2) {
             n2 = n2->next; 
         }
 
-        int sum = n1->data + n2->data;
+        int sum = n1->data + n2->data
 
         if ( sum > 9) {
             currentNode->data += (sum % 10);
