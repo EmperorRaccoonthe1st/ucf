@@ -174,14 +174,16 @@ SLList *add(SLList *num1, SLList *num2) {
 
         int sum = n1->data + n2->data;
 
-        if ( sum > 9) {
-            currentNode->data += (sum % 10);
+        if ( sum + currentNode->data > 9) {
+            currentNode->data = ((sum + currentNode->data) % 10);
             
             SLLNode *newNode = malloc(sizeof(SLLNode));
             newNode->data = 1;
             newNode->next = NULL;
             currentNode->next = newNode;
         } else if (i != amt-1) {
+            currentNode->data += sum;
+    
             SLLNode *newNode = malloc(sizeof(SLLNode));
             newNode->data = 0;
             newNode->next = NULL;
