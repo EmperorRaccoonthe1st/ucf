@@ -62,32 +62,36 @@ int main(void) {
         
         // Convert the strings into linked lists
         SLList *num1 = parse_string(str1);
+        print_number(num1);
+        printf("\n");
+
         SLList *num2 = parse_string(str2);
+        print_number(num2);
         
         // Uncomment for the guide question
         //remove_leading_zeroes(num1);
         //remove_leading_zeroes(num2);
         
         // Get the sum of the two numbers
-        SLList *sum = add(num1, num2);
+        //SLList *sum = add(num1, num2);
         
         // Print the results
-        print_number(sum);
+        //print_number(sum);
         printf(" - ");
         
         // Check if the sum is palindrome
-        if( is_palindrome(sum) )
-            printf("Palindrome");
-        else
-            printf("Not Palindrome");
-            
+        //if( is_palindrome(sum) )
+            //printf("Palindrome");
+        //else
+            //printf("Not Palindrome");
+            //
         printf("\n");
-        
+       
         // Deallocate the linked lists
         // because each parse_string() call
         // creates a brand new list; this
         // prevents any memory leak
-        sll_destroy_list(sum);
+        //sll_destroy_list(sum);
         sll_destroy_list(num1);
         sll_destroy_list(num2);
     }
@@ -105,11 +109,30 @@ int main(void) {
 SLList *parse_string(char *str) {
     // TODO: Complete this function
     // TODO 1 BEGIN
+        
+    SLList *list = malloc(sizeof(SLList));     
+
+    SLLNode *head = malloc(sizeof(SLLNode));
+    head->data = char_to_int(str[0]);
+
+    list->head = head;
+
+    SLLNode *last = head;
+
     
+    int i = 1;
+    while (str[i] != '\0') {
+        SLLNode *node = malloc(sizeof(SLLNode));
+        node->next = NULL;
+        node->data = char_to_int(str[i]);
+        last->next = node;
+        last = node;
+        i++;
+    }    
+
     
-    
-    
-    
+    return list;
+
     // TODO 1 END
 }
 
@@ -117,9 +140,13 @@ void print_number_recursive(SLLNode *node) {
     // TODO: Complete this function
     // TODO 2 BEGIN
     
-    
-    
-    
+    if (node->next != NULL) {
+        print_number_recursive(node->next); 
+    }    
+
+    printf("%d", node->data);
+
+    return;
     
     // TODO 2 END
 }
