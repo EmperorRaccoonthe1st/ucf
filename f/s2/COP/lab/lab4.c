@@ -155,10 +155,31 @@ SLList *add(SLList *num1, SLList *num2) {
     // TODO: Complete this function
     // TODO 3 BEGIN
     
+    SLList *l = malloc(sizeof(SLList));
+
+    SLLNode *head = malloc(sizeof(SLLNode));
+    l->head = head;
+
+    SLLNode *last = head;
+    SLLNode *am1L = num1->head;
+    SLLNode *am2L = num2->head;
+
+    int amt = sll_get_size(num1);
+
+    for (int i = 0; i < amt; i++) {
+        SLLNode *node = malloc(sizeof(SLLNode));
+        node->next = NULL;
+        node->data = 0;
+        last->next = node;
+
+        if (am1k
+
+        
+
+    }
     
-    
-    
-    
+    return l;
+     
     // TODO 3 END
 }
 
