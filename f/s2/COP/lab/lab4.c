@@ -63,6 +63,7 @@ int main(void) {
         // Convert the strings into linked lists
         SLList *num1 = parse_string(str1);
         SLList *num2 = parse_string(str2);
+        print_number(num2);
         
         // Uncomment for the guide question
         //remove_leading_zeroes(num1);
@@ -76,11 +77,11 @@ int main(void) {
         printf(" - ");
         
         // Check if the sum is palindrome
-        //if( is_palindrome(sum) )
-            //printf("Palindrome");
-        //else
-            //printf("Not Palindrome");
-            //
+        if ( is_palindrome(sum) )
+           printf("Palindrome");
+        else
+            printf("Not Palindrome");
+            
         printf("\n");
        
         // Deallocate the linked lists
@@ -154,6 +155,8 @@ SLList *add(SLList *num1, SLList *num2) {
     SLList *l = malloc(sizeof(SLList));
 
     SLLNode *head = malloc(sizeof(SLLNode));
+    head->data = 0;
+    head->next = NULL;
     l->head = head;
 
     int amt = sll_get_size(num1);
@@ -167,15 +170,15 @@ SLList *add(SLList *num1, SLList *num2) {
         
         SLLNode *n1 = num1->head;
         SLLNode *n2 = num2->head;
-        for (int x = 0; x < i; x++) {  
+        for (int x = amt-1; x > i; x--) {  
             n1 = n1->next; 
             n2 = n2->next; 
         }
 
         int sum = n1->data + n2->data;
 
-        if ( sum + currentNode->data > 9) {
-            currentNode->data = ((sum + currentNode->data) % 10);
+        if ( (sum + currentNode->data) > 9) {
+            currentNode->data += sum % 10;
             
             SLLNode *newNode = malloc(sizeof(SLLNode));
             newNode->data = 1;
@@ -188,6 +191,8 @@ SLList *add(SLList *num1, SLList *num2) {
             newNode->data = 0;
             newNode->next = NULL;
             currentNode->next = newNode;
+        } else {
+            currentNode->data += sum;
         }
          
     }
@@ -201,9 +206,30 @@ int is_palindrome(SLList *num) {
     // TODO: Complete this function
     // TODO 4 BEGIN
     
+    int amt = sll_get_size(num); 
     
+    SLLNode *last = num->head;
+
+    for (int i = 0; i < amt; i++) {
+        last = num->head;
+        int num1 = last->data;
+        int num2 = last->data;
+
+        for (int x = 0; x < i; x++) {
+            last = last->next;                        
+        }
+        num1 = last->data;
+        last = num->head;
+
+        for (int x = amt; x > i+1; x--) {
+            last = last->next;                        
+        }
+        num2 = last->data;
+
+        if ( num1 != num2) return 0;
+    }
     
-    
+    return 1;
     
     // TODO 4 END
 }
