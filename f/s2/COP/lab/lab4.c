@@ -170,9 +170,14 @@ SLList *add(SLList *num1, SLList *num2) {
         for (int x = 0; x < i; x++) {  
             if (n1->next != NULL) {
                 n1 = n1->next; 
+            } else {
+                n1->data = 0;
             }
+
             if (n2->next != NULL) {
                 n2 = n2->next; 
+            } else {
+                n2->data = 0;
             }
         }
 
