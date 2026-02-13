@@ -59,17 +59,27 @@ int main(void) {
     for(int i = 0; i < N; i++) {
         // Read two numeric strings
         fscanf(ifile, "%s %s", str1, str2);
+        printf("###\nParsing New Numbers - %d\n", i);        
 
         // Convert the strings into linked lists
         SLList *num1 = parse_string(str1);
+        printf("Num1 parsed! - ");
+        print_number(num1); 
+        printf("\n");
+
         SLList *num2 = parse_string(str2);
+        printf("Num2 parsed! - ");
+        print_number(num2); 
+        printf("\n");
         
         // Uncomment for the guide question
         //remove_leading_zeroes(num1);
         //remove_leading_zeroes(num2);
         
         // Get the sum of the two numbers
+        printf("** In Sum:\n");
         SLList *sum = add(num1, num2);
+        printf("Sum created!\n");
         
         // Print the results
         print_number(sum);
@@ -106,21 +116,30 @@ SLList *parse_string(char *str) {
     // TODO: Complete this function
     // TODO 1 BEGIN
         
+    printf("** In Parse:\n");
     SLList *list = malloc(sizeof(SLList));     
+    printf(" list created: %p\n", list);
 
     SLLNode *head = malloc(sizeof(SLLNode));
+    printf(" head created: %p\n", head);
     int len = strlen(str);
     head->data = char_to_int(str[len - 1]);
+    printf(" head data: %d\n", head->data);
 
     list->head = head;
+    printf(" head attached! - %p\n", list->head);
 
     SLLNode *last = head;
     
+    printf(" creating Nodes!\n");
     for (int i = len-2; i >= 0; i--) {
         SLLNode *node = malloc(sizeof(SLLNode));
         node->next = NULL;
         node->data = char_to_int(str[i]);
+        printf("  %d: node created! - %p\n", i, node);
+        printf("  %d: node data: %d\n", i, node->data);
         last->next = node;
+        printf("  %d: node attached! %p\n", i, last->next);
         last = node;
     }    
 
@@ -157,6 +176,7 @@ SLList *add(SLList *num1, SLList *num2) {
     l->head = head;
 
     int amt = sll_get_size(num1);
+    printf(" num length: %d\n", amt);
 
     SLLNode *currentNode = head;
     for (int i = 0; i < amt; i++) {
@@ -164,36 +184,44 @@ SLList *add(SLList *num1, SLList *num2) {
         while (currentNode->next != NULL) {
             currentNode = currentNode->next;
         }
+        printf("  %d: found current sum node! %p\n", i, currentNode);
         
         SLLNode *n1 = num1->head;
         SLLNode *n2 = num2->head;
         for (int x = 0; x < i; x++) {  
-            if (n1->next != NULL) {
-                n1 = n1->next; 
-            }
-            if (n2->next != NULL) {
-                n2 = n2->next; 
-            }
+            n1 = n1->next; 
+            n2 = n2->next; 
+            printf("  %d: x - %d:%d,%d\n", i, x, n1->data, n2->data);
         }
+        printf("  %d: n1->data: %d n2->data: %d\n", i, n1->data, n2->data);
 
         int sum = n1->data + n2->data;
+        printf("  %d: Sum is %d\n", i, sum);
+        printf("  %d: currentNode->data: %d\n", i, currentNode->data);
 
         if ( (sum + currentNode->data) > 9) {
+            printf("  %d: Sum is greater than 9!\n", i);
             currentNode->data += sum % 10;
+            printf("  %d: Current node now is %d\n", i, currentNode->data);
             
             SLLNode *newNode = malloc(sizeof(SLLNode));
             newNode->data = 1;
             newNode->next = NULL;
             currentNode->next = newNode;
+            printf("  %d: Carryover Node Created!\n", i);
         } else if (i != amt-1) {
             currentNode->data += sum;
+            printf("  %d: Sum is not greater than 9!\n", i);
+            printf("  %d: Current node now is %d\n", i, currentNode->data);
     
             SLLNode *newNode = malloc(sizeof(SLLNode));
             newNode->data = 0;
             newNode->next = NULL;
             currentNode->next = newNode;
+            printf("  %d: Next Node Created!\n", i);
         } else {
             currentNode->data += sum;
+            printf("  %d: Last Digit! Now %d\n", i, currentNode->data);
         }
          
     }
@@ -208,26 +236,30 @@ int is_palindrome(SLList *num) {
     // TODO 4 BEGIN
     
     int amt = sll_get_size(num); 
-
-    int *arr = malloc(amt * sizeof(int));
     
     SLLNode *last = num->head;
 
     for (int i = 0; i < amt; i++) {
-       arr[i] = last->data; 
-       last = last->next;
-    }
+        last = num->head;
+        int num1 = last->data;
+        int num2 = last->data;
 
-    int i = 0;
-    int x = amt-1;
+        for (int x = 0; x < i; x++) {
+            last = last->next;                        
+        }
+        num1 = last->data;
+        last = num->head;
 
-    while (i <= x) {
-        if (arr[i] != arr[x]) return 0;
-        i++;    
-        x--;
+        for (int x = amt; x > i+1; x--) {
+            last = last->next;                        
+        }
+        num2 = last->data;
+
+        if ( num1 != num2) return 0;
     }
     
     return 1;
+    
     // TODO 4 END
 }
 
@@ -326,6 +358,7 @@ void print_number(SLList *list) {
     // Wrapper function that simply calls
     // the actual function (recursive) that
     // prints a number on a single line
+    printf("\n** In Print:\n");
     print_number_recursive(list->head);
 }
 
