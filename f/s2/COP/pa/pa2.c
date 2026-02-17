@@ -6,7 +6,7 @@
 
 /*
     COP 3502C PA2
-    This program is written by: Your Full Name
+    This program is written by: Owen Manuel Lopez
 */
 
 typedef struct Cat_s {
