@@ -42,6 +42,7 @@ void myMain(FILE *ifile);
 
 // You may add more functions if necessary
 
+void readInput(FILE *ifile, Cat *cats, Rivals *rivals, **tracker);
 
 
 
@@ -80,9 +81,13 @@ int main(void) {
 void myMain(FILE *ifile) {
     // TODO: Complete this function
     
-    
+    readInput();    
     
     
     
 }
 
+
+void readInput(FILE *ifile, Cat *cats, Rivals *rivals, **tracker) {
+
+}

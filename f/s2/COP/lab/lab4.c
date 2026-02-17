@@ -232,6 +232,7 @@ int is_palindrome(SLList *num) {
         x--;
     }
     
+    free(arr);
     return 1;
     // TODO 4 END
 }
