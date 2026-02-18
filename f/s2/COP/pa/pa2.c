@@ -34,7 +34,7 @@ const float POSITION_BONUS[10] = {3.0, 5.0, 4.0, 6.0, 7.0, 2.0, 8.0, 1.0, 9.0, 1
 
 Cat *cats = NULL;
 Rivals *rivals = NULL;
-double bestPermScore;
+double bestPermScore = 0;
 int **tracker = NULL;
 
 
@@ -45,10 +45,11 @@ void myMain(FILE *ifile);
 
 void readInput(FILE *ifile, Cat *cats, Rivals *rivals);
 char *readStr(FILE *ifile);
-void populateCats(FILE *ifile, Cat *cats, int n, int c);
-void populateRivals(FILE *ifile, Rivals *rivals, int amt);
-Cat *createCat(FILE *ifile);
-Rivals *createRivals(char *c1, char *c2);
+int populateCats(FILE *ifile, Cat *cats, int n, int c);
+Rivals *populateRivalsArr(FILE *ifile, Rivals *rivals, int amt, int amtCats);
+Cat createCat(FILE *ifile);
+Rivals createRivals(char *c1, char *c2, int amtCats);
+void printState(int amtCats, int amtRivals);
 
 
 
@@ -70,7 +71,7 @@ int main(void) {
     
     // Calls your own main function and passes the file stream
     myMain(ifile);
-    
+
     // Close the file
     fclose(ifile);
     
@@ -100,34 +101,37 @@ void readInput(FILE *ifile, Cat *cats, Rivals *rivals) {
 
     fscanf(ifile, "%d", &n);
     fscanf(ifile, "%d", &c);
-    populateCats(ifile, cats, n, c);
+    int amtCats = populateCats(ifile, cats, n, c);
 
-    int amt;
-    fscanf(ifile, "%d", &amt);
-    populateRivals(ifile, rivals, amt);
+    int num;
+    fscanf(ifile, "%d", &num);
+    rivals = populateRivalsArr(ifile, rivals, num, amtCats);
+
+    printState(amtCats, num);
 }
 
 
-void populateCats(FILE *ifile, Cat *cats, int n, int c) {
-    cats = malloc(n * c * sizeof(Cat *));     
+int populateCats(FILE *ifile, Cat *cats, int n, int c) {
+    cats = malloc((n * c) * sizeof(Cat));     
 
     for (int i = 0; i < (n * c); i++) {
-        Cat *cat = createCat(ifile);
+        Cat cat = createCat(ifile);
         cats[i] = cat;
     }
 
+    return (n * c);
 }
 
 
-void populateRivals(FILE *ifile, Rivals *rivals, int amt) {
+Rivals *populateRivalsArr(FILE *ifile, Rivals *rivals, int amt, int amtCats) {
 
-    rivals = malloc(amt * sizeof(Rivals *));
+    rivals = malloc(amt * sizeof(Rivals));
     
     for (int i = 0; i < amt; i++) {
         char *c1 = readStr(ifile);
         char *c2 = readStr(ifile);
 
-        Rival *rival = createRivals(c1, c2);
+        Rivals rival = createRivals(c1, c2, amtCats);
         rivals[i] = rival;
         
         free(c1);
@@ -138,40 +142,39 @@ void populateRivals(FILE *ifile, Rivals *rivals, int amt) {
 }
 
 
-Cat *createCat(FILE *ifile) {
-    Cat *cat = malloc(sizeof(Cat)); 
+Cat createCat(FILE *ifile) {
+    Cat cat;
 
-    cat->name = readStr(ifile);
-    cat->breed = readStr(ifile);
+    cat.name = readStr(ifile);
+    cat.breed = readStr(ifile);
 
     for (int i = 0; i < MAX_SCORES; i++) {
-        fscanf(ifile, "%d", &cat->scores[i]);
+        fscanf(ifile, "%d", &cat.scores[i]);
     }
 
     int sum = 0;
     for (int i = 0; i < MAX_SCORES; i++) {
-        sum += cat->scores[i];
+        sum += cat.scores[i];
     }
     
-    cat->baseScore = sum;
+    cat.baseScore = sum;
 
     return cat;
 } 
 
 
-Rivals *createRivals(char *c1, char *c2) {
-    Rivals *rivals = malloc(sizeof(Rivals));
+Rivals createRivals(char *c1, char *c2, int amtCats) {
+    Rivals rivals;
     
-    int n = 0;
-    while (cats[n] != NULL) {
-        if (strcmp(c1, cats[n].name) == 0) rivals->cat1 = &cats[n];
-        n++;
+    for (int i = 0; i < amtCats; i++) {
+        printf("%d\n", i);
+        printf("%d: %s to %s\n", i, c1, cats[i].name);
+        if (strcmp(c1, cats[i].name) == 0) rivals.cat1 = &cats[i];
     }
     
-    n = 0;
-    while (cats[n] != NULL) {
-        if (strcmp(c2, cats[n].name) == 0) rivals->cat2 = &cats[n];
-        n++;
+    for (int i = 0; i< amtCats; i++) {
+        printf("%d: %s to %s\n", i, c1, cats[i].name);
+        if (strcmp(c2, cats[i].name) == 0) rivals.cat2 = &cats[i];
     }
 
     return rivals;
@@ -184,6 +187,27 @@ char *readStr(FILE *ifile) {
     fscanf(ifile, "%s", buff);
 
     char *word = malloc((strlen(buff) + 1) * sizeof(char));    
+    strcpy(word, buff);
 
     return word;
 } 
+
+
+void printState(int amtCats, int amtRivals) {
+    printf("Cats:\n");
+    for (int i = 0; i < amtCats; i++) {
+        printf("%d: %s %s ", i, cats[i].name, cats[i].breed);
+        for (int i = 0; i < MAX_SCORES; i++) {
+            printf("%d ", cats[i].scores[i]);
+        }
+        printf("%d\n", cats[i].baseScore);
+    }
+
+    printf("Rivals: \n"); 
+
+    for (int i = 0; i < amtRivals; i++) {
+        printf("%d: %s & %s\n", i,  rivals[i].cat1->name, rivals[i].cat2->name);
+    }
+
+    printf("bestPermScore: %lf\n", bestPermScore);
+}
