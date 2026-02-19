@@ -33,7 +33,7 @@ void solve(int *solution, int size) {
     // example is provided for reference.
     
     int answer[] = {
-        1, 2, 3, 4, 5               // If your answer is: 1, 2, 3, 4, 5
+        1, 3, 5 ,4 , 2               // If your answer is: 1, 2, 3, 4, 5
     };
     
     // DO NOT MODIFY THIS PORTION
