@@ -50,8 +50,13 @@ void append(SLLNode *head1, SLLNode *head2) {
     // TODO: Complete this function
     // TODO 2 BEGIN
 
+    SLLNode *l1Tail = head1;
 
+    while (l1tail->next != NULL) {
+        l1tail = l1tail->next;
+    }
 
+    l1tail->next = head2;
 
 
     // TODO 2 END
@@ -64,7 +69,7 @@ SLLNode *merge(SLLNode *ptr1, SLLNode *ptr2) {
     // TODO: Complete this function
     // TODO 3 BEGIN
 
-
+    
 
 
 
