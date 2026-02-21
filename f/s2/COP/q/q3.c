@@ -69,33 +69,18 @@ SLLNode *merge(SLLNode *ptr1, SLLNode *ptr2) {
     // TODO: Complete this function
     // TODO 3 BEGIN
     
-        if (ptr1->next == NULL) {
-            if (ptr1->data > ptr2->data) {
-                ptr1->next = NULL;
-                ptr2->next = ptr1;
-        
-                return ptr2;
-            } else {
-                ptr2->next = NULL;
-                ptr1->next = ptr2;
-        
-                return ptr1;
-            }
-        }
+    if (ptr1 == NULL) return ptr2;
+    if (ptr2 == NULL) return ptr1;
 
-        SLLNode *n = merge(ptr1->next, ptr2->next);
-    
-        if (ptr1->data > ptr2->data) {
-            ptr1->next = n;
-            ptr2->next = ptr1;
+    if (ptr1->data <= ptr2->data) {
+        ptr1->next = merge(ptr1->next, ptr2);
+        return ptr1;
 
-            return ptr2;
-        } else {
-            ptr2->next = n;
-            ptr1->next = ptr2;
-
-            return ptr1;
-        }
+    } else {
+        ptr2->next = merge(ptr1, ptr2->next);
+        return ptr2;
+ 
+    }
 
     // TODO 3 END
 }
@@ -108,7 +93,7 @@ SLLNode *reverse(SLLNode *head) {
     // TODO 4 BEGIN
 
 
-    if ( head->next == NULL) {
+    if ( head->next == NULL || head->next == NULL) {
         return head;
     }
     
