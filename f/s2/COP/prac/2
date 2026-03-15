@@ -1,0 +1,36 @@
+This document is the written portion of a practice comp sci 1 midterm exam.
+The following sections are responses to free response questions that require code to be written.
+
+
+# 1b
+```c
+
+int main(void) {
+
+// rewriting scores = realloc(etc..)
+
+    int *tmp = realloc(scores, n * 2 * sizeof(int));
+
+    if (tmp == NULL) {
+        free(scores);
+        printf("failed\n");
+    } else {
+        scores = tmp;
+        printf("success\n");
+    }
+
+    return 0;
+}
+
+```
+
+
+# 1b
+```c
+
+int main(void) {
+
+    return 0;
+}
+
+```
