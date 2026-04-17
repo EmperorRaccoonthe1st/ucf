@@ -126,7 +126,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
             controls->MemtoReg = 2;
             controls->ALUOp = 0;
             controls->MemWrite = 0;
-            controls->ALUSrc = 1;
+            controls->ALUSrc = 1; // should be 2
             controls->RegWrite = 0;
             break;
 
