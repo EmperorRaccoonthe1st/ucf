@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tcolorbox} % For highlighted concept boxes
+\usepackage{multicol}
+\usepackage{array}
+
+% Custom Colors
+\definecolor{chemblue}{RGB}{0, 51, 102}
+\definecolor{conceptgold}{RGB}{218, 165, 32}
+
+% Formatting
+\title{\Huge \textbf{CHM 2045C: Exam 4 Comprehensive Study Guide}}
+\author{\Large \textit{Quantum Mechanics, Periodicity, and Chemical Bonding}}
+\date{Spring 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+    \begin{tcolorbox}[colframe=chemblue, colback=white, width=0.8\textwidth, title=Exam Strategy]
+        \textbf{Total Questions:} 20 | \textbf{Math:} 3 | \textbf{Conceptual/Numerical:} 17 \\
+        This exam focuses heavily on \textit{why} atoms behave the way they do based on electron behavior. Master the trends and Lewis rules to secure the majority of the points.
+    \end{tcolorbox}
+\end{center}
+
+\section{Chapter 8: The Quantum Mechanical Model}
+
+\subsection{8.1--8.2: Nature of Light}
+\textbf{Concept:} Light behaves as both a \textbf{wave} (diffraction/interference) and a \textbf{particle} (photoelectric effect). Particles of light are called \textit{photons}.
+\begin{itemize}
+    \item \textbf{Wave Formula:} $c = \lambda \nu$ (where $c = 3.00 \times 10^8$ m/s, $\lambda$ is wavelength in meters, $\nu$ is frequency in s$^{-1}$).
+    \item \textbf{Particle Formula:} $E = h\nu = \frac{hc}{\lambda}$ (where $h = 6.626 \times 10^{-34}$ J$\cdot$s).
+    \item \textbf{Relationship:} Short wavelength ($\lambda$) = High frequency ($\nu$) = High energy ($E$).
+\end{itemize}
+
+\subsection{8.4: Wave Properties of Matter (The de Broglie Wavelength)}
+\textbf{Concept:} If light can act like a particle, matter (like electrons) can act like a wave.
+\begin{tcolorbox}[colframe=chemblue!50, title=Mathematical Method: de Broglie Calculation]
+    \textbf{Formula:} $\lambda = \frac{h}{m v}$ \\
+    \textbf{Critical Units:} 
+    \begin{enumerate}
+        \item Mass ($m$) \textbf{MUST} be in \textbf{kilograms} (kg).
+        \item Velocity ($v$) \textbf{MUST} be in \textbf{meters per second} (m/s).
+        \item $\lambda$ will result in meters (m).
+    \end{enumerate}
+\end{tcolorbox}
+
+\subsection{8.5: Quantum Numbers}
+\textbf{Concept:} Four numbers describe the "address" and properties of an electron in an orbital.
+\begin{enumerate}
+    \item \textbf{Principal ($n$):} Energy level/Size. $n = 1, 2, 3, \dots$
+    \item \textbf{Angular Momentum ($l$):} Shape of the orbital. $l$ ranges from $0$ to $(n-1)$.
+    \begin{itemize}
+        \item $l=0 \rightarrow s$ (sphere); $l=1 \rightarrow p$ (dumbbell); $l=2 \rightarrow d$ (clover); $l=3 \rightarrow f$.
+    \end{itemize}
+    \item \textbf{Magnetic ($m_l$):} Orientation in space. $m_l$ ranges from $-l$ to $+l$ (including 0).
+    \item \textbf{Spin ($m_s$):} Direction of electron spin. Either $+1/2$ or $-1/2$.
+\end{enumerate}
+
+\subsection{8.5: Hydrogen Electron Transitions (Bohr Model)}
+\textbf{Mathematical Method:} Calculating energy change when an electron jumps levels.
+\[ \Delta E = -2.18 \times 10^{-18} \text{ J} \left( \frac{1}{n_f^2} - \frac{1}{n_i^2} \right) \]
+\begin{itemize}
+    \item \textbf{Absorption:} $n_f > n_i$ ($\Delta E$ is positive).
+    \item \textbf{Emission:} $n_f < n_i$ ($\Delta E$ is negative; light is released).
+\end{itemize}
+
+\newpage
+
+\section{Chapter 9: Periodic Properties}
+
+\subsection{9.3: Rules for Electron Configuration}
+\begin{itemize}
+    \item \textbf{Pauli Exclusion Principle:} No two electrons in an atom can have the same four quantum numbers (max 2 electrons per orbital, must have opposite spins).
+    \item \textbf{Hund's Rule:} When filling degenerate orbitals (same energy), electrons fill them singly first with parallel spins to minimize repulsion.
+    \item \textbf{Aufbau Principle:} Electrons fill the lowest energy orbitals first ($1s \rightarrow 2s \rightarrow 2p \dots$).
+\end{itemize}
+
+\subsection{9.6--9.8: Periodic Trends}
+\textbf{Underlying Concept:} Trends are driven by \textbf{Effective Nuclear Charge ($Z_{\text{eff}}$)}, which is the net positive charge "felt" by valence electrons after accounting for shielding by core electrons.
+
+\begin{tcolorbox}[colframe=conceptgold, title=Visualizing Trends (Arrows point toward INCREASE)]
+    \begin{center}
+        \begin{tabular}{l l l}
+            \textbf{Trend} & \textbf{Horizontal ($\leftrightarrow$)} & \textbf{Vertical ($\updownarrow$)} \\ \midrule
+            Atomic Radius & $\longleftarrow$ (Increase Left) & $\downarrow$ (Increase Down) \\
+            Ionization Energy (IE) & $\longrightarrow$ (Increase Right) & $\uparrow$ (Increase Up) \\
+            Metallic Character & $\longleftarrow$ (Increase Left) & $\downarrow$ (Increase Down) \\
+            Electron Affinity & $\longrightarrow$ (More Negative Right) & $\uparrow$ (More Negative Up) \\
+            Effective Nuclear Charge & $\longrightarrow$ (Increase Right) & (Slight Increase Down) \\ \bottomrule
+        \end{tabular}
+    \end{center}
+\end{tcolorbox}
+
+\subsection{9.7: Magnetic Properties}
+\begin{itemize}
+    \item \textbf{Paramagnetic:} Atom or ion has \textbf{unpaired} electrons. Attracted to magnetic fields.
+    \item \textbf{Diamagnetic:} All electrons are \textbf{paired}. Slightly repelled by magnetic fields.
+\end{itemize}
+
+\section{Chapter 10: Chemical Bonding I}
+
+\subsection{10.5--10.6: Bond Classification}
+Determined by the difference in electronegativity ($\Delta\text{EN}$):
+\begin{itemize}
+    \item \textbf{0.0 -- 0.4:} Pure (Nonpolar) Covalent (Equal sharing).
+    \item \textbf{0.4 -- 2.0:} Polar Covalent (Unequal sharing).
+    \item \textbf{> 2.0:} Ionic (Electron transfer).
+\end{itemize}
+
+\subsection{10.8: Formal Charge}
+Used to identify the \textbf{best} Lewis structure among resonance forms.
+\textbf{Formula:} $\text{FC} = (\text{Valence } e^-) - [\text{Unpaired } e^- + \frac{1}{2}(\text{Bonding } e^-)]$
+\textit{Selection Rules:}
+1. Smaller FCs are better (closer to zero).
+2. Negative FCs should be on the more electronegative atom.
+
+\subsection{10.10: Calculating Bond Energy ($\Delta H_{\text{rxn}}$)}
+\begin{tcolorbox}[colframe=chemblue, title=Meticulous Method: Step-by-Step $\Delta H_{\text{rxn}}$]
+    \textbf{Formula:} $\Delta H_{\text{rxn}} = \sum (\text{Bonds Broken}) - \sum (\text{Bonds Formed})$
+    \begin{enumerate}
+        \item \textbf{Draw:} Sketch the Lewis structures for \textbf{every} reactant and product.
+        \item \textbf{Inventory Reactants (Breaking):} Count every bond in the reactants. Multiply by the coefficients from the balanced equation. These values are \textbf{Positive}.
+        \item \textbf{Inventory Products (Forming):} Count every bond in the products. Multiply by the coefficients. These values are \textbf{Negative} in the formula.
+        \item \textbf{Calculate:} [Sum of Reactant Bond Energies] $-$ [Sum of Product Bond Energies].
+    \end{enumerate}
+    \textit{Note: Breaking bonds costs energy (+), forming bonds releases energy (-).}
+\end{tcolorbox}
+
+\newpage
+
+\section{Chapter 11: Molecular Shapes (VSEPR)}
+
+\subsection{11.2--11.4: VSEPR Theory}
+\textbf{Concept:} Electron groups (lone pairs and bonds) repel each other and want to be as far apart as possible.
+\begin{itemize}
+    \item \textbf{Electron Geometry:} Based on total electron groups.
+    \item \textbf{Molecular Geometry:} Based only on where atoms are (lone pairs change the name).
+\end{itemize}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|l|c|}
+\hline
+\textbf{Total Groups} & \textbf{Lone Pairs} & \textbf{Electron Geo} & \textbf{Molecular Geo} & \textbf{Ideal Angle} \\ \hline
+2 & 0 & Linear & Linear & $180^\circ$ \\ \hline
+3 & 0 & Trigonal Planar & Trigonal Planar & $120^\circ$ \\ 
+3 & 1 & Trigonal Planar & \textbf{Bent} & $<120^\circ$ \\ \hline
+4 & 0 & Tetrahedral & Tetrahedral & $109.5^\circ$ \\ 
+4 & 1 & Tetrahedral & \textbf{Trigonal Pyramidal} & $<109.5^\circ$ \\ 
+4 & 2 & Tetrahedral & \textbf{Bent} & $<<109.5^\circ$ \\ \hline
+5 & 0 & Trig. Bipyramidal & Trig. Bipyramidal & $90^\circ, 120^\circ$ \\ \hline
+6 & 0 & Octahedral & Octahedral & $90^\circ$ \\ \hline
+\end{tabular}
+\end{center}
+
+\subsection{11.3: Lone Pair Effects}
+\textbf{Concept:} Lone pairs are "physically larger" than bonding pairs because they are held by only one nucleus. They exert more repulsion, which \textbf{squeezes} the bonding angles to be smaller than the ideal values.
+
+\section{Summary Checklist}
+\begin{itemize}
+    \item [ ] Can I convert units for de Broglie (g $\rightarrow$ kg)?
+    \item [ ] Do I remember that $l$ values $0, 1, 2, 3$ correspond to $s, p, d, f$?
+    \item [ ] Can I rank atoms by size: Fr (largest) vs F (smallest)?
+    \item [ ] Do I know that $Z_{\text{eff}}$ increases to the \textbf{right}?
+    \item [ ] Can I calculate Formal Charge for a molecule like $N_2O$?
+    \item [ ] Am I remembering to subtract "Formed" from "Broken" for $\Delta H$?
+\end{itemize}
+
+\end{document}

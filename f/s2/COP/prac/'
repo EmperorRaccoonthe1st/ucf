@@ -1,0 +1,33 @@
+#include <std.io>
+
+#define INPUT_FILE arr.txt
+#define MAX_LEN 256
+
+int isMinHeap(int *arr, int size, int capacity);
+
+int main() {
+
+    FILE *ifile = NULL;
+
+    if (fopen(ifile, "r") == NULL) return -1;
+
+    int buff[MAX_LEN];
+    int size = 0;
+
+    int i = 0;
+    while (i >= 0) {
+        int tmp = 0;
+        fscanf(ifile, "%d", &tmp);
+        if (tmp != -1) {
+            buff[i] = tmp;
+            size++;
+            i++;
+        } else {
+
+        }
+    }
+}
+
+int isMinHeap(int *arr, int size, int capacity) {
+
+}
