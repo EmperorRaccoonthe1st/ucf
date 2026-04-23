@@ -1,0 +1,196 @@
+{
+  "main": {
+    "id": "78b1de1f9a18a6ab",
+    "type": "split",
+    "children": [
+      {
+        "id": "5c8206b1702e0384",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "49594e599c99d58e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "f/s1/PHI/chap5/PHI1.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "PHI1"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f8881a1627a865e6",
+    "type": "split",
+    "children": [
+      {
+        "id": "d5c6a98cbb075063",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "293389dcc1827a1e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "ab27166dfe5fd986",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c25a2cc06bd64be0",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "2eb21ce5ca355b6c",
+    "type": "split",
+    "children": [
+      {
+        "id": "78f590a1e45e8f99",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8de0a9b8db6538c5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "f/s1/PHI/chap5/PHI1.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for PHI1"
+            }
+          },
+          {
+            "id": "1cae68d1cf96ed11",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "f/s1/PHI/chap5/PHI1.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from PHI1"
+            }
+          },
+          {
+            "id": "6285759ae2ae2c58",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "46d84a42a596c0c4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d264a2e99219f652",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "f/s1/PHI/chap5/PHI1.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of PHI1"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "49594e599c99d58e",
+  "lastOpenFiles": [
+    "f/s2/CDA/ProjectGuideline.pdf",
+    "f/s2/CHM/CHM_Exam_4_Study_Guide-2.pdf",
+    "f/s2/CHM/CHM_Constants.png",
+    "f/s2/CHM/CHM_Formula.png",
+    "f/s1/PHI/chap1/dpa2.md",
+    "f/s1/PHI/chap7/PHI2.md",
+    "f/s1/PHI/chap4/PHI1.md"
+  ]
+}

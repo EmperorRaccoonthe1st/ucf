@@ -69,6 +69,7 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 
     // Halt Cond
     if (PC % 4 != 0) return 1;
+    if (PC < 0x4000 || PC > 0xFFFF) return 1; 
 
     ins = MEM(PC);
     
