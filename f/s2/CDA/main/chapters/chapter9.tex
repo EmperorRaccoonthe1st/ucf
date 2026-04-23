@@ -1,0 +1,112 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Exceptions and Interrupts}
+
+\section{Introduction to Unexpected Events}
+Handling unexpected events is a fundamental requirement for robust processor design. These events require a sudden change in the flow of control, pausing the current program to handle the underlying issue.
+
+\begin{definition}[Exception]
+An unexpected event that arises \textit{within} the CPU during instruction execution. Examples include an undefined opcode, an arithmetic overflow, or a system call (syscall).
+\end{definition}
+
+\begin{definition}[Interrupt]
+An unexpected event originating from an \textit{external} source, typically an I/O controller (e.g., a disk drive completing a transfer, or a hardware timer).
+\end{definition}
+
+\section{Evolution of Exception Handling (VM/0 Conceptual Model)}
+To understand how processors handle exceptions, we observe the conceptual addition of hardware to a simple sequential processor (VM/0).
+
+\begin{vocabulary}[Overflow (OV) Flip-Flop]
+A hardware flag set when an arithmetic operation results in an overflow.
+\end{vocabulary}
+
+\begin{vocabulary}[NEWPC Register]
+A register containing the address of the error handler. If the OV flag is set, the CPU bypasses the normal flow and executes the instruction at this address.
+\end{vocabulary}
+
+\begin{vocabulary}[FENCE Register]
+A register used for memory protection that stores the maximum memory boundary for a process.
+\end{vocabulary}
+
+\begin{vocabulary}[MP (Memory Protection) Flip-Flop]
+A hardware flag that triggers if a memory request exceeds the bound set in the FENCE register.
+\end{vocabulary}
+
+\begin{vocabulary}[Mode Bit]
+A bit indicating the current execution state (e.g., 0 for User, 1 for Privileged). Certain opcodes are restricted to Privileged mode.
+\end{vocabulary}
+
+\begin{vocabulary}[PI (Privileged Instruction) Flag]
+A flag set if an unprivileged process attempts to execute restricted instructions.
+\end{vocabulary}
+
+\begin{vocabulary}[OLDPC / OLDR0]
+Registers used to save the current Program Counter and data register (R0) respectively, allowing the CPU to pause a program for an I/O switch and later restore its state.
+\end{vocabulary}
+
+\begin{definition}[Interrupt Handler Vector (IHV)]
+A unified structure used to manage various exceptions. It is a table in system memory containing the starting addresses of specific handler routines, such as:
+\begin{itemize}
+    \item Overflow Handler
+    \item Timer Handler
+    \item I/O Handler
+    \item System Call Handler
+\end{itemize}
+\end{definition}
+
+\section{MIPS Exception Handling Implementation}
+In the MIPS architecture, exceptions and interrupts are managed by the \textbf{System Control Coprocessor (CP0)}. When an exception occurs, the processor must freeze the execution state and identify the cause.
+
+\subsection{The Exception Program Counter (EPC)}
+\begin{definition}[Exception Program Counter (EPC)]
+A special 32-bit register within CP0 used to precisely save the address of the offending (or interrupted) instruction.
+\end{definition}
+
+\begin{itemize}
+    \item \textbf{Restartable Exception}: If the exception is restartable (e.g., an I/O interrupt or an OS page fault), the handler takes corrective action and uses the EPC to return execution to the exact point the program was interrupted.
+    \item \textbf{Fatal Exception}: If the exception is fatal (e.g., an undefined opcode or memory protection violation), the program is terminated, and the OS uses the EPC to report the exact location of the error.
+\end{itemize}
+
+\subsection{The Cause and Status Registers}
+To determine why the exception occurred, MIPS utilizes specific registers in CP0:
+\begin{definition}[Cause Register]
+Saves an encoded indication of the exact problem. The handler reads this register to determine which specific corrective routine to execute.
+\end{definition}
+
+\begin{definition}[Status Register]
+Contains the operating mode, interrupt enabling flags, and diagnostic states. Specific codes indicate the exception type (e.g., \texttt{0000} for undefined instruction, \texttt{0180} for arithmetic overflow).
+\end{definition}
+
+\subsection{Handler Actions}
+When an exception is triggered, the processor automatically performs a sequence of events:
+\begin{enumerate}
+    \item Reads the \textbf{Cause} register to identify the source.
+    \item Transfers control to the relevant handler routine (often utilizing the \textbf{IHV}).
+    \item The handler determines the required action.
+    \item If restartable, it corrects the issue and returns via the \textbf{EPC}. Otherwise, it terminates the process and issues an error report using the \textbf{EPC}.
+\end{enumerate}
+
+\section{Exceptions in a Pipelined Datapath}
+In a pipelined processor, an exception is treated as another form of a \textbf{control hazard}. It disrupts the steady flow of instructions.
+
+\subsection{Datapath Modifications}
+\begin{remark}
+Consider an arithmetic overflow occurring during an \texttt{add} instruction that is currently in the Execution (EX) stage. The following steps must be taken:
+\begin{enumerate}
+    \item \textbf{Prevent State Corruption}: Immediately prevent the offending instruction from overwriting registers or memory by disabling \texttt{RegWrite} and \texttt{MemWrite}.
+    \item \textbf{Complete Previous Instructions}: Instructions in the MEM and WB stages are allowed to safely complete.
+    \item \textbf{Flush the Pipeline}: The offending instruction and all subsequent instructions in the IF and ID stages are flushed.
+    \item \textbf{Record State}: Hardware sets the \texttt{Cause} and \texttt{EPC} register values.
+    \item \textbf{Transfer Control}: The PC is updated to the address of the exception handler.
+\end{enumerate}
+\end{remark}
+
+\subsection{Precise vs. Imprecise Exceptions}
+Because pipelining overlaps the execution of multiple instructions, it is possible for multiple exceptions to occur within the same clock cycle.
+
+\begin{definition}[Precise Exceptions]
+A mechanism where the processor handles the exception originating from the \textit{earliest} instruction in the logical program order (the instruction furthest along in the pipeline).
+\end{definition}
+
+\begin{proposition}
+Any subsequent instructions in the pipeline, even if they also generated exceptions, are simply flushed. This ensures the processor state remains perfectly consistent, allowing the program to be accurately restarted or debugged sequentially.
+\end{proposition}

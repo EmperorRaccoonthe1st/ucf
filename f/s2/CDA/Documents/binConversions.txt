@@ -1,0 +1,115 @@
+How to Approach Binary Conversions
+
+Q: Given the bitstring (11 0011)2, what decimal number does it represent?
+
+A: It depends on the representation.
+
+If Unsigned:
+
+1 * 25 + 1 * 24 + 0 * 23 + 0 * 22 + 1 * 21 + 1 * 20
+
+32 + 16 + 0 + 0 + 2 + 1
+
+= 51
+
+If Signed, which representation of signed integers are we using?
+
+Sign-Magnitude: The most significant bit (MSB) is the sign, the rest is the magnitude.
+
+Sign: 1
+
+Magnitude: 1 0011
+
+-1 * (1 * 24 + 0 * 23 + 0 * 22 + 1 * 21 + 1 * 20)
+
+-1 * (16 + 0 + 0 + 2 + 1)
+
+= -19
+
+1's Complement: First, check the sign.  If the MSB is 0, we can treat this value as if it unsigned and follow the same process as unsigned values above.  If the MSB is 1, we must first perform a bitwise inverse on the value.  Then we can again follow the same process as unsigned values above. 
+
+11 0011
+
+00 1100
+
+-1 * (0 * 25 + 0 * 24 + 1 * 23 + 1 * 22 + 0 * 21 + 0 * 20)
+
+-1 * (8 + 4)
+
+= -12
+
+2's Complement: First, check the sign.  If the MSB is 0, we can treat this value as if it unsigned and follow the same process as unsigned values above.  If the MSB is 1, we must first perform a bitwise inverse and add one to the value.  Then we can again follow the same process as unsigned values above. 
+
+11 0011
+
+00 1100
+
++             1
+
+00 1101
+
+-1 * (0 * 25 + 0 * 24 + 1 * 23 + 1 * 22 + 0 * 21 + 1 * 20)
+
+-1 * (8 + 4 + 1)
+
+= -13
+Sign Extension
+
+Q: What if need to represent our value in more than 4/8/16 bits?
+
+A: We use sign extension to determine the bits that will be added in front of the value.
+
+Consider the binary expansion of 6: (0110)2
+
+If we want to sign extend this value to 8 bits instead of 4 bits, we need to know if the target destination is signed or unsigned.
+
+If unsigned, we sign extend with 0s:
+
+0000 0110
+
+If signed, we sign extend with copies of the MSB (in this case, the MSB is also 0):
+
+0000 0110
+
+Consider the binary expansion of -6 in 2's complement: (1010)2
+
+If we want to sign extend this value to 8 bits instead of 4 bits, we need to know if the target destination is signed or unsigned.
+
+If unsigned, we sign extend with 0s. In this case, we lose the precision of the value and our result will be incorrect.
+
+If signed, we sign extend with copies of the MSB (in this case, the MSB is 1):
+
+1111 1010
+
+For an exercise, convert (1111 1010)2 from 2's complement binary to decimal to verify that it is still -6.
+Bonus C Knowledge
+
+The 'int' data type in C may be 2 or 4 bytes depending on the underlying architecture.  In the architecture we will be looking at this semester, we will use 4 bytes for integers (32 bits). By default, it is a signed type that uses the 2's complement representation. If you want to declare an unsigned integer, you can use the keyword 'unsigned'.
+Integer Data Types in C int x; 	4 bytes (1 word), 2's complement 	-231 through 231 - 1
+unsigned x; or unsigned int x; 	4 bytes (1 word), unsigned 	0 through 232 - 1
+short x; 	2 bytes (half-word), 2's complement 	-215 through 215 - 1
+unsigned short x; 	2 bytes (half-word), unsigned 	0 through 216 - 1
+
+
+Using different data types affects the instructions that binary operators will be converted into.  For example, if we add two unsigned integers in our code, the compiler will select the "addu" or add unsigned instruction.  If either operand is signed, we default to the signed instruction "add".
+Signed and Unsigned Addition
+
+Right now, the primary difference between signed and unsigned addition is how we check for overflow. In unsigned addition, we only need to check the final carry-out of the operation:
+
+Consider adding 7 and 10 in unsigned, 4-bit binary:
+
+carry        1 1100
+A                 0111
++ B             1010
+=                 0001
+
+The final carry-out is 1. This tells us that the result (0001) is incorrect and we should send an overflow error. However, the check for overflow is different for signed addition:
+
+Consider adding 7 and 2 in 2's complement, 4-bit binary:
+
+carry        0 1100
+A                 0111
++ B             0010
+=                 1001
+
+In signed addition, we need to compare the last two carry values.  If they are different, then we should send an overflow error.  Mathematically, we want to xor the carry-in and the carry-out of the MSB.

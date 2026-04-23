@@ -1,0 +1,160 @@
+\chapterimage{chapter_head_1.pdf} % Error: chapter_head_1.pdf not found in the repository
+\chapter{Arithmetic Hardware and Algorithms}
+
+This chapter covers the foundational algorithms and hardware implementations for computer arithmetic, including integer addition, subtraction, multiplication, division, and IEEE 754 floating-point operations.
+
+\section{Integer Arithmetic}
+
+\begin{vocabulary}[ALU]
+The \textbf{Arithmetic Logic Unit (ALU)} is the component of the processor responsible for performing arithmetic and logical operations.
+\end{vocabulary}
+
+\subsection{Addition and Subtraction}
+
+Binary addition operates similarly to decimal addition. 
+
+\begin{definition}[Half Adder]
+Adds two 1-bit inputs to produce a Sum and CarryOut.
+\begin{itemize}
+    \item $\text{Sum} = A \oplus B$
+    \item $\text{Cout} = A \cdot B$
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Full Adder]
+Adds two 1-bit inputs and a CarryIn to produce a Sum and CarryOut.
+\begin{itemize}
+    \item $\text{Sum} = A \oplus B \oplus \text{Cin}$
+    \item $\text{Cout} = A \cdot B + B \cdot \text{Cin} + A \cdot \text{Cin}$
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Ripple-Carry Adder]
+Cascades multiple 1-bit full adders to add multi-bit numbers. A significant disadvantage is the long propagation delay, as the carry bit may have to ripple from the least significant bit (LSB) to the most significant bit (MSB).
+\end{definition}
+
+\begin{definition}[Carry-Lookahead Adder]
+Solves the ripple delay by determining carry values sooner using Carry Generate ($G_i = A_i B_i$) and Carry Propagate ($P_i = A_i \oplus B_i$) logic.
+\end{definition}
+
+\begin{remark}
+\textbf{Subtraction} ($A - B$) is performed using addition and two's complement representation: $A + (-B) = A + B' + 1$. The hardware takes the bitwise inverse of $B$ (using a 2:1 multiplexer) and sets the initial $\text{CarryIn}$ to 1.
+\end{remark}
+
+\begin{proposition}[Overflow Detection]
+Overflow occurs when the result is too large or too small to be represented in the available bits. In signed arithmetic, it can be detected by comparing the carry-in and carry-out of the most significant bit; if they are different, an overflow has occurred.
+\end{proposition}
+
+\subsection{Integer Multiplication}
+
+Multiplication is conceptually based on the ``paper and pencil'' method of shifting and adding.
+
+\begin{remark}[Evolution of Multipliers]
+Modern multiplication hardware has evolved through several versions to optimize space and speed:
+\begin{itemize}
+    \item \textbf{Version 1:} Wastes space with a 64-bit Multiplicand register and a 64-bit ALU.
+    \item \textbf{Version 2:} Reduces cost by shifting the Product right instead of the Multiplicand left.
+    \item \textbf{Version 3 (Optimized):} Combines the Multiplier and Product registers into a single 64-bit register, using a 32-bit ALU.
+\end{itemize}
+\end{remark}
+
+\begin{example}[Multiplication by Constants]
+Compilers often replace multiplications by constants with a series of shifts and adds to improve performance. For example, $A \times 4$ is equivalent to $A \ll 2$.
+\end{example}
+
+\subsection{Integer Division}
+
+Binary division uses the same hardware components as multiplication but executes a different algorithm, typically \textbf{Restoring Division}.
+
+\begin{proposition}[Restoring Division Algorithm]
+The algorithm for $X$-bit division follows these steps for each pass:
+\begin{enumerate}
+    \item Subtract the divisor from the left half of the remainder register.
+    \item Check the sign of the remainder:
+    \begin{itemize}
+        \item \textbf{If negative ($\text{result} < 0$):} Restore the previous value by adding the divisor back. Shift the entire remainder register left, shifting in a $0$ into the LSB.
+        \item \textbf{If positive ($\text{result} \geq 0$):} Do not restore. Shift the entire remainder register left, shifting in a $1$ into the LSB.
+    \end{itemize}
+    \item After $X$ iterations, shift the left half of the remainder register right by 1 bit.
+\end{enumerate}
+The lower half of the register contains the \textbf{Quotient}, and the upper half contains the \textbf{Remainder}.
+\end{proposition}
+
+\begin{remark}
+In signed division, the sign of the remainder is always the same as the sign of the dividend.
+\end{remark}
+
+\section{Booth's Algorithm}
+
+\begin{theorem}[Booth's Algorithm]
+Booth's Algorithm is an efficient method for multiplying two's complement signed integers. It allows multiplication without needing to strip signs and adjust them later. It is especially efficient for multipliers with long sequences (runs) of 1s or 0s.
+\end{theorem}
+
+\begin{proposition}[Booth's Step-by-Step]
+Repeat $X$ times for $X$-bit operands:
+\begin{enumerate}
+    \item \textbf{Examine bits:} Look at the current LSB and the implied bit to its right:
+    \begin{itemize}
+        \item \texttt{00}: No arithmetic operation.
+        \item \texttt{01}: Add Multiplicand to the left half of the Product.
+        \item \texttt{10}: Subtract Multiplicand from the left half of the Product.
+        \item \texttt{11}: No arithmetic operation.
+    \end{itemize}
+    \item \textbf{Arithmetic Shift Right (ASR):} Shift the entire Product register right by 1 bit, preserving the sign bit.
+\end{enumerate}
+\end{proposition}
+
+\begin{example}[Booth's Algorithm: $(-5) \times 2$]
+Using 5-bit representation:
+\begin{itemize}
+    \item Multiplier $(-5) = \texttt{11011}$, Multiplicand $2 = \texttt{00010}$.
+    \item Initial Product: $\texttt{00000 11011 0}$ (with implied bit 0).
+    \item \textbf{Pass 1:} Ends are \texttt{10} $\rightarrow$ Subtract Multiplicand, then ASR.
+    \item \dots (Repeat for 5 total passes)
+    \item Final 10-bit Product is obtained after dropping the implied bit.
+\end{itemize}
+\end{example}
+
+\section{IEEE 754 Floating-Point}
+
+The IEEE 754 standard defines the representation and arithmetic operations for real (``float'') numbers.
+
+\subsection{Representation}
+
+\begin{definition}[IEEE 754 Fields]
+\begin{itemize}
+    \item \textbf{Sign (1 bit):} \texttt{0} for positive, \texttt{1} for negative.
+    \item \textbf{Exponent:} Stored as a biased exponent ($\text{Stored} = \text{Actual} + \text{Bias}$). 8 bits for Single Precision ($\text{Bias}=127$), 11 bits for Double Precision ($\text{Bias}=1023$).
+    \item \textbf{Mantissa (Significand):} Represents the fractional part after the normalized leading \texttt{1} (which is implied and not stored).
+\end{itemize}
+\end{definition}
+
+\begin{proposition}[Floating-Point Value Formula]
+The value of a normalized IEEE 754 number is given by:
+\begin{equation}
+(-1)^{\text{Sign}} \times (1.\text{Mantissa}) \times 2^{(\text{Exponent} - \text{Bias})}
+\end{equation}
+\end{proposition}
+
+\subsection{Floating-Point Addition Algorithm}
+
+\begin{proposition}[Addition Steps]
+\begin{enumerate}
+    \item \textbf{Align Binary Points:} Denormalize the smaller value until its exponent matches the larger exponent.
+    \item \textbf{Add Significands:} Perform binary addition on the aligned significands.
+    \item \textbf{Normalize Result:} Shift significand and adjust exponent until format is $1.XXXX$. Check for overflow/underflow.
+    \item \textbf{Round:} Round the significand. If rounding disrupts normalization, repeat Step 3.
+\end{enumerate}
+\end{proposition}
+
+\subsection{Floating-Point Multiplication Algorithm}
+
+\begin{proposition}[Multiplication Steps]
+\begin{enumerate}
+    \item \textbf{Calculate Exponent:} $\text{New Biased Exponent} = (\text{Exp1} + \text{Exp2}) - \text{Bias}$.
+    \item \textbf{Multiply Significands:} Perform binary multiplication (including the implied leading 1).
+    \item \textbf{Normalize Product:} Shift right and increment exponent if necessary.
+    \item \textbf{Round:} Round the significand.
+    \item \textbf{Set Sign:} Positive if operands have same sign, negative otherwise.
+\end{enumerate}
+\end{proposition}

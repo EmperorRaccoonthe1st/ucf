@@ -1,0 +1,40 @@
+
+
+Each control signal asks a question about what the instruction (opcode) does:
+Signal 	Question 	Purpose 	Values
+RegDst 	Am I an R-Type instruction? 	Select the destination register number 	\u2218 0: 2nd register field
+\u2218 1: 3rd register field
+RegWrite 	Am I writing to a register? 	Enable writing of register 	\u2218 0: no write
+\u2218 1: write
+ALUSrc 	Is my second input coming from Sign Extend? (Is my second input a constant?) 	Select the 2nd operand for ALU 	\u2218 0: 2nd register field
+\u2218 1: immediate
+ALUcontrol 	What is the ALU doing? 	Select the operation to be performed by the ALU 	see ALUcontrol table
+MemRead 	Am I reading from memory? 	Enable reading of data memory 	\u2218 0: no read
+\u2218 1: read
+MemWrite 	Am I writing to memory? 	Enable writing of data memory 	\u2218 0: no write
+\u2218 1: write
+MemToReg 	Am I reading from memory? 	Select the result to be written back to register file 	\u2218 0: ALU result
+\u2218 1: memory data
+Branch 	Am I a branch instruction? 	Select the next $PC value 	\u2218 0: $PC + 4
+\u2218 1: ($PC + 4)+(offset x 4)
+Jump 	Am I a jump instruction? 	Select the next $PC value 	\u2218 0: $PC + 4
+\u2218 1: $PC[31..28] : (offset x 4)
+
+ 
+Alternately...
+Signal 	Selector
+RegDst 	R-Format
+ALUSrc 	lw OR sw
+MemToReg 	lw
+RegWrite 	R-Format OR lw
+MemRead 	lw
+MemWrite 	sw
+Branch 	beq
+Jump 	j OR jal
+ALUop1 	R-Format
+ALUop0 	beq
+
+Alternately...
+
+ 
+

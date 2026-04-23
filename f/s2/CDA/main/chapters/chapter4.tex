@@ -1,0 +1,177 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{Sequential Logic Design}
+
+\section{Introduction to Sequential Logic}
+
+Unlike combinational circuits where outputs depend purely on current inputs, sequential circuits incorporate memory.
+
+\begin{definition}[Sequential Circuits]
+Circuits whose outputs depend on both current inputs and the history of past inputs (previous outputs). They are characterized by having an internal \textbf{State}.
+\end{definition}
+
+\begin{itemize}
+    \item \textbf{Memory Elements:} Hardware components that store the current state.
+    \item \textbf{Combinational Logic:} Computes the \textit{next state} and \textit{outputs} based on the input and current state.
+\end{itemize}
+
+\begin{remark}
+Sequential design relies on \textbf{Steady-State Abstraction}. Outputs are only observed after sufficient time has elapsed for the system to settle, and state changes are synchronized by a clock signal.
+\end{remark}
+
+\section{Latches}
+
+\begin{definition}[Latch]
+A fundamental memory element where the output equals the stored state, and the state changes whenever appropriate inputs change (event-driven).
+\end{definition}
+
+\subsection{Set-Reset (S-R) Latch}
+
+Built from cross-coupled NOR or NAND gates, the S-R latch can force its output to 0 (reset) or 1 (set).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccl}
+\toprule
+\textbf{S} & \textbf{R} & \textbf{Q(t+1)} & \textbf{State} \\
+\midrule
+0 & 0 & Q(t) & Hold \\
+0 & 1 & 0 & Reset \\
+1 & 0 & 1 & Set \\
+1 & 1 & - & Unstable / Not Allowed \\
+\bottomrule
+\end{tabular}
+\caption{Truth Table for a NOR-based S-R Latch}
+\end{table}
+
+\begin{proposition}[S-R Latch Characteristic Equation]
+The next state of an S-R latch can be described by:
+\begin{equation}
+    Q(t+\Delta) = S + R' Q(t)
+\end{equation}
+\end{proposition}
+
+\begin{remark}
+The $S=1, R=1$ state is unstable because it forces both $Q$ and $Q'$ to 0 in a NOR latch. Transitioning out of this state can lead to unpredictable oscillations.
+\end{remark}
+
+\subsection{Clocked (Gated) S-R Latch}
+
+To control \textit{when} inputs are sampled, a clock signal is added. The inputs to the cross-coupled gates can only change when the clock is asserted (high). When the clock is 0, the latch is ``closed'' and holds its value regardless of $S$ and $R$.
+
+\section{Flip-Flops}
+
+\begin{definition}[Flip-Flop]
+A memory element built from clocked latches that is \textbf{edge-triggered}. Its internal state changes \textit{only} on a specific clock edge (rising or falling).
+\end{definition}
+
+\subsection{D Flip-Flop (Data Flip-Flop)}
+
+On the active clock edge, the output $Q$ becomes equal to the input $D$.
+
+\begin{proposition}[D Flip-Flop Behavior]
+\begin{equation}
+    Q(t+1) = D
+\end{equation}
+\end{proposition}
+
+\begin{remark}
+Flip-flops are often constructed using a \textbf{master-slave} arrangement of latches to prevent unstable states from propagating and to ensure edge-triggered behavior.
+\end{remark}
+
+\subsection{T (Toggle) and J-K Flip-Flops}
+
+\begin{vocabulary}[T Flip-Flop]
+A flip-flop that toggles its state if $T=1$ and holds if $T=0$.
+\end{vocabulary}
+
+\begin{proposition}[T Flip-Flop Characteristic Equation]
+\begin{equation}
+    Q(t+1) = T \oplus Q(t)
+\end{equation}
+\end{proposition}
+
+\begin{vocabulary}[J-K Flip-Flop]
+A versatile flip-flop that solves the unstable state issue of the S-R latch by toggling when both inputs are high.
+\end{vocabulary}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccl}
+\toprule
+\textbf{J} & \textbf{K} & \textbf{Q(t+1)} & \textbf{Operation} \\
+\midrule
+0 & 0 & Q(t) & Hold \\
+0 & 1 & 0 & Reset \\
+1 & 0 & 1 & Set \\
+1 & 1 & Q'(t) & Toggle \\
+\bottomrule
+\end{tabular}
+\caption{J-K Flip-Flop Truth Table}
+\end{table}
+
+\begin{proposition}[J-K Flip-Flop Characteristic Equation]
+\begin{equation}
+    Q(t+1) = J Q'(t) + K' Q(t)
+\end{equation}
+\end{proposition}
+
+\section{Timing Methodologies}
+
+\begin{vocabulary}[Duty Cycle]
+The ratio of time the clock is ``high'' to the total clock period.
+\end{vocabulary}
+
+\begin{vocabulary}[Setup Time ($T_{su}$)]
+Minimum time inputs must be valid and steady \textbf{before} the clock edge.
+\end{vocabulary}
+
+\begin{vocabulary}[Hold Time ($T_h$)]
+Minimum time inputs must be valid and steady \textbf{after} the clock edge.
+\end{vocabulary}
+
+\begin{remark}
+If inputs transition during the setup/hold window, the flip-flop may enter a \textbf{metastable} state. A \textbf{synchronizer} (typically two D flip-flops in series) is used to mitigate this risk for asynchronous inputs.
+\end{remark}
+
+\begin{vocabulary}[Clock Skew]
+The difference in time between when two state elements see the same clock edge.
+\end{vocabulary}
+
+\section{Counters \& Registers}
+
+\begin{itemize}
+    \item \textbf{Data Registers:} Hold multi-bit binary values, typically with a \textit{Write Enable} signal.
+    \item \textbf{Shift Registers:} Move stored bits left or right per clock cycle. A \textbf{Universal Shift Register} supports parallel load and bidirectional shifting.
+    \item \textbf{Register Files:} Sets of registers indexed by address, using decoders for writing and multiplexers for reading.
+    \item \textbf{Counters:} Sequence through a fixed set of patterns. \textbf{Grey Code} counters are often used to prevent transient errors by changing only one bit per step.
+\end{itemize}
+
+\section{Finite State Machines (FSMs)}
+
+Sequential circuits are mathematically modeled as FSMs, consisting of states, transitions, and outputs.
+
+\subsection{FSM Design Steps}
+
+\begin{example}[1001 Overlapping Pattern Recognizer]
+To design a pattern recognizer:
+\begin{enumerate}
+    \item \textbf{State Diagram:} Define states representing the progress in seeing the sequence (e.g., ``Saw 1'', ``Saw 10'', etc.).
+    \item \textbf{State Encoding:} Assign binary values to each state. If there are $N$ states, $\lceil \log_2 N \rceil$ flip-flops are required.
+    \item \textbf{Boolean Expressions:} Use Karnaugh Maps to derive logic for flip-flop inputs (Next State Logic) and outputs.
+    \item \textbf{Circuit Realization:} Implement using flip-flops and combinational gates.
+\end{enumerate}
+\end{example}
+
+\subsection{Moore vs. Mealy Machines}
+
+\begin{definition}[Moore Machine]
+An FSM where the outputs depend \textbf{only} on the current state.
+\end{definition}
+
+\begin{definition}[Mealy Machine]
+An FSM where the outputs depend on \textbf{both} the current state and the current inputs.
+\end{definition}
+
+\begin{remark}
+Mealy machines can respond faster to input changes (within the same clock cycle) but may produce asynchronous glitches if the inputs are not synchronized.
+\end{remark}

@@ -1,0 +1,154 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{MIPS Instruction Set Architecture (ISA)}
+
+The MIPS (Microprocessor without Interlocked Pipelined Stages) architecture is a Reduced Instruction Set Computer (RISC) ISA that emphasizes simplicity, regularity, and efficiency. This chapter explores the fundamental components of the MIPS ISA, including its registers, memory organization, instruction formats, and addressing modes.
+
+\section{Register File}
+
+The MIPS architecture is built around a central \textbf{Register File} that acts as the primary hardware workspace. Instructions operate heavily on these registers rather than directly on memory.
+
+\begin{definition}[Register File]
+A \textbf{Register File} is a small, extremely fast set of storage locations within the CPU, typically constructed from flip-flops. MIPS provides 32 general-purpose registers, each 32 bits wide.
+\end{definition}
+
+\begin{vocabulary}[Word]
+In MIPS, a \textbf{word} is defined as a 32-bit (4-byte) entity.
+\end{vocabulary}
+
+\begin{proposition}[Smaller is Faster]
+MIPS uses a limited set of 32 registers because smaller hardware structures are physically faster to access than larger ones (like main memory). This enables the high-speed execution characteristic of RISC architectures.
+\end{proposition}
+
+\subsection{MIPS Register Conventions}
+
+While the hardware treats most registers identically, MIPS software follows a strict convention to ensure compatibility between different programs and libraries:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcll}
+\toprule
+\textbf{Name} & \textbf{Number} & \textbf{Usage} & \textbf{Preserved?} \\
+\midrule
+\texttt{\$zero} & 0 & Hardwired to 0 & N/A \\
+\texttt{\$at} & 1 & Assembler Temporary & No \\
+\texttt{\$v0--\$v1} & 2--3 & Function results/expression evaluation & No \\
+\texttt{\$a0--\$a3} & 4--7 & Function arguments & No \\
+\texttt{\$t0--\$t7} & 8--15 & Temporaries (caller-saved) & No \\
+\texttt{\$s0--\$s7} & 16--23 & Saved temporaries (callee-saved) & Yes \\
+\texttt{\$t8--\$t9} & 24--25 & More temporaries & No \\
+\texttt{\$k0--\$k1} & 26--27 & Reserved for OS Kernel & No \\
+\texttt{\$gp} & 28 & Global Pointer & Yes \\
+\texttt{\$sp} & 29 & Stack Pointer & Yes \\
+\texttt{\$fp} & 30 & Frame Pointer & Yes \\
+\texttt{\$ra} & 31 & Return Address & Yes \\
+\bottomrule
+\end{tabular}
+\caption{MIPS Register Convention}
+\end{table}
+
+\subsection{Special-Purpose Registers}
+
+\begin{itemize}
+    \item \textbf{Hi and Lo:} These 32-bit registers are used exclusively for multiplication and division.
+    \begin{itemize}
+        \item \textit{Multiply:} The 64-bit product is split; high 32 bits go to \texttt{Hi}, low 32 bits to \texttt{Lo}.
+        \item \textit{Divide:} The quotient is stored in \texttt{Lo}, and the remainder is stored in \texttt{Hi}.
+    \end{itemize}
+    \item \textbf{Floating-Point Registers:} A separate co-processor provides 32 floating-point registers (\texttt{\$f0--\$f31}) for single and double-precision operations.
+\end{itemize}
+
+\section{Memory Layout}
+
+MIPS utilizes a structured memory layout to separate instructions, data, and execution state.
+
+\begin{definition}[Word Alignment]
+In a byte-addressed system like MIPS, \textbf{word alignment} requires that the starting memory address of a 32-bit word must be a multiple of 4 (e.g., 0, 4, 8, 12).
+\end{definition}
+
+\subsection{Memory Segments}
+
+\begin{itemize}
+    \item \textbf{Text Segment:} Stores the compiled machine code (instructions). Located at the lower end of memory.
+    \item \textbf{Static Data:} Stores global variables and constants that exist for the program's lifetime.
+    \item \textbf{Dynamic Data (Heap):} Area for runtime allocations (e.g., \texttt{malloc}). It grows \textit{upward} from the static data area.
+    \item \textbf{Stack:} Stores local variables and procedure call information. It starts at high memory and grows \textit{downward} toward the heap.
+\end{itemize}
+
+\begin{example}[Stack Operations]
+Since MIPS lacks explicit \texttt{push} and \texttt{pop} instructions, these are implemented using \texttt{addi}, \texttt{sw}, and \texttt{lw}:
+\begin{verbatim}
+# Push $t0 to stack
+addi $sp, $sp, -4
+sw $t0, 0($sp)
+
+# Pop from stack to $t0
+lw $t0, 0($sp)
+addi $sp, $sp, 4
+\end{verbatim}
+\end{example}
+
+\section{MIPS Instruction Formats}
+
+To maintain regularity, \textbf{every MIPS instruction is exactly 32 bits long.} There are three formats:
+
+\subsection{R-Type (Register Format)}
+Used for arithmetic and logical instructions where all operands are registers.
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{op} (6) & \textbf{rs} (5) & \textbf{rt} (5) & \textbf{rd} (5) & \textbf{shamt} (5) & \textbf{funct} (6) \\
+\hline
+\end{tabular}
+\end{table}
+\begin{itemize}
+    \item \textbf{op:} Opcode (0 for R-type).
+    \item \textbf{rs, rt:} Source registers.
+    \item \textbf{rd:} Destination register.
+    \item \textbf{shamt:} Shift amount (used for \texttt{sll}, \texttt{srl}).
+    \item \textbf{funct:} Function code, identifying the specific operation.
+\end{itemize}
+
+\subsection{I-Type (Immediate Format)}
+Used for instructions involving constants, memory access, or conditional branches.
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{op} (6) & \textbf{rs} (5) & \textbf{rt} (5) & \textbf{constant or address} (16) \\
+\hline
+\end{tabular}
+\end{table}
+\begin{itemize}
+    \item \textbf{op:} Unique opcode for the instruction.
+    \item \textbf{rs:} Source/Base register.
+    \item \textbf{rt:} Target register (destination for loads, source for stores/branches).
+    \item \textbf{constant:} 16-bit signed immediate value or offset.
+\end{itemize}
+
+\subsection{J-Type (Jump Format)}
+Used for unconditional jumps to distant memory locations.
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{op} (6) & \textbf{address} (26) \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Addressing Modes}
+
+Addressing modes define how MIPS calculates the effective address of an operand or the target of a branch/jump.
+
+\begin{enumerate}
+    \item \textbf{Register Addressing:} Operand is in a register (e.g., \texttt{add \$t0, \$t1, \$t2}).
+    \item \textbf{Immediate Addressing:} Operand is a 16-bit constant in the instruction (e.g., \texttt{addi \$t0, \$t1, 100}).
+    \item \textbf{Base Addressing:} Address is \texttt{Base Register + Offset} (e.g., \texttt{lw \$t0, 32(\$s3)}).
+    \item \textbf{PC-Relative Addressing:} Target is \texttt{(PC + 4) + (Offset * 4)}. Used for \texttt{beq} and \texttt{bne}.
+    \item \textbf{Pseudodirect Addressing:} Target is \texttt{Upper 4 bits of PC : (26-bit Address * 4)}. Used for \texttt{j} and \texttt{jal}.
+\end{enumerate}
+
+\begin{remark}
+In PC-Relative addressing, the offset is in \textit{words}. The hardware automatically shifts the offset left by 2 bits to convert it to bytes before adding it to the PC.
+\end{remark}
