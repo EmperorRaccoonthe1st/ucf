@@ -21,15 +21,15 @@ State elements are components that have internal storage and depend on the clock
 \begin{vocabulary}[Program Counter (PC)]
 A register that holds the address of the current instruction being executed.
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Instruction Memory]
 Memory that stores the program code. It is addressed by the PC to fetch instructions.
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Register File]
 A collection of 32 32-bit registers. It features two read ports for retrieving operands and one write port for storing results.
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Data Memory]
 Memory used by load and store instructions to read from or write to system memory.
 \end{vocabulary}
@@ -40,19 +40,19 @@ Combinational elements are components whose outputs depend solely on their curre
 \begin{vocabulary}[ALU (Arithmetic Logic Unit)]
 The core component that performs arithmetic (e.g., addition, subtraction) and logical (e.g., AND, OR) operations.
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Adders]
 Functional units used exclusively for addition, such as incrementing the PC ($PC + 4$) or calculating branch target addresses.
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Multiplexers (MUX)]
 Data selectors that choose between multiple input sources based on a specific control signal.
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Sign-Extension Unit]
 A unit that converts a 16-bit immediate value into a 32-bit value by replicating the most significant bit (sign bit).
 \end{vocabulary}
-
+\vspace{-10pt}
 \begin{vocabulary}[Shift Left 2]
 A component that multiplies a value by 4, used specifically for calculating branch and jump targets in MIPS.
 \end{vocabulary}
@@ -75,7 +75,8 @@ The following table defines the primary control signals and their functions when
 
 \begin{table}[h]
 \centering
-\begin{tabular}{l p{4cm} p{4cm} p{4cm}}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{} l XXX @{}}
 \toprule
 \textbf{Signal} & \textbf{Purpose} & \textbf{Deasserted (0)} & \textbf{Asserted (1)} \\
 \midrule
@@ -88,7 +89,7 @@ The following table defines the primary control signals and their functions when
 \textbf{Branch} & Conditional branch indicator. & PC replaced by $PC + 4$. & If ALU Zero is 1, PC replaced by target. \\
 \textbf{Jump} & Unconditional jump indicator. & Normal PC routing. & PC replaced by jump target. \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{MIPS Control Signal Definitions}
 \end{table}
 
@@ -98,7 +99,9 @@ The Main Control Unit sets these signals based on the opcode of each instruction
 
 \begin{table}[h]
 \centering
-\begin{tabular}{l c c c c c c c c c}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{} l *{9}{>{\centering\arraybackslash}X} @{}}
 \toprule
 \textbf{Instr.} & \textbf{RegDst} & \textbf{ALUSrc} & \textbf{MemtoReg} & \textbf{RegWrite} & \textbf{MemRead} & \textbf{MemWrite} & \textbf{Branch} & \textbf{ALUOp1} & \textbf{ALUOp0} \\
 \midrule
@@ -107,7 +110,7 @@ The Main Control Unit sets these signals based on the opcode of each instruction
 \textbf{sw} & X & 1 & X & 0 & 0 & 1 & 0 & 0 & 0 \\
 \textbf{beq} & X & 0 & X & 0 & 0 & 0 & 1 & 0 & 1 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Control Signal Truth Table (X denotes "Don't Care")}
 \end{table}
 
@@ -117,6 +120,7 @@ The ALU requires a 4-bit control input to determine the specific operation to pe
 
 \begin{vocabulary}[ALU Control Lines]
 The 4-bit signals that drive the ALU:
+
 \begin{itemize}
     \item \texttt{0000}: AND
     \item \texttt{0001}: OR
@@ -125,6 +129,7 @@ The 4-bit signals that drive the ALU:
     \item \texttt{0111}: Set-on-less-than (slt)
     \item \texttt{1100}: NOR
 \end{itemize}
+
 \end{vocabulary}
 
 \subsection{Multilevel Decoding}
@@ -132,17 +137,20 @@ The 4-bit signals that drive the ALU:
 MIPS uses multilevel decoding to reduce complexity. The Main Control Unit outputs a 2-bit \textbf{ALUOp} signal, which the ALU Control Unit then combines with the 6-bit \textbf{funct} field to generate the final 4-bit ALU control lines.
 
 \begin{proposition}[ALUOp Definitions]
+
 \begin{itemize}
     \item \texttt{00}: Memory References (\texttt{lw}/\texttt{sw}) $\rightarrow$ ALU performs \textbf{Add}.
     \item \texttt{01}: Branches (\texttt{beq}) $\rightarrow$ ALU performs \textbf{Subtract}.
     \item \texttt{10}: R-type instructions $\rightarrow$ ALU operation determined by \textbf{funct} field.
 \end{itemize}
+
 \end{proposition}
 
 \subsection{ALU Control Logic Table}
 
 \begin{table}[h]
 \centering
+\small
 \begin{tabular}{c c c l c}
 \toprule
 \textbf{ALUOp} & \textbf{Instr. Type} & \textbf{Funct Field} & \textbf{Action} & \textbf{Control Lines} \\
@@ -166,6 +174,7 @@ Every instruction execution begins with an \textbf{Instruction Fetch}. The PC is
 \end{remark}
 
 \subsection{R-Type Instructions (add, sub, and, or, slt)}
+
 \begin{enumerate}
     \item \textbf{Read:} Bits [25:21] (\texttt{rs}) and [20:16] (\texttt{rt}) are sent to the Register File to read two source registers.
     \item \textbf{Execute:} The \texttt{ALUSrc} MUX selects read data 2. The ALU performs the operation specified by the ALU Control unit.
@@ -173,6 +182,7 @@ Every instruction execution begins with an \textbf{Instruction Fetch}. The PC is
 \end{enumerate}
 
 \subsection{Load Word (lw)}
+
 \begin{enumerate}
     \item \textbf{Read:} Bits [25:21] (\texttt{rs}) read the base address register. The 16-bit immediate field (bits [15:0]) is sign-extended.
     \item \textbf{Execute:} The \texttt{ALUSrc} MUX selects the sign-extended immediate. The ALU adds the base register and immediate to calculate the memory address.
@@ -181,6 +191,7 @@ Every instruction execution begins with an \textbf{Instruction Fetch}. The PC is
 \end{enumerate}
 
 \subsection{Store Word (sw)}
+
 \begin{enumerate}
     \item \textbf{Read:} \texttt{rs} reads the base address register; \texttt{rt} reads the data to be stored. The immediate is sign-extended.
     \item \textbf{Execute:} The ALU adds the base register and the sign-extended immediate to calculate the address.
@@ -188,6 +199,7 @@ Every instruction execution begins with an \textbf{Instruction Fetch}. The PC is
 \end{enumerate}
 
 \subsection{Branch on Equal (beq)}
+
 \begin{enumerate}
     \item \textbf{Read:} \texttt{rs} and \texttt{rt} are read. The 16-bit immediate is sign-extended and shifted left by 2 to form the offset.
     \item \textbf{Target Calculation:} A dedicated adder adds the shifted offset to $PC + 4$.
@@ -196,6 +208,7 @@ Every instruction execution begins with an \textbf{Instruction Fetch}. The PC is
 \end{enumerate}
 
 \subsection{Jump (j)}
+
 \begin{enumerate}
     \item \textbf{Fetch:} Instruction is fetched and $PC + 4$ is calculated.
     \item \textbf{Address Calculation:} The 26-bit target address (bits [25:0]) is shifted left by 2.

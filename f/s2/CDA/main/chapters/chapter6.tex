@@ -23,6 +23,8 @@ MIPS uses a limited set of 32 registers because smaller hardware structures are 
 
 While the hardware treats most registers identically, MIPS software follows a strict convention to ensure compatibility between different programs and libraries:
 
+\vspace{15pt}
+\needspace{5cm}
 \begin{table}[h]
 \centering
 \begin{tabular}{lcll}
@@ -50,10 +52,12 @@ While the hardware treats most registers identically, MIPS software follows a st
 
 \begin{itemize}
     \item \textbf{Hi and Lo:} These 32-bit registers are used exclusively for multiplication and division.
+
     \begin{itemize}
         \item \textit{Multiply:} The 64-bit product is split; high 32 bits go to \texttt{Hi}, low 32 bits to \texttt{Lo}.
         \item \textit{Divide:} The quotient is stored in \texttt{Lo}, and the remainder is stored in \texttt{Hi}.
     \end{itemize}
+
     \item \textbf{Floating-Point Registers:} A separate co-processor provides 32 floating-point registers (\texttt{\$f0--\$f31}) for single and double-precision operations.
 \end{itemize}
 
@@ -76,6 +80,7 @@ In a byte-addressed system like MIPS, \textbf{word alignment} requires that the 
 
 \begin{example}[Stack Operations]
 Since MIPS lacks explicit \texttt{push} and \texttt{pop} instructions, these are implemented using \texttt{addi}, \texttt{sw}, and \texttt{lw}:
+
 \begin{verbatim}
 # Push $t0 to stack
 addi $sp, $sp, -4
@@ -85,6 +90,7 @@ sw $t0, 0($sp)
 lw $t0, 0($sp)
 addi $sp, $sp, 4
 \end{verbatim}
+
 \end{example}
 
 \section{MIPS Instruction Formats}
@@ -95,12 +101,15 @@ To maintain regularity, \textbf{every MIPS instruction is exactly 32 bits long.}
 Used for arithmetic and logical instructions where all operands are registers.
 \begin{table}[h]
 \centering
+\vspace{5pt}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
 \textbf{op} (6) & \textbf{rs} (5) & \textbf{rt} (5) & \textbf{rd} (5) & \textbf{shamt} (5) & \textbf{funct} (6) \\
 \hline
 \end{tabular}
+\vspace{5pt}
 \end{table}
+
 \begin{itemize}
     \item \textbf{op:} Opcode (0 for R-type).
     \item \textbf{rs, rt:} Source registers.
@@ -111,14 +120,18 @@ Used for arithmetic and logical instructions where all operands are registers.
 
 \subsection{I-Type (Immediate Format)}
 Used for instructions involving constants, memory access, or conditional branches.
+
 \begin{table}[h]
 \centering
+\vspace{5pt}
 \begin{tabular}{|c|c|c|c|}
 \hline
 \textbf{op} (6) & \textbf{rs} (5) & \textbf{rt} (5) & \textbf{constant or address} (16) \\
 \hline
 \end{tabular}
+\vspace{5pt}
 \end{table}
+
 \begin{itemize}
     \item \textbf{op:} Unique opcode for the instruction.
     \item \textbf{rs:} Source/Base register.
@@ -130,11 +143,13 @@ Used for instructions involving constants, memory access, or conditional branche
 Used for unconditional jumps to distant memory locations.
 \begin{table}[h]
 \centering
+\vspace{5pt}
 \begin{tabular}{|c|c|}
 \hline
 \textbf{op} (6) & \textbf{address} (26) \\
 \hline
 \end{tabular}
+\vspace{5pt}
 \end{table}
 
 \section{Addressing Modes}
@@ -150,5 +165,6 @@ Addressing modes define how MIPS calculates the effective address of an operand 
 \end{enumerate}
 
 \begin{remark}
+
 In PC-Relative addressing, the offset is in \textit{words}. The hardware automatically shifts the offset left by 2 bits to convert it to bytes before adding it to the PC.
 \end{remark}

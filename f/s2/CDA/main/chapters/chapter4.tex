@@ -30,6 +30,8 @@ Built from cross-coupled NOR or NAND gates, the S-R latch can force its output t
 
 \begin{table}[h]
 \centering
+\vspace{10pt}
+\begin{center}
 \begin{tabular}{cccl}
 \toprule
 \textbf{S} & \textbf{R} & \textbf{Q(t+1)} & \textbf{State} \\
@@ -40,6 +42,8 @@ Built from cross-coupled NOR or NAND gates, the S-R latch can force its output t
 1 & 1 & - & Unstable / Not Allowed \\
 \bottomrule
 \end{tabular}
+\end{center}
+\vspace{10pt}
 \caption{Truth Table for a NOR-based S-R Latch}
 \end{table}
 
@@ -96,6 +100,7 @@ A versatile flip-flop that solves the unstable state issue of the S-R latch by t
 
 \begin{table}[h]
 \centering
+\begin{center}
 \begin{tabular}{cccl}
 \toprule
 \textbf{J} & \textbf{K} & \textbf{Q(t+1)} & \textbf{Operation} \\
@@ -106,6 +111,7 @@ A versatile flip-flop that solves the unstable state issue of the S-R latch by t
 1 & 1 & Q'(t) & Toggle \\
 \bottomrule
 \end{tabular}
+\end{center}
 \caption{J-K Flip-Flop Truth Table}
 \end{table}
 
@@ -154,12 +160,14 @@ Sequential circuits are mathematically modeled as FSMs, consisting of states, tr
 
 \begin{example}[1001 Overlapping Pattern Recognizer]
 To design a pattern recognizer:
+
 \begin{enumerate}
     \item \textbf{State Diagram:} Define states representing the progress in seeing the sequence (e.g., ``Saw 1'', ``Saw 10'', etc.).
     \item \textbf{State Encoding:} Assign binary values to each state. If there are $N$ states, $\lceil \log_2 N \rceil$ flip-flops are required.
     \item \textbf{Boolean Expressions:} Use Karnaugh Maps to derive logic for flip-flop inputs (Next State Logic) and outputs.
     \item \textbf{Circuit Realization:} Implement using flip-flops and combinational gates.
 \end{enumerate}
+
 \end{example}
 
 \subsection{Moore vs. Mealy Machines}

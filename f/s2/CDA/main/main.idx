@@ -3,24 +3,24 @@
 \indexentry{Logic Design|hyperpage}{9}
 \indexentry{Assembly Language|hyperpage}{9}
 \indexentry{Machine Instructions|hyperpage}{9}
-\indexentry{MIPS Instructions|hyperpage}{39}
-\indexentry{Conditionals|hyperpage}{39}
-\indexentry{Branching|hyperpage}{39}
-\indexentry{Branch Instructions|hyperpage}{39}
-\indexentry{Jump Instructions|hyperpage}{39}
-\indexentry{Loops|hyperpage}{40}
-\indexentry{Procedure Calls|hyperpage}{40}
-\indexentry{Registers!Procedure|hyperpage}{40}
-\indexentry{jal|hyperpage}{40}
-\indexentry{jr|hyperpage}{40}
-\indexentry{Stack|hyperpage}{41}
-\indexentry{Stack!Pointer|hyperpage}{41}
-\indexentry{Prologue|hyperpage}{41}
-\indexentry{Epilogue|hyperpage}{41}
-\indexentry{Recursion|hyperpage}{41}
-\indexentry{Unsigned Integers|hyperpage}{55}
-\indexentry{2's Complement|hyperpage}{56}
-\indexentry{Overflow|hyperpage}{56}
-\indexentry{Booth's Algorithm|hyperpage}{56}
-\indexentry{ALU|hyperpage}{56}
-\indexentry{K-Map|hyperpage}{56}
+\indexentry{MIPS Instructions|hyperpage}{53}
+\indexentry{Conditionals|hyperpage}{53}
+\indexentry{Branching|hyperpage}{53}
+\indexentry{Branch Instructions|hyperpage}{54}
+\indexentry{Jump Instructions|hyperpage}{54}
+\indexentry{Loops|hyperpage}{54}
+\indexentry{Procedure Calls|hyperpage}{55}
+\indexentry{Registers!Procedure|hyperpage}{56}
+\indexentry{jal|hyperpage}{56}
+\indexentry{jr|hyperpage}{56}
+\indexentry{Stack|hyperpage}{56}
+\indexentry{Stack!Pointer|hyperpage}{56}
+\indexentry{Prologue|hyperpage}{56}
+\indexentry{Epilogue|hyperpage}{56}
+\indexentry{Recursion|hyperpage}{57}
+\indexentry{Unsigned Integers|hyperpage}{75}
+\indexentry{2's Complement|hyperpage}{76}
+\indexentry{Overflow|hyperpage}{76}
+\indexentry{Booth's Algorithm|hyperpage}{77}
+\indexentry{ALU|hyperpage}{77}
+\indexentry{K-Map|hyperpage}{77}

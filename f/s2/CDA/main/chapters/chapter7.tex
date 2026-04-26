@@ -14,17 +14,21 @@ Individual commands that the MIPS processor can understand, categorized mainly i
 Conditionals allow programs to execute different code paths based on dynamic evaluations. In MIPS, this is achieved through branch and jump instructions.
 
 \begin{definition}[Branch Instructions]\index{Branch Instructions}
+
 \begin{itemize}
     \item \texttt{beq \$s1, \$s2, L} (Branch if equal): If \texttt{\$s1 == \$s2}, jump to label \texttt{L}.
     \item \texttt{bne \$s1, \$s2, L} (Branch if not equal): If \texttt{\$s1 != \$s2}, jump to label \texttt{L}.
 \end{itemize}
+
 Branches are \textbf{I-Type instructions}. The offset (16 bits) is used to calculate the ``branch target address''.
 \end{definition}
 
 \begin{definition}[Jump Instructions]\index{Jump Instructions}
+
 \begin{itemize}
     \item \texttt{j L} (Jump): Unconditionally jump to label \texttt{L}.
 \end{itemize}
+
 Jumps are \textbf{J-Type instructions}. The 26-bit address is a ``pseudo-direct address''. It is shifted left by 2 (multiplied by 4) and concatenated with the top 4 bits of the current Program Counter (PC) to calculate the next instruction address.
 \end{definition}
 
@@ -38,6 +42,8 @@ High-level loop constructs are synthesized in MIPS using a combination of initia
 
 \begin{example}[While Loop Execution]
 Consider the C code:
+
+\vspace{10pt}
 \begin{lstlisting}[language=C]
 i = 0;
 while (i <= 20) {
@@ -74,6 +80,7 @@ The condition check (\texttt{slt}, \texttt{beq}) is placed at the \textit{end} o
 Programming languages separate individual tasks into functions or methods. In assembly, these are called ``procedures''.
 
 \begin{vocabulary}[Procedure Registers]\index{Registers!Procedure}
+
 \begin{itemize}
     \item \texttt{\$a0} -- \texttt{\$a3}: Argument registers used to pass parameters to the procedure.
     \item \texttt{\$v0} -- \texttt{\$v1}: Return value registers used to pass results back to the caller.
@@ -82,6 +89,7 @@ Programming languages separate individual tasks into functions or methods. In as
 \end{vocabulary}
 
 \begin{definition}[Procedure Instructions]
+
 \begin{itemize}
     \item \textbf{Jump and Link (\texttt{jal}):}\index{jal} e.g., \texttt{jal 10000}. Sets \texttt{\$ra = PC + 4} (saving the return address) and sets \texttt{PC = 40000} (jumping to the procedure).
     \item \textbf{Jump Register (\texttt{jr}):}\index{jr} e.g., \texttt{jr \$ra}. Sets \texttt{PC = \$ra}, returning control to the calling function.
@@ -94,12 +102,14 @@ When executing procedures, the processor has a limited number of registers. If a
 
 \begin{definition}[The Stack]\index{Stack!Pointer}
 A region of memory used for dynamic storage during procedure execution. It typically grows downwards in memory.
+
 \begin{itemize}
     \item \texttt{\$sp}: The Stack Pointer register (\texttt{\$29}). It points to the top (lowest address) of the stack.
 \end{itemize}
 \end{definition}
 
 \subsection{Mechanism (Prologue and Epilogue)}\index{Prologue}\index{Epilogue}
+
 \begin{itemize}
     \item \textbf{Prologue:} The start of a procedure. We move the stack pointer down to allocate space, then store (\texttt{sw}) registers. 
     \textit{Example:} \texttt{addi \$sp, \$sp, -8} (allocate 8 bytes for 2 words), followed by \texttt{sw \$ra, 4(\$sp)} and \texttt{sw \$a0, 0(\$sp)}.
@@ -113,6 +123,8 @@ Recursion occurs when a procedure calls itself. Because every call to the proced
 
 \begin{example}[Recursive Sum]
 Convert the C function:
+
+\vspace{10pt}
 \begin{lstlisting}[language=C]
 int recSum(int n) {
     if (n <= 1) return n;

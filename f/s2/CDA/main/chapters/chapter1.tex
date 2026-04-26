@@ -10,7 +10,9 @@ Computer Design and Architecture (CDA) is the study of the structure, behavior, 
 \end{definition}
 
 \subsection{Core Focus Areas}
+
 According to the UCF CDA course introduction, the primary areas of focus include:
+
 \begin{itemize}
     \index{System Architecture}
     \item \textbf{System Architecture:} The high-level structure and organization of a computer system.
@@ -25,14 +27,18 @@ According to the UCF CDA course introduction, the primary areas of focus include
 \end{itemize}
 
 \subsection{The Levels of Abstraction}
+
 Modern computer systems are designed using multiple levels of abstraction to manage complexity:
+
 \begin{enumerate}
     \item \textbf{Application Software:} Written in high-level languages such as C, Java, or Python.
     \item \textbf{Systems Software:}
+
     \begin{itemize}
         \item \textbf{Compiler:} Translates high-level code into assembly language.
         \item \textbf{Operating System (OS):} Manages hardware resources and provides services to applications.
     \end{itemize}
+
     \item \textbf{Hardware:} The physical components (transistors, circuits) that execute instructions.
 \end{enumerate}
 
@@ -50,10 +56,12 @@ Devices that present data to the user (e.g., monitor, speakers, printer).
 
 \begin{vocabulary}[Memory]
 Stores data and instructions currently in use.
+
 \begin{itemize}
     \item \textbf{Volatile Memory (RAM):} Fast, but loses data when power is off.
     \item \textbf{Non-volatile Memory (SSD/HDD):} Slower, but retains data.
 \end{itemize}
+
 \end{vocabulary}
 
 \begin{vocabulary}[Datapath]
@@ -90,6 +98,7 @@ Moore's Law (proposed by Gordon Moore in 1965) predicted that the number of tran
 \end{definition}
 
 \subsection{Key Implications}
+
 \begin{itemize}
     \item \textbf{Exponential Growth:} Led to rapid improvements in performance and reductions in cost for decades.
     \item \textbf{The ``Power Wall'':} As clock rates increased, power dissipation became a limiting factor, ending the era of rapid single-core frequency increases.
@@ -109,6 +118,7 @@ Also known as \textbf{Bandwidth}, this is the total amount of work done in a giv
 \end{vocabulary}
 
 \subsection{Relative Performance}
+
 \begin{proposition}[Performance Ratio]
 If Computer A is faster than Computer B, the relative performance is calculated as:
 \begin{equation}
@@ -117,6 +127,7 @@ If Computer A is faster than Computer B, the relative performance is calculated 
 \end{proposition}
 
 \subsection{The CPU Time Equation}
+
 \begin{theorem}[CPU Time Equation]
 The fundamental formula for calculating the CPU time of a program is:
 \begin{equation}
@@ -128,7 +139,8 @@ Alternatively, using the clock rate:
 \end{equation}
 \end{theorem}
 
-The components of this equation are determined by various factors:
+\noindent The components of this equation are determined by various factors:
+
 \begin{itemize}
     \item \textbf{Instruction Count:} Number of instructions executed (determined by the algorithm, compiler, and ISA).
     \item \textbf{CPI (Cycles Per Instruction):} The average number of clock cycles required per instruction (determined by the microarchitecture).

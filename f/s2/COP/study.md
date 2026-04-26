@@ -1,6 +1,6 @@
 # Sorting Algorithms
 
-## Insertion Sort
+## Insertion Sort - **"Swap Left"**
 
 ### Pseudo-Code
 
@@ -8,6 +8,11 @@
 2. Take `i` item and compare with the sorted part of array, heading left <-.
 3. If `i` item is less/greater than `x` card then swap them.
 4. Insert once correct position is found.
+
+### Running Time
+
+- Worst Case: O(n^2)
+- Best Case: O(n)
 
 ### Code
 
@@ -31,12 +36,7 @@ void insertion_sort(int *array, size_t size) {
 }
 ```
 
-### Running Time
-
-- Worst Case: O(n^2)
-- Best Case: O(n)
-
-## Selection Sort
+## Selection Sort - **"Switch Right"**
 
 ### Pseudo-Code
 
@@ -76,54 +76,123 @@ void selection_sort(int *array, size_t size) {
 }
 ```
 
-## Bubble Sort
+## Bubble Sort - **"Swap Right"**
 
 ### Pseudo-Code
 
-1. 
+1. Look at the first two elements and sort.
+2. Move right and sort pairs.
+3. Repeat `n` times.
+3. Decrement `n` and repeat.
 
 ### Running Time
 
-- Worst Case: O()
-- Best Case: O()
+- Worst Case: O(n^2)
+- Best Case: O(n)
 
 ### Code
 
 ```c
+void bubble_sort(int *array, size_t size) {
+    if (array == NULL || size < 2)
+        return;
 
+    bool swapped;
+    for (size_t i = 0; i < size - 1; i++) {
+        swapped = false;
+
+        /* Inner loop for comparisons; 'size - i - 1' because 
+           the last 'i' elements are already sorted */
+        for (size_t j = 0; j < size - i - 1; j++) {
+            if (array[j] > array[j + 1]) {
+                /* Swap elements */
+                int temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+                swapped = true;
+            }
+        }
+
+        /* If no two elements were swapped by inner loop, then break */
+        if (swapped == false)
+            break;
+    }
+}
 ```
 
-## Merge Sort
+## Merge Sort - **"Binary Split"**
 
 ### Pseudo-Code
 
-1. 
+1. Divide arr into 2.
+2. Keep dividing until many arr's of 1.
+3. Merge arr's next to each other.
+4. When merging place smaller object out of the two.
 
 ### Running Time
 
-- Worst Case: O()
-- Best Case: O()
+- Worst Case: O(nlgn)
+- Best Case: O(nlgn)
 
 ### Code
 
 ```c
+void merge(int *array, int left, int mid, int right) {
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
+    /* Create temporary arrays */
+    int *L = malloc(n1 * sizeof(int));
+    int *R = malloc(n2 * sizeof(int));
+
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++)
+        L[i] = array[left + i];
+    for (j = 0; j < n2; j++)
+        R[j] = array[mid + 1 + j];
+
+    /* Merge the temp arrays back into array[left..right] */
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = left; // Initial index of merged subarray
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            array[k] = L[i];
+            i++;
+        } else {
+            array[k] = R[j];
+            j++;
+        }
+        k++;
+    }
 ```
 
-## Quick Sort
+## Quick Sort - **"Pivot Split"**
 
 ### Pseudo-Code
 
-1. 
+1. Pick a pivot.
+2. Place elements smaller to left and larger to the right.
+3. Repeat for each side of the pivot
 
 ### Running Time
 
-- Worst Case: O()
-- Best Case: O()
+- Worst Case: O(nlogn)
+- Best Case: O(n^2)
 
 ### Code
 
 ```c
+void quick_sort(int *array, int low, int high) {
+    if (low < high) {
+        /* pi is partitioning index, array[pi] is now at right place */
+        int pi = partition(array, low, high);
 
+        /* Separately sort elements before and after partition */
+        quick_sort(array, low, pi - 1);
+        quick_sort(array, pi + 1, high);
+    }
+}
 ```
 

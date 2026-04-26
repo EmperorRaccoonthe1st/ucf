@@ -45,18 +45,21 @@ Registers used to save the current Program Counter and data register (R0) respec
 
 \begin{definition}[Interrupt Handler Vector (IHV)]
 A unified structure used to manage various exceptions. It is a table in system memory containing the starting addresses of specific handler routines, such as:
+
 \begin{itemize}
     \item Overflow Handler
     \item Timer Handler
     \item I/O Handler
     \item System Call Handler
 \end{itemize}
+
 \end{definition}
 
 \section{MIPS Exception Handling Implementation}
 In the MIPS architecture, exceptions and interrupts are managed by the \textbf{System Control Coprocessor (CP0)}. When an exception occurs, the processor must freeze the execution state and identify the cause.
 
 \subsection{The Exception Program Counter (EPC)}
+
 \begin{definition}[Exception Program Counter (EPC)]
 A special 32-bit register within CP0 used to precisely save the address of the offending (or interrupted) instruction.
 \end{definition}
@@ -68,6 +71,7 @@ A special 32-bit register within CP0 used to precisely save the address of the o
 
 \subsection{The Cause and Status Registers}
 To determine why the exception occurred, MIPS utilizes specific registers in CP0:
+
 \begin{definition}[Cause Register]
 Saves an encoded indication of the exact problem. The handler reads this register to determine which specific corrective routine to execute.
 \end{definition}
@@ -76,8 +80,10 @@ Saves an encoded indication of the exact problem. The handler reads this registe
 Contains the operating mode, interrupt enabling flags, and diagnostic states. Specific codes indicate the exception type (e.g., \texttt{0000} for undefined instruction, \texttt{0180} for arithmetic overflow).
 \end{definition}
 
+\needspace{4cm}
 \subsection{Handler Actions}
 When an exception is triggered, the processor automatically performs a sequence of events:
+
 \begin{enumerate}
     \item Reads the \textbf{Cause} register to identify the source.
     \item Transfers control to the relevant handler routine (often utilizing the \textbf{IHV}).
@@ -86,11 +92,12 @@ When an exception is triggered, the processor automatically performs a sequence 
 \end{enumerate}
 
 \section{Exceptions in a Pipelined Datapath}
-In a pipelined processor, an exception is treated as another form of a \textbf{control hazard}. It disrupts the steady flow of instructions.
-
+...
 \subsection{Datapath Modifications}
+
 \begin{remark}
 Consider an arithmetic overflow occurring during an \texttt{add} instruction that is currently in the Execution (EX) stage. The following steps must be taken:
+
 \begin{enumerate}
     \item \textbf{Prevent State Corruption}: Immediately prevent the offending instruction from overwriting registers or memory by disabling \texttt{RegWrite} and \texttt{MemWrite}.
     \item \textbf{Complete Previous Instructions}: Instructions in the MEM and WB stages are allowed to safely complete.
@@ -98,6 +105,7 @@ Consider an arithmetic overflow occurring during an \texttt{add} instruction tha
     \item \textbf{Record State}: Hardware sets the \texttt{Cause} and \texttt{EPC} register values.
     \item \textbf{Transfer Control}: The PC is updated to the address of the exception handler.
 \end{enumerate}
+
 \end{remark}
 
 \subsection{Precise vs. Imprecise Exceptions}
