@@ -1,0 +1,394 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{helvet}
+\tcbuselibrary{breakable, listings}
+
+% Define colors
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{ucfred}{rgb}{1.0, 0.0, 0.0}
+
+% Global styles
+\renewcommand{\familydefault}{\rmdefault}
+\setlist[itemize]{label=$\blacksquare$, leftmargin=2em}
+
+% Custom boxes
+\newtcolorbox{importantbox}{
+    colback=white,
+    colframe=ucfred,
+    arc=4pt,
+    outer arc=4pt,
+    boxrule=1.5pt,
+    left=10pt,
+    right=10pt,
+    top=10pt,
+    bottom=10pt
+}
+
+\newtcolorbox{codebox}{
+    colback=codegray,
+    colframe=black,
+    arc=0pt,
+    outer arc=0pt,
+    boxrule=0.5pt,
+    left=5pt,
+    right=5pt,
+    top=5pt,
+    bottom=5pt,
+    fontupper=\ttfamily\small,
+    breakable
+}
+
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=none,
+    backgroundcolor=\color{codegray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{orange}
+}
+
+\begin{document}
+
+\begin{center}
+    {\Huge \textsf{\textbf{Programming Assignment 6}}} \\
+    \vspace{5pt}
+    {\large \textsf{Filename: pa6.c}} \\
+    \vspace{10pt}
+\end{center}
+
+\begin{importantbox}
+    You must include the following commented lines at the beginning of your code to declare authorship. Submissions that do not include these lines will receive a 10\% deduction.
+    \begin{verbatim}
+/* COP 3502C PA6
+   This program is written by: Your Full Name */
+    \end{verbatim}
+\end{importantbox}
+
+\section*{Objective}
+In this assignment, you will practice:
+\begin{itemize}
+    \item Array-based binary heap with mode-dependent comparator.
+    \item Priority-based extraction using a unified service command.
+    \item Key recomputation + O(n) heapify on mode changes.
+    \item Heap-based priority queue with linear search for name-based updates and removals.
+    \item Clean dynamic memory management and deterministic output formatting.
+\end{itemize}
+
+\section*{Background Story}
+Welcome to \textit{The Scratching Post}, the largest feline triage and adoption center in Mew York City. From sun-kissed strays to elderly long-timers, the center cares for thousands of cats each year.
+
+But with rising rescue numbers, the staff can no longer manually decide: which cats need urgent medical care, which cats are ideal for same-day adoption, which cats should temporarily remain in quarantine, how shifting conditions (age, injuries, health changes) affect priority, and how special campaigns (like Featured Breed Week) influence adoptability.
+
+They now turn to you, the center’s most trusted systems engineer, to implement a dynamic, heap-driven priority engine capable of:
+\begin{itemize}
+    \item Ranking cats in Adoption Mode (max-heap),
+    \item Ranking cats in Triage Mode (min-heap),
+    \item Automatically recalculating priorities when modes change,
+    \item Supporting cat attribute updates,
+    \item Enforcing Quarantine Protocols,
+    \item Respecting Featured Breed bonuses,
+    \item And handling all shelter operations through a consistent command language.
+\end{itemize}
+
+Your system must be fast, memory-safe, and perfectly deterministic, no surprises allowed when real cats’ wellbeing is on the line.
+
+\newpage
+
+\section*{System Overview}
+The system maintains a live collection of cats. For each cat, the system computes a priority key based on the current mode and stores the cat in a heap. Cats are identified by name using a linear search over the heap array when updates or removals are requested. 
+
+Two global modes exist:
+\begin{enumerate}
+    \item \textbf{Adoption} - A max-heap ranking cats with the highest adoptability score at the top.
+    \item \textbf{Triage} - A min-heap ranking cats with the lowest (most urgent) triage score at the top.
+\end{enumerate}
+
+Default mode is \textbf{Adoption}. Switching modes forces a full key recompute and heap rebuild. Following are the scoring formulae for the two global modes:
+
+\subsection*{Mode 1: Adoption (Max-Heap)}
+\begin{itemize}
+    \item $base = 1.6 \times friendliness + 1.1 \times health - 0.7 \times age$
+    \item $mult = (breed == featured ? \alpha : 1.0)$
+    \item $adoption\_key = base \times mult + (-10^{-6} \times arrival\_id)$
+\end{itemize}
+\textbf{Higher is better.} So, higher key ranks higher; tie-breakers $\Rightarrow$ lexicographically smaller name, then smaller $arrival\_id$.
+
+\subsection*{Mode 2: Triage (Min-Heap)}
+\begin{itemize}
+    \item $triage\_key = (100 - health) \times 2.0 + \max(0, age - 12) \times 1.0 - 0.05 \times friendliness$
+\end{itemize}
+\textbf{Lower = more urgent.} So, lower key ranks higher; tie-breakers $\Rightarrow$ lexicographically smaller name, then smaller $arrival\_id$.
+
+\section*{Serving Cats}
+The system provides a unified \texttt{SERVE} command that removes and processes the highest-priority cat based on the current mode.
+\begin{itemize}
+    \item In \textbf{ADOPTION} mode, \texttt{SERVE} adopts the highest-priority non-quarantined cat (max-heap behavior).
+    \item In \textbf{TRIAGE} mode, \texttt{SERVE} treats the most urgent cat (min-heap behavior).
+\end{itemize}
+Switching modes changes the interpretation of priority but does not change the underlying heap structure.
+
+Additionally, a \textbf{quarantine protocol} needs to be implemented. A quarantined cat (\texttt{quarantine = 1}) cannot be adopted. However, a quarantined cat can be treated in \textbf{TRIAGE} mode. In \textbf{ADOPTION} mode: the system extracts top cats until it finds a non-quarantined one; skipped quarantined cats are temporarily stored and reinserted afterwards. If only quarantined cats exist, the system will print: ``No adoptable cats available.'' Quarantine does not affect numeric priority values, only adoption eligibility.
+
+\newpage
+
+\section*{Commands and Input Specifications}
+The first line contains $q$ (number of commands). Then $q$ lines of:
+\begin{itemize}
+    \item \textbf{Add a cat:} \texttt{ADD <name> <breed> <age> <friendliness> <health>}
+    \item \textbf{Update a cat:} \texttt{UPDATE <name> <FIELD> <value>}
+    \item \textbf{Remove a cat:} \texttt{REMOVE <name>}
+    \item \textbf{View top cat:} \texttt{PEEK}
+    \item \textbf{Serve top-priority cat:} \texttt{SERVE}
+    \item \textbf{Change mode:} \texttt{MODE <ADOPTION|TRIAGE>}
+    \item \textbf{Set/reset featured breed:} \texttt{FEATURED <breed> <alpha>} or \texttt{FEATURED NONE 1.0}
+    \item \textbf{Print top k (non-destructively):} \texttt{PRINT <k>}
+    \item \textbf{Quit:} \texttt{QUIT}
+\end{itemize}
+
+\section*{Required Data Structures and Function Prototypes}
+Do not rename, remove, or alter any required fields of the provided structures. You may add additional fields or helper structs only if they don't break these definitions or the specified behaviors. The provided function prototypes are also mandatory. You may write additional helper functions, but do not alter or overload these required prototypes.
+
+\begin{codebox}
+\begin{lstlisting}
+/* ---------- Global Modes ---------- */
+typedef enum { 
+    MODE_ADOPTION = 0,      /* Max-heap by adoption_key (higher is better)   */
+    MODE_TRIAGE   = 1       /* Min-heap by triage_key   (lower is more urgent)*/
+} Mode;
+
+/* ---------- Core Cat Record ---------- */
+typedef struct Cat {
+    char *name;             /* dynamically allocated, unique string (<= 25 chars + '\0') */
+    char *breed;            /* dynamically allocated string */
+    int age;                /* years */
+    int friendliness;       /* 0..100 */
+    int health;             /* 0..100      (higher means healthier) */
+    int arrival_id;         /* strictly increasing when ADDed */
+    int quarantine;         /* 0 or 1 (1 => cannot be adopted; S1) */
+    double key;             /* cached priority value for the **active** mode */
+} Cat;
+
+/* ---------- Array-Based Binary Heap of Cat* ---------- */
+typedef struct {
+    Cat **arr;              /* array of Cat* implementing the heap */
+    int size;               /* current number of elements */
+    int capacity;           /* allocated capacity */
+    Mode mode;              /* controls comparator semantics */
+} CatHeap;
+
+/* ---------- Global Shelter State ---------- */
+typedef struct {
+    Mode mode;              /* MODE_ADOPTION or MODE_TRIAGE */
+    char *featured_breed;   /* NULL => none; else dynamically allocated breed string */
+    double alpha;           /* multiplier for featured breed (>= 1.0; default 1.0)*/
+    int next_arrival_id;    /* increments on each ADD */
+    CatHeap heap;           /* priority structure */
+} Shelter;
+
+/* Returns heap index of cat with given name, or -1 if not found */
+int find_cat_index(const CatHeap *heap, const char *name);
+/* Returns the current adoption-mode key for cat c using S->featured_breed and S->alpha. */
+double compute_adoption_key(const Cat *c, const Shelter *S);
+/* Returns the current triage-mode key for cat c. */
+double compute_triage_key(const Cat *c);
+/* Recomputes all keys for the active mode and rebuilds heap in O(n) using bottom-up heapify. */
+void recompute_all_keys_and_build(Shelter *S);
+
+/* ========== Command Handlers (I/O-Free Logic) ========== */
+/* Allocates a new Cat, initializes fields, computes key for active mode,
+   ensures no duplicate name exists (linear scan), and inserts into the heap. */
+void cmd_add(Shelter *S, const char *name, const char *breed, int age, int friendl, int health);
+/* Locate the cat by name using a linear scan of the heap array.
+   If found, update the requested field.
+   For AGE/FRIEND/HEALTH: recompute key for active mode and restore heap order.
+   For QUARANTINE: update the flag only (numeric key unchanged), then restore heap order. */
+void cmd_update(Shelter *S, const char *name, const char *field, int new_value);
+/* Locate the cat by name using a linear scan of the heap array.
+   Remove it from the heap, restore heap order, and free the Cat. */
+void cmd_remove(Shelter *S, const char *name);
+/* Prints the current top cat for the active mode (does not modify heap). */
+void cmd_peek(const Shelter *S);
+/* Serves the highest-priority cat based on the active mode.
+   ADOPTION: adopt highest-priority non-quarantined cat.
+   TRIAGE: treat most urgent cat. */
+void cmd_serve(Shelter *S);
+/* Sets S->mode, sets heap mode, then recompute_all_keys_and_build(S). */
+void cmd_mode(Shelter *S, const char *mode_str);
+/* Sets (or clears) featured breed and alpha, then recompute_all_keys_and_build(S). */
+void cmd_featured(Shelter *S, const char *breed, double alpha);
+/* Non-destructive: print top k according to active mode.
+   Recommended: copy heap array into a temp heap and extract k from the copy. */
+void cmd_print(const Shelter *S, int k);
+\end{lstlisting}
+\end{codebox}
+
+\newpage
+
+\section*{Output Specifications}
+\textbf{General rules (apply to every line you print)}
+\begin{itemize}
+    \item Exact text/case/spacing; ASCII; no extra blank lines.
+    \item Keys and alpha: two decimals (rounded).
+    \item Follow per-command patterns as shown.
+\end{itemize}
+
+\begin{enumerate}
+    \item \textbf{Mode Changes, print:} \texttt{Mode set to <MODE>. Rebuilding priorities...} \\
+    Only \texttt{ADOPTION} and \texttt{TRIAGE} are valid modes. For all other entries, print: \\ \texttt{Unknown mode <unknown>}.
+    
+    \item \textbf{Featured Breed:}
+    \begin{itemize}
+        \item \textbf{Set or change to a breed, print:} \\ \texttt{Featured breed set to <breed> with alpha=<alpha\_formatted>.} \\ \texttt{Rebuilding priorities...}
+        \item \textbf{Clear featured breed, print:} \texttt{Featured breed cleared.} \\ \texttt{Rebuilding priorities...}
+    \end{itemize}
+
+    \item \textbf{Adding Cats:}
+    \begin{itemize}
+        \item On success, print: \texttt{Added <name>.}
+        \item If a cat with the same name already exists, print: \texttt{Name <name> already exists.}
+    \end{itemize}
+    \textbf{Note:} \texttt{ADD} never prints keys or mode tags.
+
+    \item \textbf{Peek Top Cat:}
+    \begin{itemize}
+        \item If the heap is empty, print: \texttt{No cats available.}
+        \item Otherwise, print one line describing the current top for the active mode: \\
+        \texttt{Top[<MODE>]: [<MODE>] (key=XX.YY, name=<name>, breed=<breed>,} \\ \texttt{age=<age>, friend=<friendliness>, health=<health>)}
+    \end{itemize}
+    \textbf{Formatting details:} Exactly one space after the colon \texttt{:}. The inner tag \texttt{[ADOPTION]} or \texttt{[TRIAGE]} must match the mode in the brackets after \texttt{Top[...]}. Key is two decimals.
+
+    \item \textbf{Serve Cat (SERVE):} \\
+    If the heap is empty, print: \texttt{No cats available.} \\
+    \textbf{If current mode is ADOPTION:}
+    \begin{itemize}
+        \item If all cats are quarantined, print: \texttt{No adoptable cats available.}
+        \item Otherwise, the highest-priority non-quarantined cat is adopted, print: \\
+        \texttt{Serve now: <name> (key=XX.YY, name=<name>, breed=<breed>,} \\ \texttt{age=<age>, friend=<friendliness>, health=<health>)}
+    \end{itemize}
+    \textbf{If current mode is TRIAGE:}
+    \begin{itemize}
+        \item The most urgent cat is treated, print: \\
+        \texttt{Serve now: <name> (key=XX.YY, name=<name>, breed=<breed>,} \\ \texttt{age=<age>, friend=<friendliness>, health=<health>)}
+    \end{itemize}
+    \textbf{Note:} Only one cat is served per \texttt{SERVE} command. Quarantine blocks adoption but does not affect \texttt{TRIAGE}.
+
+    \item \textbf{Update Cat:}
+    \begin{itemize}
+        \item If \texttt{<name>} doesn't exist, print: \texttt{Cat <name> not found.}
+        \item For \texttt{FIELD} in \texttt{\{AGE, FRIEND, HEALTH\}}: \\
+        Update the field, recompute key, adjust heap position, then print: \\
+        \texttt{Updated <name>: <FIELD>=<value>. Priority adjusted.}
+        \item For \texttt{FIELD == QUARANTINE}: \\
+        Accept 0 or 1; adjust position (safe no-op) and print: \\
+        \texttt{Updated <name>: QUARANTINE=<0\_or\_1>.}
+        \item For any other field, print: \texttt{Unknown field <FIELD>.}
+    \end{itemize}
+    \textbf{Note:} Breed is immutable after \texttt{ADD}; \texttt{UPDATE} does not support changing breeds.
+
+    \item \textbf{Remove Cat:}
+    \begin{itemize}
+        \item If \texttt{<name>} doesn't exist, print: \texttt{Cat <name> not found.}
+        \item On success, print: \texttt{Removed <name>.}
+    \end{itemize}
+
+    \item \textbf{Print Top-k (Non-Destructive):}
+    \begin{itemize}
+        \item If heap is empty, print: \texttt{No cats available.}
+        \item Otherwise, print up to k lines (or fewer if fewer than k cats exist): \\
+        \texttt{[<rank>] <name> (key=XX.YY, <MODE>)}
+    \end{itemize}
+    \textbf{Formatting details:} Square brackets around the 1-based rank. One space after the closing bracket. Exactly one space after the comma before the mode label. Do not include breed/age/friend/health here.
+
+    \item \textbf{Quit:} Print nothing for \texttt{QUIT}. Program terminates after processing \texttt{QUIT} or after reading all $q$ commands.
+
+    \item \textbf{Formatting \& Rounding Rules:}
+    \begin{itemize}
+        \item \textbf{Priority keys (key=XX.YY) and Alpha:} Always two decimals, rounded using standard rounding (e.g., 1.234 $\rightarrow$ 1.23, 1.235 $\rightarrow$ 1.24). No thousand separators.
+        \item \textbf{Integers (age, friend, health, counts, ranks, total):} Print as plain base-10 integers; no leading zeros.
+        \item \textbf{Spacing:} Exactly one space after colons \texttt{:} and commas \texttt{,}, where shown. Do not add trailing spaces at the end of lines.
+    \end{itemize}
+\end{enumerate}
+
+\section*{Runtime and Memory Requirements}
+\textbf{Runtime:}
+\begin{itemize}
+    \item Insert: $O(\log n)$
+    \item Update by name: $O(n)$
+    \item Remove by name: $O(n)$
+    \item Serve: $O(\log n)$
+    \item Mode / Featured change: $O(n)$
+    \item PRINT k: $O(k \log n)$ using a temporary heap
+    \item $n \leq$ approximately 5,000 cats
+\end{itemize}
+\textbf{Memory:}
+\begin{itemize}
+    \item All strings dynamically allocated
+    \item Free all dynamically allocated memory (cats, strings, heap, featured breed)
+    \item No memory leaks permitted
+\end{itemize}
+
+\section*{Sample I/O}
+\begin{codebox}
+\footnotesize
+\textbf{Sample Input:} \\
+13 \\
+MODE ADOPTION \\
+ADD Coco Ragdoll 4 88 90 \\
+ADD Hana DSH 3 92 85 \\
+UPDATE Coco QUARANTINE 1 \\
+UPDATE Hana QUARANTINE 1 \\
+SERVE \\
+UPDATE Hana QUARANTINE 0 \\
+SERVE \\
+MODE TRIAGE \\
+ADD Milo Siamese 15 40 60 \\
+SERVE \\
+PRINT 2 \\
+QUIT \\
+\vspace{5pt}
+\textbf{Sample Output:} \\
+Mode set to ADOPTION. Rebuilding priorities... \\
+Added Coco. \\
+Added Hana. \\
+Updated Coco: QUARANTINE=1. \\
+Updated Hana: QUARANTINE=1. \\
+No adoptable cats available. \\
+Updated Hana: QUARANTINE=0. \\
+Serve now: Hana (key=238.60, name=Hana, breed=DSH, age=3, friend=92, health=85) \\
+Mode set to TRIAGE. Rebuilding priorities... \\
+Added Milo. \\
+Serve now: Coco (key=15.60, name=Coco, breed=Ragdoll, age=4, friend=88, health=90) \\
+\relax[1] Milo (key=81.00, TRIAGE)
+\end{codebox}
+
+\section*{Implementation Hint}
+\begin{itemize}
+    \item You are NOT required to use any tree or map structure.
+    \item To find a cat by name, simply scan the heap array.
+    \item Focus on correctly restoring the heap after updates or removals.
+\end{itemize}
+
+\section*{Implementation Requirements}
+\begin{itemize}
+    \item Your program must be written in C and must compile on Gradescope.
+    \item Make sure to submit well-structured and well-commented code to avoid penalties.
+    \item No global variables except those explicitly required.
+    \item You may not use C++ features, external libraries beyond standard C libraries such as \texttt{qsort}, \texttt{priority\_queue}, \texttt{map}, etc., \texttt{system()} calls, or any OS-specific calls. Such approach will result in a \textbf{-100 penalty}.
+    \item You may not use multiple \texttt{.c} or \texttt{.h} files, preprocessor tricks that alter required structures, or hard-coded output for any scenario.
+    \item All output must be printed using \texttt{printf} exactly as specified in the ``Output Specifications'' section. No additional or missing newlines.
+    \item All cat names and breed strings must be read into a temporary static buffer first, then dynamically allocated with the exact amount of memory needed, and finally copied using \texttt{strcpy}.
+    \item All memory must be dynamically allocated using \texttt{malloc}, \texttt{calloc}, or \texttt{realloc}.
+    \item You must not: Use global static arrays, Use fixed-length arrays for cat storage, Leak memory in any scenario.
+    \item At the end of execution (before quitting), you must free: Every remaining cat, All name and breed strings, everything that had memory allocated. When removing a cat, you must free: \texttt{cat->name}, \texttt{cat->breed}, and the \texttt{Cat*} object itself.
+\end{itemize}
+
+\end{document}
