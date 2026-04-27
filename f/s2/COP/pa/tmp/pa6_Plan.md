@@ -1,10 +1,11 @@
 # Main
     Read # of commands
     Run a for loop for N times -> Event Loop
+    if Quit then quite program
 
 # Helper Functions
 
-##    Cat *create_cat(Shelter *S, Char *name, char *breed, int age, int friendliness, int health)
+## Cat *create_cat(Shelter *S, Char *name, char *breed, int age, int friendliness, int health)
 
     create Cat *c
     malloc for sizeof(cat)
@@ -179,23 +180,26 @@
     if S->heap->size == 0 print "No Cats available\n"
 
     ADOPTION:
-        run for loop over (i < S->heap->size):
-            if not S->heap->arr[i]->quarantine then 
+        reserve an Cat * array the size of S->heap->size as arr[]
+        int tmpSize = 0:
+        while S->heap->size > 0:
+            if S->heap->arr[0]->quarantine then 
+                deep copy to arr[tmpSize]
+                tmpSize++
+                remove_from_heap(S, 0)
+            else 
+                Cat *c = S->heap->arr[0];
                 print "Serve now: <name> (key=XX.YY, name=<name>, breed=<breed>, age=<age>, friend=<friendliness>, health=<health>)\n"        
-                remove_from_heap(S, i);
-                return
-            else continue
+                remove_from_heap(S, 0)
 
-        if loop ends then print "No adoptable cats available.\n"
-
-        free_cat(c);
-    TRIAGE:
+        for i < tmpSize insert_heap(S, arr[i]);
+        
+    TRIAGE
         print "Serve now: <name> (key=XX.YY, name=<name>, breed=<breed>, age=<age>, friend=<friendliness>, health=<health>)\n"        
         remove_from_heap(S, 0);
 
 ## cmd_mode(Shelter *S, const char *mode_str)
-    if strcpy mode_str to "ADOPTION" true then 
-        S->mode = Mode.MODE_ADOPTION
+    if strcpy mode_str to "ADOPTION" true then S->mode = Mode.MODE_ADOPTION
         recompute_all_keys_and_build(S);
         print "Mode set to <MODE>. Rebuilding priorities...\n"
     else if strcpy mode_str to "TRIAGE" then
@@ -206,7 +210,24 @@
         print "Unkown mode <unknown>.\n"
 
 ## cmd_featured(Shelter *S, const char *breed, double alpha))
+    if strcmp breed "NONE" true then 
+        S->breed = NULL
+        S->alpha = 0
+        print "Featured breed cleared. Rebuilding priorities...\n"
+    else 
+        print "Featured breed set to <breed> with alpha=<alpha_formatted>. Rebuilding priorities...\n"
+        S->breed = breed
+        S->alpha = alpha
 
 ## cmd_print(const Shelter *S, int k)
+    if S->heap->size == 0 then print "No cats available.\n"
+
+    Shelter *tmp = malloc(sizeof(Shelter));    
+
+    tmp = S;
+
+    for i < k:
+        print "[<rank>] <name> (key=XX.YY, <MODE>)\n" from tmp->heap->arr[0]
+        remove_from_heap(tmp, 0);
 
 
