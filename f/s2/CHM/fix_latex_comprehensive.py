@@ -1,209 +1,19 @@
-\documentclass[11pt]{article}
+import re
 
-% --- Packages ---
-\usepackage[margin=1in]{geometry}
-\usepackage[version=4]{mhchem}
-\usepackage{chemfig}
-\usepackage{amsmath, amssymb}
-\usepackage{siunitx}
-\usepackage{tcolorbox}
-\usepackage{enumitem}
-\usepackage{titlesec}
-\usepackage{booktabs}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
+file_path = "exam4/intermediate_files/main.tex"
+with open(file_path, "r") as f:
+    content = f.read()
 
-% --- siunitx configuration for Chemistry ---
-\DeclareSIUnit\atm{atm}
-\DeclareSIUnit\mmHg{mmHg}
-\DeclareSIUnit\torr{Torr}
+split_marker = r"\\section\{Stoichiometry\}"
+parts = re.split(split_marker, content)
 
-% --- Style Configuration ---
-\sisetup{per-mode=symbol}
+if len(parts) < 2:
+    print("Could not find Stoichiometry section")
+    exit(1)
 
-% Custom tcolorbox styles for distinguishing Provided vs Must Memorize
-\tcbset{
-    base/.style={fonttitle=\bfseries, left=5pt, right=5pt, top=5pt, bottom=5pt},
-    provided/.style={base, colback=blue!5!white, colframe=blue!75!black, title=Key Formula (Provided on Exam)},
-    memorize/.style={base, colback=gray!5!white, colframe=gray!50!black, title=Key Formula *}
-}
+header = parts[0]
 
-\titleformat{\section}{\large\bfseries\sffamily}{Chapter \thesection:}{1em}{}
-\titleformat{\subsection}{\normalsize\bfseries\sffamily}{}{0em}{}
-
-\begin{document}
-
-\title{CHM2045C: Final Exam Comprehensive Study Guide}
-\author{Chemistry Study Guide Draft}
-\date{Spring 2026}
-\maketitle
-
-\section{Foundations: The Chemical Toolbox}
-
-This chapter establishes the fundamental quantitative and qualitative tools required for chemical analysis, focusing on measurement, classification, and naming.
-
-\subsection{Density and Volume Displacement}
-Density is an intrinsic property relating mass and volume. For irregular solids, volume is determined by the displacement of a liquid.
-\begin{tcolorbox}[memorize]
-    \[ d = \frac{m}{V} \quad \text{and} \quad V_{\text{object}} = V_{\text{final}} - V_{\text{initial}} \]
-\end{tcolorbox}
-\begin{enumerate}
-    \item Identify given mass (\si{\gram}) and volume (\si{\milli\liter} or \si{\centi\meter^3}).
-    \item Use displacement to find $V$ if necessary (Archimedes' Principle).
-    \item Solve for the unknown variable using algebraic rearrangement.
-\end{enumerate}
-
-\subsection{Chemical Nomenclature}
-\begin{itemize}
-    \item \textbf{Ionic Compounds}: Name the cation followed by the anion. Use Roman numerals for transition metals with variable oxidation states (e.g., \ce{FeCl3} is iron(III) chloride).
-    \item \textbf{Acids}: Binary acids (\ce{H} + element) use the prefix \textit{hydro-} and suffix \textit{-ic} (e.g., \ce{HCl(aq)} is hydrochloric acid). Oxyacids use \textit{-ic} for \textit{-ate} ions and \textit{-ous} for \textit{-ite} ions.
-    \item \textbf{Hydrates}: Append the number of water molecules using Greek prefixes (e.g., \ce{CuSO4.5H2O} is copper(II) sulfate pentahydrate).
-\end{itemize}
-
-\subsection{Classification of Matter}
-Matter is classified by its composition and uniformity at the particulate level.
-\begin{itemize}
-    \item \textbf{Elements}: Pure substances consisting of one type of atom (e.g., \ce{O2}).
-    \item \textbf{Compounds}: Pure substances with fixed ratios of different atoms (e.g., \ce{H2O}).
-    \item \textbf{Mixtures}: Physical blends of substances. \textbf{Homogeneous} (uniform) or \textbf{Heterogeneous} (non-uniform).
-\end{itemize}
-\begin{center}
-    \textit{Particulate Representation of a Water Molecule (\ce{H2O}):} \\
-    \vspace{0.5em}
-    \chemfig{O(-[1]H)(-[7]H)}
-\end{center}
-
-\subsection{Metric System, Units, and Temperature}
-Mastery of prefixes is essential for dimensional analysis and unit comparison.
-\begin{table}[h]
-    \centering
-    \begin{tabular}{lcccc}
-        \toprule
-        Prefix & Nano (n) & Micro ($\mu$) & Milli (m) & Kilo (k) \\
-        \midrule
-        Factor & $10^{-9}$ & $10^{-6}$ & $10^{-3}$ & $10^{3}$ \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\begin{tcolorbox}[provided, title=Temperature Conversion (Provided)]
-    \[ T_{\si{\kelvin}} = T_{^\circ\text{C}} + 273.15 \]
-\end{tcolorbox}
-\textbf{Note}: Kelvin is mandatory for all gas law and thermodynamic calculations. Absolute zero is \SI{0}{\kelvin}.
-
-\newpage
-
-\section{Atomic Structure}
-
-Understanding the atom involves identifying its constituent subatomic particles and their contribution to the element's identity and mass.
-
-\subsection{Nuclide Notation and Subatomic Particles}
-The identity of an atom is defined by its atomic number ($Z$), while its mass is determined by the sum of protons and neutrons.
-\begin{tcolorbox}[memorize]
-    \[ A = Z + N \quad \text{and} \quad \text{Charge} = \text{Protons} - \text{Electrons} \]
-\end{tcolorbox}
-In the symbol \ce{^{A}_{Z}X^{charge}}:
-\begin{itemize}
-    \item \textbf{Protons}: Equal to $Z$ (Atomic Number). Defines the element.
-    \item \textbf{Neutrons}: Calculated as $A - Z$ (Mass Number - Atomic Number).
-    \item \textbf{Electrons}: Calculated as $Z - (\text{Charge})$. In neutral atoms, $e^- = p^+$.
-\end{itemize}
-
-\subsection{Average Atomic Mass}
-The mass reported on the periodic table is a weighted average of all naturally occurring isotopes based on their abundance.
-\begin{tcolorbox}[memorize]
-    \[ \text{Avg. Atomic Mass} = \sum_{i} (\text{Mass of Isotope}_i \times \text{Fractional Abundance}_i) \]
-\end{tcolorbox}
-\textbf{Technique}: Convert percentages to decimals (e.g., $75\% \rightarrow 0.75$) to find the "fractional abundance" before multiplying by isotopic mass.
-
-\subsection{Isotopes vs. Ions}
-\begin{itemize}
-    \item \textbf{Isotopes}: Atoms of the same element (same $Z$) with different numbers of neutrons ($N$), resulting in different mass numbers ($A$).
-    \item \textbf{Ions}: Atoms that have gained or lost electrons, resulting in a net positive (cation) or negative (anion) charge.
-\end{itemize}
-
-\newpage
-
-\section{Electronic Structure and Periodic Trends}
-
-\subsection{Electromagnetic Radiation and the Bohr Model}
-Light behaves as both a wave and a particle (photon). The energy of an electron in an atom is quantized.
-\begin{tcolorbox}[memorize, title=Light and Photon Energy *]
-    \[ c = \lambda \nu \quad \text{and} \quad E = h\nu = \frac{hc}{\lambda} \]
-    \[ \Delta E = -2.18 \times 10^{-18} \si{\joule} \left( \frac{1}{n_f^2} - \frac{1}{n_i^2} \right) \]
-\end{tcolorbox}
-Note: $h$ and $c$ are usually provided, but the relationships between $E$, $\lambda$, and $\nu$ must be mastered.
-
-\subsection{Quantum Numbers}
-Four quantum numbers describe the unique quantum state (or "address") of an electron:
-\begin{enumerate}
-    \item \textbf{Principal ($n$)}: Energy level ($1, 2, 3 \dots$).
-    \item \textbf{Angular Momentum ($l$)}: Orbital shape ($0$ to $n-1$). $s=0, p=1, d=2, f=3$.
-    \item \textbf{Magnetic ($m_l$)}: Orbital orientation ($-l$ to $+l$).
-    \item \textbf{Spin ($m_s$)}: Direction of electron spin ($+1/2$ or $-1/2$).
-\end{enumerate}
-
-\subsection{Electron Configurations}
-Follow three core principles to populate orbitals in the ground state:
-\begin{itemize}
-    \item \textbf{Aufbau Principle}: Electrons fill the lowest energy orbitals first ($1s, 2s, 2p \dots$).
-    \item \textbf{Pauli Exclusion Principle}: No two electrons can have the same four quantum numbers (max 2 $e^-$ per orbital with opposite spins).
-    \item \textbf{Hund's Rule}: Electrons fill degenerate orbitals singly with parallel spins before pairing.
-\end{itemize}
-\textbf{Noble Gas Shorthand}: Use the preceding noble gas to represent core electrons (e.g., \ce{Sn} is \ce{[Kr] 5s^2 4d^{10} 5p^2}).
-
-\subsection{Periodic Trends: Ionization Energy (IE)}
-Ionization Energy is the energy required to remove an electron from a gaseous atom.
-\begin{itemize}
-    \item \textbf{Across a Period}: IE generally increases due to increasing effective nuclear charge ($Z_{\text{eff}}$).
-    \item \textbf{Down a Group}: IE generally decreases due to increasing atomic radius and electronic shielding.
-\end{itemize}
-
-\newpage
-
-\section{Formula Calculations and the Mole}
-
-\subsection{Core Concepts}
-The mole is the fundamental unit in chemistry for measuring the amount of a substance. It provides a bridge between the microscopic world of atoms and molecules and the macroscopic world of grams and liters.
-
-\begin{itemize}[noitemsep]
-    \item \textbf{Avogadro's Number}: $1 \text{ mole} = \num{6.022e23}$ representative particles.
-    \item \textbf{Molar Mass}: The mass in grams of one mole of a substance (\si{\gram\per\mole}).
-    \item \textbf{Percent Composition}: The percentage by mass of each element in a compound.
-\end{itemize}
-
-\begin{tcolorbox}[provided, title=Avogadro Constant (Provided)]
-    \[ N_A = \num{6.022e23} \si{\per\mole} \]
-\end{tcolorbox}
-
-\begin{tcolorbox}[memorize, title=Mole Calculations *]
-    \[ n = \frac{m}{MM} \quad \text{and} \quad N = n \times N_A \]
-\end{tcolorbox}
-
-\subsection{Problem-Solving Skills}
-\begin{enumerate}
-    \item \textbf{Mass-to-Particle Conversions}:
-    \begin{itemize}
-        \item $\text{Mass (g)} \xrightarrow{\div MM} \text{Moles} \xrightarrow{\times N_A} \text{Particles}$
-    \end{itemize}
-    
-    \item \textbf{Calculating Empirical Formulas}:
-    \begin{enumerate}[label=\alph*)]
-        \item Assume a \SI{100}{\gram} sample (convert \% directly to grams).
-        \item Convert grams of each element to moles using atomic masses.
-        \item Divide all mole values by the smallest mole value obtained.
-        \item If necessary, multiply by a small integer to reach whole numbers.
-    \end{enumerate}
-
-    \item \textbf{Percent Mass Composition}:
-    \begin{tcolorbox}[memorize]
-        \[ \text{Mass \% of element} = \left( \frac{\text{mass of element in 1 mol compound}}{\text{molar mass of compound}} \right) \times 100\% \]
-    \end{tcolorbox}
-\end{enumerate}
-
-\newpage
-
-\section{Stoichiometry}
+rest_of_doc = r"""\section{Stoichiometry}
 
 \subsection{Core Concepts}
 Stoichiometry involves using the relationships between reactants and products in a balanced chemical equation to determine quantitative data.
@@ -246,7 +56,7 @@ Stoichiometry involves using the relationships between reactants and products in
 Most chemical reactions occur in solution. Understanding concentration and the behavior of ions in water is critical.
 
 \begin{itemize}
-    \item \textbf{Molarity (M)}: A measure of concentration defined as moles of solute per liter of solution (\si{\mole\per\liter}).
+    \item \textbf{Molarity (M)}: A measure of concentration defined as moles of solute per liter of solution (\si{mol.L^{-1}}).
     \item \textbf{Electrolytes}: Substances that dissociate into ions in water (Strong = complete dissociation, Weak = partial).
     \item \textbf{Precipitation}: A reaction where two aqueous solutions form an insoluble solid product.
     \item \textbf{Oxidation States}: Bookkeeping for electrons to track redox processes.
@@ -401,7 +211,7 @@ Centrally bonded atoms with four electron domains (e.g., \ce{CH4}) adopt a tetra
 \subsection{Gas Laws and Constants}
 \begin{tcolorbox}[provided, title=Gas Laws and Constants (Provided)]
     \textbf{Constants}:
-    \[ R = \SI{0.0821}{\liter\atm\per\mole\per\kelvin} \]
+    \[ R = \SI{0.0821}{\liter.atm.mol^{-1}.K^{-1}} \]
     \[ 1 \text{ atm} = 760 \text{ mmHg} = 760 \text{ Torr} \]
     \vspace{0.5em}
     \textbf{Laws}:
@@ -427,7 +237,7 @@ The distribution of molecular speeds changes with temperature. At higher tempera
     ylabel = {Relative Number of Molecules},
     ticks = none,
     xmin = 0, xmax = 10,
-    ymin = 0, ymax = 1.6,
+    ymin = 0, ymax = 1,
     width = 8cm, height = 5cm,
     legend pos = north east
 ]
@@ -454,9 +264,9 @@ The distribution of molecular speeds changes with temperature. At higher tempera
 \subsection*{Provided Information}
 \begin{itemize}
     \item \textbf{Temperature}: $T_{\si{\kelvin}} = T_{^\circ\text{C}} + 273.15$
-    \item \textbf{Avogadro Constant}: $N_A = \num{6.022e23} \si{\per\mole}$
-    \item \textbf{Gas Constant}: $R = \SI{0.0821}{\liter\atm\per\mole\per\kelvin}$
-    \item \textbf{Pressure}: $\SI{1}{\atm} = \SI{760}{\mmHg} = \SI{760}{\torr}$
+    \item \textbf{Avogadro Constant}: $N_A = \num{6.022e23} \si{mol^{-1}}$
+    \item \textbf{Gas Constant}: $R = \SI{0.0821}{\liter.atm.mol^{-1}.K^{-1}}$
+    \item \textbf{Pressure}: $1 \text{ atm} = \SI{760}{mmHg} = \SI{760}{Torr}$
     \item \textbf{Ideal Gas Law}: $PV = nRT$
     \item \textbf{Combined Gas Law}: $\frac{P_1V_1}{n_1T_1} = \frac{P_2V_2}{n_2T_2}$
     \item \textbf{Graham's Law}: $\frac{\text{rate}_1}{\text{rate}_2} = \sqrt{\frac{M_2}{M_1}}$
@@ -467,7 +277,7 @@ The distribution of molecular speeds changes with temperature. At higher tempera
 \begin{itemize}
     \item \textbf{Atomic Mass}: $\sum (\text{mass} \times \text{fraction abundance})$
     \item \textbf{Light}: $c = \lambda \nu$ and $E = h\nu = hc/\lambda$
-    \item \textbf{Rydberg}: $\Delta E = -2.18 \times 10^{-18} \si{\joule} (1/n_f^2 - 1/n_i^2)$
+    \item \textbf{Rydberg}: $\Delta E = -2.18 \times 10^{-18} \si{J} (1/n_f^2 - 1/n_i^2)$
     \item \textbf{Molarity}: $M = n/V$
     \item \textbf{Enthalpy (Formation)}: $\sum \Delta H_f^\circ(\text{prod}) - \sum \Delta H_f^\circ(\text{react})$
     \item \textbf{Enthalpy (Bonds)}: $\sum (\text{broken}) - \sum (\text{formed})$
@@ -476,3 +286,7 @@ The distribution of molecular speeds changes with temperature. At higher tempera
 \end{itemize}
 
 \end{document}
+"""
+
+with open(file_path, "w") as f:
+    f.write(header + rest_of_doc)
