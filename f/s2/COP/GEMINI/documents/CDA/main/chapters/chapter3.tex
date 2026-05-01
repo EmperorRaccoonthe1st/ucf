@@ -1,0 +1,241 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{Combinational Logic}
+
+\section{Logic Gates}
+
+\begin{definition}[Combinational Logic]
+Combinational logic circuits are digital circuits where the output is strictly a function of the present inputs. These circuits do not possess feedback loops or internal memory states. The primary voltage levels in digital systems are represented as Low (0) and High (1).
+\end{definition}
+
+\subsection{Fundamental Gates}
+
+\begin{vocabulary}[NOT (Inverter)]
+A unary operator that flips the logic level of the input.
+\begin{equation}
+Z = X' = \overline{X}
+\end{equation}
+\end{vocabulary}
+
+\begin{vocabulary}[AND]
+A logical product operation. The output is 1 only if all inputs are 1.
+\begin{equation}
+Z = X \cdot Y
+\end{equation}
+\end{vocabulary}
+
+\begin{vocabulary}[OR]
+A logical sum operation. The output is 1 if at least one input is 1.
+\begin{equation}
+Z = X + Y
+\end{equation}
+\end{vocabulary}
+
+\begin{remark}
+The truth tables for these fundamental gates define their behavior across all possible input combinations.
+\end{remark}
+
+\vspace{10pt}
+\begin{center}
+\begin{tabular}{|c|c||c|c|c|}
+\hline
+$X$ & $Y$ & NOT $X$ & $X \cdot Y$ (AND) & $X + Y$ (OR) \\
+\hline
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 \\
+1 & 0 & 0 & 0 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Universal and Advanced Gates}
+
+\begin{vocabulary}[NAND]
+NOT-AND operation. The output is 0 only if all inputs are 1. It is a universal gate.
+\begin{equation}
+Z = (X \cdot Y)' = \overline{X \cdot Y}
+\end{equation}
+\end{vocabulary}
+
+\begin{vocabulary}[NOR]
+NOT-OR operation. The output is 1 only if all inputs are 0. It is also a universal gate.
+\begin{equation}
+Z = (X + Y)' = \overline{X + Y}
+\end{equation}
+\end{vocabulary}
+
+\begin{vocabulary}[XOR (Exclusive-OR)]
+Represents "inequality" or "difference". The output is 1 if the inputs are different.
+\begin{equation}
+Z = X \oplus Y = X'Y + XY'
+\end{equation}
+\end{vocabulary}
+
+\begin{vocabulary}[XNOR (Exclusive-NOR)]
+Represents "equality" or "coincidence". The output is 1 if the inputs are the same.
+\begin{equation}
+Z = \overline{X \oplus Y} = XY + X'Y'
+\end{equation}
+\end{vocabulary}
+
+\section{Boolean Algebra}
+
+\begin{definition}[Boolean Algebra]
+Boolean algebra provides the mathematical foundation for digital logic design, dealing with binary variables and logic operators (AND, OR, NOT).
+\end{definition}
+
+\subsection{Axioms and Theorems}
+
+\begin{theorem}[Boolean Axioms and Theorems]
+The following properties hold for any Boolean variables $X, Y, Z$:
+
+\begin{itemize}
+    \item \textbf{Identity:} $X + 0 = X$ ; $X \cdot 1 = X$
+    \item \textbf{Null (Dominance):} $X + 1 = 1$ ; $X \cdot 0 = 0$
+    \item \textbf{Idempotency:} $X + X = X$ ; $X \cdot X = X$
+    \item \textbf{Involution:} $(X')' = X$
+    \item \textbf{Inverse (Complement):} $X + X' = 1$ ; $X \cdot X' = 0$
+    \item \textbf{Commutative:} $X + Y = Y + X$ ; $X \cdot Y = Y \cdot X$
+    \item \textbf{Associative:} $(X + Y) + Z = X + (Y + Z)$ ; $(X \cdot Y) \cdot Z = X \cdot (Y \cdot Z)$
+    \item \textbf{Distributive:} $X \cdot (Y + Z) = (X \cdot Y) + (X \cdot Z)$ ; $X + (Y \cdot Z) = (X + Y) \cdot (X + Z)$
+    \item \textbf{Uniting Theorem:} $X \cdot Y + X \cdot Y' = X$ ; $(X + Y) \cdot (X + Y') = X$
+    \item \textbf{Absorption:} $X + X \cdot Y = X$ ; $X \cdot (X + Y) = X$
+\end{itemize}
+
+\end{theorem}
+
+\begin{proposition}[DeMorgan's Theorems]
+The complement of a sum is the product of the complements, and the complement of a product is the sum of the complements:
+\begin{equation}
+\overline{X + Y} = \overline{X} \cdot \overline{Y}
+\end{equation}
+\begin{equation}
+\overline{X \cdot Y} = \overline{X} + \overline{Y}
+\end{equation}
+\end{proposition}
+
+\subsection{Proving Equivalence}
+
+Equivalence between Boolean expressions can be established through:
+
+\begin{enumerate}
+    \item \textbf{Perfect Induction:} Constructing a complete truth table to verify that all possible input combinations yield the same output.
+    \item \textbf{Algebraic Manipulation:} Applying Boolean axioms to transform one expression into the other.
+\end{enumerate}
+
+\section{Canonical Forms and Truth Tables}
+
+\begin{remark}
+A truth table is the unique algebraic signature of a Boolean function. A function with $n$ inputs requires a table with $2^n$ rows to represent all possible states.
+\end{remark}
+
+\subsection{Sum of Products (SOP)}
+
+\begin{definition}[Sum of Products / Minterm Expansion]
+Also known as \textbf{Disjunctive Normal Form (DNF)}. A \textbf{minterm} is a product term where every variable in the function appears exactly once (e.g., $m_3 = A'BC$ for a 3-variable function). It represents an input combination for which the function evaluates to 1. SOP is constructed by OR-ing all minterms that correspond to an output of 1.
+\textit{Notation:} $F(A,B,C) = \Sigma m(1, 3, 5, 6, 7)$
+\end{definition}
+
+\subsection{Product of Sums (POS)}
+
+\begin{definition}[Product of Sums / Maxterm Expansion]
+Also known as \textbf{Conjunctive Normal Form (CNF)}. A \textbf{maxterm} is a sum term where every variable appears exactly once. It represents an input combination for which the function evaluates to 0. Maxterms are the logical inverse of minterms. POS is constructed by AND-ing all maxterms that correspond to an output of 0.
+\textit{Notation:} $F(A,B,C) = \Pi M(0, 2, 4)$
+\end{definition}
+
+\subsection{Incompletely Specified Functions}
+
+\begin{vocabulary}[Don't Cares]
+In some digital systems, certain input combinations are guaranteed never to occur (e.g., invalid states in a BCD encoder). These are marked as 'X' or 'd' in truth tables. During minimization, these can be treated as either 0 or 1 to achieve the most efficient hardware realization.
+\end{vocabulary}
+
+\section{Karnaugh Maps (K-Maps) and Minimization}
+
+\begin{definition}[Karnaugh Map]
+A K-Map is a visual tool used to simplify Boolean expressions. It structures the truth table into a grid where cells are arranged in Gray-code order, ensuring that adjacent cells differ by only one variable. This facilitates the application of the Uniting Theorem ($XY + XY' = X$) through visual grouping.
+\end{definition}
+
+\subsection{Terminology}
+
+\begin{vocabulary}[Implicant]
+A group of one or more adjacent 1s (and don't cares) that form a rectangle with side lengths that are powers of 2.
+\end{vocabulary}
+
+\begin{vocabulary}[Prime Implicant (PI)]
+An implicant that cannot be further expanded into a larger group.
+\end{vocabulary}
+
+\begin{vocabulary}[Essential Prime Implicant (EPI)]
+A prime implicant that covers at least one '1' that is not covered by any other prime implicant. EPIs are mandatory components of the minimal expression.
+\end{vocabulary}
+
+\subsection{Minimization Algorithm (MSP)}
+
+\begin{example}[Algorithm for Minimal Sum of Products]
+To derive the simplest two-level logic:
+
+\begin{enumerate}
+    \item Group all 1s (and 'd's if helpful) into the largest possible prime implicants.
+    \item Identify all Essential Prime Implicants and include them in the final sum.
+    \item For any remaining 1s not covered by EPIs, select the minimal set of remaining PIs to complete the coverage.
+\end{enumerate}
+
+\textit{Tip:} To find the minimal POS, perform the same steps by grouping the 0s instead of the 1s.
+
+\end{example}
+
+\section{Standard Combinational Hardware}
+
+\subsection{Adders}
+
+\begin{definition}[Half Adder]
+A circuit that adds two 1-bit inputs (A, B) and produces a Sum and a Carry-Out.
+
+\begin{itemize}
+    \item $Sum = A \oplus B$
+    \item $CarryOut = A \cdot B$
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}[Full Adder]
+A circuit that adds three 1-bit inputs (A, B, and a Carry-In $C_{in}$).
+
+\begin{itemize}
+    \item $Sum = A \oplus B \oplus C_{in}$
+    \item $C_{out} = AB + AC_{in} + BC_{in}$
+\end{itemize}
+
+\end{definition}
+
+\subsection{Decoders}
+
+\begin{definition}[Decoder]
+A functional block with $n$ inputs and $2^n$ outputs. For any input combination, exactly one output is asserted. Decoders can be used to generate all minterms of a function.
+\end{definition}
+
+\subsection{Multiplexers (MUX)}
+
+\begin{definition}[Multiplexer]
+A data selector that directs one of $2^n$ data inputs to a single output based on $n$ selection lines.
+\end{definition}
+
+\subsection{Programmable Logic Arrays (PLA)}
+
+\begin{definition}[PLA]
+A programmable device used to implement SOP logic. It features a programmable AND array to generate product terms, followed by a programmable OR array to sum them.
+\end{definition}
+
+\section{Logic Design Procedure}
+
+\begin{remark}
+The professional design flow for combinational logic is a systematic process:
+
+\begin{enumerate}
+    \item \textbf{Specification:} Define inputs, outputs, and functional requirements.
+    \item \textbf{Truth Table:} Map all input combinations to the desired output behavior.
+    \item \textbf{Logic Minimization:} Use K-Maps to find the Minimal Sum of Products (MSP) or Minimal Product of Sums (MPS).
+    \item \textbf{Implementation:} Draw the gate-level diagram, optimizing for transistor count or propagation delay through gate sharing.
+\end{enumerate}
+
+\end{remark}

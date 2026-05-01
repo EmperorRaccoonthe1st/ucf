@@ -4,10 +4,15 @@
 
 ### Pseudo-Code
 
-1. Take first item as sorted.
-2. Take `i` item and compare with the sorted part of array, heading left <-.
-3. If `i` item is less/greater than `x` card then swap them.
-4. Insert once correct position is found.
+for i:1 -> n
+    key = arr:i
+    j = i--
+
+    while j > -1 & arr:j > key
+        arr:j++ = arr:j
+        j--
+
+    arr:j++ = key
 
 ### Running Time
 
@@ -40,9 +45,13 @@ void insertion_sort(int *array, size_t size) {
 
 ### Pseudo-Code
 
-1. Start at 0
-2. Find min/max & swap with `j`
-3. Increment `j`
+for i -> n
+    min = i
+    for j:i++ -> n
+        if arr:j < arr:min
+            min = j
+
+    swap min & i
 
 ### Running Time
 
@@ -80,10 +89,10 @@ void selection_sort(int *array, size_t size) {
 
 ### Pseudo-Code
 
-1. Look at the first two elements and sort.
-2. Move right and sort pairs.
-3. Repeat `n` times.
-3. Decrement `n` and repeat.
+for i -> n--
+    for j -> n - i--
+        if arr:j > arr:j++
+            swap j & j++
 
 ### Running Time
 
@@ -124,10 +133,14 @@ void bubble_sort(int *array, size_t size) {
 
 ### Pseudo-Code
 
-1. Divide arr into 2.
-2. Keep dividing until many arr's of 1.
-3. Merge arr's next to each other.
-4. When merging place smaller object out of the two.
+    if l < r then
+    
+    m = l + (r-l)/2
+
+    sort(l, m)
+    sort(m++, r)
+
+    merge(l, m, r)
 
 ### Running Time
 
@@ -172,9 +185,12 @@ void merge(int *array, int left, int mid, int right) {
 
 ### Pseudo-Code
 
-1. Pick a pivot.
-2. Place elements smaller to left and larger to the right.
-3. Repeat for each side of the pivot
+if (l < h) then
+
+p = partition(l, h)
+
+sort(l, p--)
+sort(p++, h)
 
 ### Running Time
 
@@ -196,3 +212,31 @@ void quick_sort(int *array, int low, int high) {
 }
 ```
 
+## Partition
+p //from some source random/high/low
+i = l--
+
+for j:l -> h--
+    if arr:j < p
+        i++
+        swap j & i
+
+swap i++ & h
+
+ret i++
+
+
+# Recurrence Relations
+
+1. aT(n/b) + C(n) -> func:0
+2. n/b -> bod:0
+3. Plug bod:0 into func:0 -> bod:1
+4. Plug bod:1 into func:0 -> func:2
+5. Body of func:2 -> bod:2
+6. Plug bod:2 into func:0 -> body:3
+7. Plug bod:3 into func:2 -> func:3
+
+8. Find pattern of func:3 -> func:4
+9. Solve for k; set function to 0 or 1
+10. Plug definition of k back into func:4 -> func:5
+11. Find O() of func:5

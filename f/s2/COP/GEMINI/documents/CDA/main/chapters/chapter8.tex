@@ -1,0 +1,216 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{The Datapath and Control}
+
+This study guide provides a comprehensive summary of the MIPS single-cycle processor datapath and control, focusing on component interactions, control signals, ALU control logic, and the execution data flow for various instruction types.
+
+\section{Single-Cycle Datapath Overview}
+
+The datapath consists of the functional units and connections necessary to execute MIPS instructions.
+
+\begin{definition}[Single-Cycle Implementation]
+A \textbf{single-cycle implementation} is a design where every instruction begins execution on one clock edge and completes execution on the next clock edge. Consequently, the clock cycle time must be long enough to accommodate the slowest instruction, which is typically the Load Word (\texttt{lw}) instruction.
+\end{definition}
+
+\subsection{Datapath Components}
+
+The datapath is divided into state elements and combinational elements.
+
+\subsubsection{State Elements (Sequential Logic)}
+State elements are components that have internal storage and depend on the clock signal.
+
+\begin{vocabulary}[Program Counter (PC)]
+A register that holds the address of the current instruction being executed.
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Instruction Memory]
+Memory that stores the program code. It is addressed by the PC to fetch instructions.
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Register File]
+A collection of 32 32-bit registers. It features two read ports for retrieving operands and one write port for storing results.
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Data Memory]
+Memory used by load and store instructions to read from or write to system memory.
+\end{vocabulary}
+
+\subsubsection{Combinational Elements}
+Combinational elements are components whose outputs depend solely on their current inputs.
+
+\begin{vocabulary}[ALU (Arithmetic Logic Unit)]
+The core component that performs arithmetic (e.g., addition, subtraction) and logical (e.g., AND, OR) operations.
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Adders]
+Functional units used exclusively for addition, such as incrementing the PC ($PC + 4$) or calculating branch target addresses.
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Multiplexers (MUX)]
+Data selectors that choose between multiple input sources based on a specific control signal.
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Sign-Extension Unit]
+A unit that converts a 16-bit immediate value into a 32-bit value by replicating the most significant bit (sign bit).
+\end{vocabulary}
+\vspace{-10pt}
+\begin{vocabulary}[Shift Left 2]
+A component that multiplies a value by 4, used specifically for calculating branch and jump targets in MIPS.
+\end{vocabulary}
+
+\begin{remark}
+Because a single-cycle datapath cannot reuse the same resource during a single instruction's execution, some elements must be duplicated (e.g., separate Instruction and Data Memories, separate ALU and PC adders).
+\end{remark}
+
+\section{Control Signals}
+
+Control signals coordinate the flow of data through the multiplexers and functional units.
+
+\begin{definition}[Main Control Unit]
+The unit responsible for generating control signals based strictly on the 6-bit \textbf{Opcode} field (bits [31:26] of the instruction).
+\end{definition}
+
+\subsection{Signal Definitions and Actions}
+
+The following table defines the primary control signals and their functions when deasserted (0) or asserted (1).
+
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{} l XXX @{}}
+\toprule
+\textbf{Signal} & \textbf{Purpose} & \textbf{Deasserted (0)} & \textbf{Asserted (1)} \\
+\midrule
+\textbf{RegDst} & Destination register selection. & From \texttt{rt} field (20:16). & From \texttt{rd} field (15:11). \\
+\textbf{RegWrite} & Write enable for Register File. & No write occurs. & Register receives write data. \\
+\textbf{ALUSrc} & Second ALU operand selection. & Read data 2. & Sign-extended immediate. \\
+\textbf{MemRead} & Data Memory read enable. & No read occurs. & Memory content at address is output. \\
+\textbf{MemWrite} & Data Memory write enable. & No write occurs. & Memory content at address is replaced. \\
+\textbf{MemtoReg} & Register write data source. & ALU result. & Data Memory output. \\
+\textbf{Branch} & Conditional branch indicator. & PC replaced by $PC + 4$. & If ALU Zero is 1, PC replaced by target. \\
+\textbf{Jump} & Unconditional jump indicator. & Normal PC routing. & PC replaced by jump target. \\
+\bottomrule
+\end{tabularx}
+\caption{MIPS Control Signal Definitions}
+\end{table}
+
+\subsection{Control Signal Values by Instruction}
+
+The Main Control Unit sets these signals based on the opcode of each instruction.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{} l *{9}{>{\centering\arraybackslash}X} @{}}
+\toprule
+\textbf{Instr.} & \textbf{RegDst} & \textbf{ALUSrc} & \textbf{MemtoReg} & \textbf{RegWrite} & \textbf{MemRead} & \textbf{MemWrite} & \textbf{Branch} & \textbf{ALUOp1} & \textbf{ALUOp0} \\
+\midrule
+\textbf{R-type} & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+\textbf{lw} & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 \\
+\textbf{sw} & X & 1 & X & 0 & 0 & 1 & 0 & 0 & 0 \\
+\textbf{beq} & X & 0 & X & 0 & 0 & 0 & 1 & 0 & 1 \\
+\bottomrule
+\end{tabularx}
+\caption{Control Signal Truth Table (X denotes "Don't Care")}
+\end{table}
+
+\section{ALU Control}
+
+The ALU requires a 4-bit control input to determine the specific operation to perform.
+
+\begin{vocabulary}[ALU Control Lines]
+The 4-bit signals that drive the ALU:
+
+\begin{itemize}
+    \item \texttt{0000}: AND
+    \item \texttt{0001}: OR
+    \item \texttt{0010}: Add
+    \item \texttt{0110}: Subtract
+    \item \texttt{0111}: Set-on-less-than (slt)
+    \item \texttt{1100}: NOR
+\end{itemize}
+
+\end{vocabulary}
+
+\subsection{Multilevel Decoding}
+
+MIPS uses multilevel decoding to reduce complexity. The Main Control Unit outputs a 2-bit \textbf{ALUOp} signal, which the ALU Control Unit then combines with the 6-bit \textbf{funct} field to generate the final 4-bit ALU control lines.
+
+\begin{proposition}[ALUOp Definitions]
+
+\begin{itemize}
+    \item \texttt{00}: Memory References (\texttt{lw}/\texttt{sw}) $\rightarrow$ ALU performs \textbf{Add}.
+    \item \texttt{01}: Branches (\texttt{beq}) $\rightarrow$ ALU performs \textbf{Subtract}.
+    \item \texttt{10}: R-type instructions $\rightarrow$ ALU operation determined by \textbf{funct} field.
+\end{itemize}
+
+\end{proposition}
+
+\subsection{ALU Control Logic Table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{c c c l c}
+\toprule
+\textbf{ALUOp} & \textbf{Instr. Type} & \textbf{Funct Field} & \textbf{Action} & \textbf{Control Lines} \\
+\midrule
+\texttt{00} & \texttt{lw} / \texttt{sw} & XXXXXX & Add & \texttt{0010} \\
+\texttt{01} & \texttt{beq} & XXXXXX & Subtract & \texttt{0110} \\
+\texttt{10} & R-type (add) & 100000 & Add & \texttt{0010} \\
+\texttt{10} & R-type (sub) & 100010 & Subtract & \texttt{0110} \\
+\texttt{10} & R-type (and) & 100100 & AND & \texttt{0000} \\
+\texttt{10} & R-type (or) & 100101 & OR & \texttt{0001} \\
+\texttt{10} & R-type (slt) & 101010 & Set-on-less-than & \texttt{0111} \\
+\bottomrule
+\end{tabular}
+\caption{ALU Control Logic Truth Table}
+\end{table}
+
+\section{Data Flow by Instruction Type}
+
+\begin{remark}
+Every instruction execution begins with an \textbf{Instruction Fetch}. The PC is used to read the instruction from Instruction Memory, and an adder calculates $PC + 4$.
+\end{remark}
+
+\subsection{R-Type Instructions (add, sub, and, or, slt)}
+
+\begin{enumerate}
+    \item \textbf{Read:} Bits [25:21] (\texttt{rs}) and [20:16] (\texttt{rt}) are sent to the Register File to read two source registers.
+    \item \textbf{Execute:} The \texttt{ALUSrc} MUX selects read data 2. The ALU performs the operation specified by the ALU Control unit.
+    \item \textbf{Write Back:} The \texttt{RegDst} MUX selects bits [15:11] (\texttt{rd}) as the write register. The \texttt{MemtoReg} MUX selects the ALU result. \texttt{RegWrite} is asserted.
+\end{enumerate}
+
+\subsection{Load Word (lw)}
+
+\begin{enumerate}
+    \item \textbf{Read:} Bits [25:21] (\texttt{rs}) read the base address register. The 16-bit immediate field (bits [15:0]) is sign-extended.
+    \item \textbf{Execute:} The \texttt{ALUSrc} MUX selects the sign-extended immediate. The ALU adds the base register and immediate to calculate the memory address.
+    \item \textbf{Memory Access:} \texttt{MemRead} is asserted. Data Memory reads the value at the address.
+    \item \textbf{Write Back:} The \texttt{RegDst} MUX selects bits [20:16] (\texttt{rt}) as the destination register. \texttt{RegWrite} is asserted.
+\end{enumerate}
+
+\subsection{Store Word (sw)}
+
+\begin{enumerate}
+    \item \textbf{Read:} \texttt{rs} reads the base address register; \texttt{rt} reads the data to be stored. The immediate is sign-extended.
+    \item \textbf{Execute:} The ALU adds the base register and the sign-extended immediate to calculate the address.
+    \item \textbf{Memory Access:} \texttt{MemWrite} is asserted. The value from \texttt{rt} is written into Data Memory.
+\end{enumerate}
+
+\subsection{Branch on Equal (beq)}
+
+\begin{enumerate}
+    \item \textbf{Read:} \texttt{rs} and \texttt{rt} are read. The 16-bit immediate is sign-extended and shifted left by 2 to form the offset.
+    \item \textbf{Target Calculation:} A dedicated adder adds the shifted offset to $PC + 4$.
+    \item \textbf{Comparison:} The ALU subtracts the two register values.
+    \item \textbf{Update PC:} If registers are equal (\texttt{Zero} signal is 1), the Branch Target Address is routed to the PC.
+\end{enumerate}
+
+\subsection{Jump (j)}
+
+\begin{enumerate}
+    \item \textbf{Fetch:} Instruction is fetched and $PC + 4$ is calculated.
+    \item \textbf{Address Calculation:} The 26-bit target address (bits [25:0]) is shifted left by 2.
+    \item \textbf{Update PC:} The 28-bit value is concatenated with the upper 4 bits of $PC + 4$. The \texttt{Jump} signal routes this absolute address to the PC.
+\end{enumerate}
