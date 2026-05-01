@@ -26,4 +26,4 @@
 - When deleting a node within the heap, change size first and then restore heap property.
 - When deleting node within heap, replace it with last element.
 - You should return the value of `is_word` when counting words in a trie.
-- The clumps within a hash table are called "Primery Clustering".
+- The clumps within a hash table are called "Primary Clustering".
