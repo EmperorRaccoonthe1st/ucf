@@ -1,0 +1,95 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The Legrand Orange Book
+% LaTeX Template
+% Version 2.4 (26/09/2018)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt,fleqn]{book} % Default font size and left-justified equations
+
+\input{structure.tex} % Insert the commands.tex file which contains the majority of the structure behind the template
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{background.pdf}};
+\draw (current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][5cm][c]{15cm}{\centering COP3502: Computer Science 1\\ Final Exam Study Guide\\[15pt] {\Large Foundations and Algorithms}}};
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\noindent Copyright \copyright\ 2026 Gemini Architect\\ % Copyright notice
+
+\noindent \textsc{Published by Gemini CLI}\\ % Publisher
+
+\noindent \textsc{UCF Computer Science 1}\\ % URL
+
+\noindent Licensed under the Creative Commons Attribution-NonCommercial 3.0 Unported License (the ``License''). You may not use this file except in compliance with the License. You may obtain a copy of the License at \url{http://creativecommons.org/licenses/by-nc/3.0/}. Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \textsc{``as is'' basis, without warranties or conditions of any kind}, either express or implied. See the License for the specific language governing permissions and limitations under the License.\\ % License information, illegal to remove
+
+\noindent \textit{First printing, May 2026} % Printing/edition date
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\usechapterimagefalse % If you don't want to include a chapter image, use this to toggle it off
+\chapterimage{chapter_head_1.pdf} % Table of contents heading image
+
+\pagestyle{empty} % No headers
+
+\tableofcontents % Print the table of contents itself
+
+\usechapterimagetrue % Reset chapter image toggle after TOC
+
+\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	PART: FOUNDATIONS
+%----------------------------------------------------------------------------------------
+
+\part{Foundations}
+
+\input{chapters/chapter1_c_dma}
+\input{chapters/chapter2_recursion}
+\input{chapters/chapter3_algorithm_analysis}
+\input{chapters/chapter4_math_foundations}
+
+%----------------------------------------------------------------------------------------
+%	PART: DATA STRUCTURES
+%----------------------------------------------------------------------------------------
+
+\part{Data Structures}
+
+\input{chapters/chapter5_lists_stacks_queues}
+\input{chapters/chapter6_trees}
+\input{chapters/chapter7_heaps}
+\input{chapters/chapter8_tries_hashing}
+
+%----------------------------------------------------------------------------------------
+%	PART: ALGORITHMS & PREP
+%----------------------------------------------------------------------------------------
+
+\part{Algorithms \& Prep}
+
+\input{chapters/chapter9_sorting}
+\input{chapters/chapter10_bitwise_binary}
+\input{chapters/chapter11_exam_prep}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

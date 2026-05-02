@@ -1,0 +1,63 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Exam Prep \& Programming Assignments}
+
+\section{High-Frequency Exam Topics}
+
+Success in CS1 and the Foundation Exam requires mastery of both theoretical analysis and applied data structure operations.
+
+\begin{theorem}[Algorithmic Analysis]
+    \begin{itemize}
+        \item \textbf{Recurrence Relations:} Mastery of the Master Theorem and the Iteration Technique is mandatory.
+        \item \textbf{Summations:} Algebraic manipulation of closed-form solutions.
+        \item \textbf{Runtime Analysis:} Determining Big-O for nested loops and recursive calls.
+    \end{itemize}
+\end{theorem}
+
+\begin{definition}[Core Data Structure Operations]
+    \begin{itemize}
+        \item \textbf{Binary Heaps:} Tracing insertions and deletions in an array-based heap.
+        \item \textbf{BST \& Tries:} Implementing recursion for counting or searching.
+        \item \textbf{Linked Lists:} Pointer manipulation for insertion, deletion, and reordering.
+    \end{itemize}
+\end{definition}
+
+\section{Programming Assignment Core Logic}
+
+Each Programming Assignment (PA) introduces a specific algorithmic "trick" that builds on standard data structures.
+
+\begin{example}[PA Hybrid Sorting]
+    In PA4, Merge Sort and Quick Sort were optimized by switching to \textbf{Insertion Sort} once the subarray size fell below a certain threshold (e.g., 30). This leverages the efficiency of $O(n^2)$ algorithms on small datasets.
+\end{example}
+
+\begin{example}[PA Order Statistic Tree]
+    In PA5, a standard BST was augmented with a \texttt{subtree\_size} field at each node. This allowed for $O(h)$ time complexity when searching for the \textbf{$k$-th smallest element}.
+\end{example}
+
+\begin{example}[PA Mode-Dependent Heap]
+    In PA6, a Binary Heap was implemented with a mode-dependent comparator, allowing it to toggle between a \textbf{Min-Heap} (Triage Mode) and a \textbf{Max-Heap} (Adoption Mode) using a bottom-up $O(n)$ \texttt{heapify}.
+\end{example}
+
+\section{Foundation Exam Core Patterns}
+
+\begin{remark}[The Recursive Traversal Pattern]
+    Most tree and graph problems follow a standard template:
+    \begin{enumerate}
+        \item \textbf{Base Case:} Check for \texttt{NULL} or terminal states.
+        \item \textbf{Recursive Step:} Aggregate results from child nodes.
+        \item \textbf{Return:} Pass the result back up the stack.
+    \end{enumerate}
+\end{remark}
+
+\begin{remark}[Pointer Safety]
+    In Linked List and DMA questions, always trace your pointers. Ensure you don't "drop" the rest of the list when reassigning \texttt{next} pointers.
+\end{remark}
+
+\section{Practice Problems}
+
+\begin{exercise}[Recurrence Iteration]
+    Solve the recurrence $T(n) = 2T(n/2) + n$ using the iteration technique. Show each step of the expansion.
+\end{exercise}
+
+\begin{exercise}[Heap Trace]
+    Given an empty min-heap, trace the insertion of the following values: \texttt{[10, 5, 12, 3, 8]}. Draw the resulting array representation.
+\end{exercise}

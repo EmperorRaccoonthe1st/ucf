@@ -1,0 +1,127 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Sorting Algorithms}
+
+\section{Theoretical Core}
+
+Sorting is a fundamental operation in computer science, used to arrange data in a specific order (ascending or descending). Algorithms are generally categorized by their approach: elementary or divide and conquer.
+
+\begin{definition}[Elementary Sorting]
+    Algorithms that typically use nested loops and have $O(n^2)$ average-case time complexity.
+    \begin{itemize}
+        \item \textbf{Selection Sort:} Repeatedly finds the minimum element from the unsorted region and swaps it into the sorted region.
+        \item \textbf{Insertion Sort:} Builds the sorted list one element at a time by inserting each new element into its correct position.
+        \item \textbf{Bubble Sort:} Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Divide and Conquer Sorting]
+    Algorithms that recursively break a problem into sub-problems until they are simple enough to solve directly.
+    \begin{itemize}
+        \item \textbf{Merge Sort:} Recursively divides the array in half, sorts the halves, and merges them.
+        \item \textbf{Quick Sort:} Partitions the array around a pivot element and recursively sorts the resulting partitions.
+    \end{itemize}
+\end{definition}
+
+\section{Time \& Space Complexities}
+
+\begin{theorem}[Sorting Complexity Bounds]
+    The following table summarizes the performance characteristics of standard sorting algorithms.
+\end{theorem}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} & \textbf{Space} & \textbf{Stable?} \\ \hline
+Selection Sort & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & $O(1)$ & No \\ \hline
+Insertion Sort & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $O(1)$ & Yes \\ \hline
+Bubble Sort & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & $O(1)$ & Yes \\ \hline
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $O(n)$ & Yes \\ \hline
+Quick Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $O(\log n)$ & No \\ \hline
+\end{tabular}
+\caption{Comparison of Sorting Algorithms}
+\end{table}
+
+\begin{remark}
+    Merge Sort's $O(n)$ space complexity is due to the auxiliary array needed for the merge step. Quick Sort's space complexity is $O(\log n)$ on average due to the recursion stack.
+\end{remark}
+
+\section{Algorithmic Tracing}
+
+\begin{example}[Merge Sort Trace]
+    Tracing \texttt{[38, 27, 43, 3, 9, 82, 10]}:
+    \begin{enumerate}
+        \item \textbf{Divide:} \texttt{[38, 27, 43, 3]} and \texttt{[9, 82, 10]}
+        \item \textbf{Divide:} \texttt{[38, 27]}, \texttt{[43, 3]}, \texttt{[9, 82]}, \texttt{[10]}
+        \item \textbf{Merge:} \texttt{[27, 38]} and \texttt{[3, 43]} $\rightarrow$ \texttt{[3, 27, 38, 43]}
+        \item \textbf{Merge:} \texttt{[9, 82]} and \texttt{[10]} $\rightarrow$ \texttt{[9, 10, 82]}
+        \item \textbf{Final Merge:} $\rightarrow$ \texttt{[3, 9, 10, 27, 38, 43, 82]}
+    \end{enumerate}
+\end{example}
+
+\begin{example}[Quick Sort Partition Trace]
+    Target Array: \texttt{[8, 3, 1, 7, 0, 10, 2]}, Pivot: \texttt{2}.
+    \begin{itemize}
+        \item \textbf{Initial:} \texttt{i} tracks smaller elements. \texttt{j} scans the array.
+        \item \texttt{j=2 (val 1):} $1 \le 2$, swap with \texttt{arr[0]}. Array: \texttt{[1, 3, 8, 7, 0, 10, 2]}
+        \item \texttt{j=4 (val 0):} $0 \le 2$, swap with \texttt{arr[1]}. Array: \texttt{[1, 0, 8, 7, 3, 10, 2]}
+        \item \textbf{Final Swap:} Swap pivot (\texttt{2}) with \texttt{arr[2]}.
+        \item \textbf{Result:} \texttt{[1, 0, 2, 7, 3, 10, 8]}
+    \end{itemize}
+\end{example}
+
+\section{Code Implementation}
+
+\subsection{Merge Step}
+\begin{lstlisting}[language=C, caption=Merge Step Implementation]
+void merge(int arr[], int low, int mid, int high) {
+    int size = high - low + 1;
+    int *tmp = malloc(size * sizeof(int));
+    int i = low, j = mid, p = 0;
+
+    while (i < mid && j <= high) {
+        if (arr[i] <= arr[j]) tmp[p++] = arr[i++];
+        else tmp[p++] = arr[j++];
+    }
+    while (i < mid) tmp[p++] = arr[i++];
+    while (j <= high) tmp[p++] = arr[j++];
+
+    for (int x = low, pos = 0; x <= high; x++, pos++) {
+        arr[x] = tmp[pos];
+    }
+    free(tmp);
+}
+\end{lstlisting}
+
+\subsection{Quick Sort Partition}
+\begin{lstlisting}[language=C, caption=Quick Sort Partition Step]
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high]; // Last element as pivot
+    int j = low - 1; 
+    
+    for (int i = low; i <= high - 1; i++) {
+        if (arr[i] <= pivot) { // HIGHLIGHT: Core Partition Logic
+            j++;
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    } 
+    // Swap pivot to its final position
+    int temp = arr[j + 1];
+    arr[j + 1] = arr[high];
+    arr[high] = temp;
+    
+    return j + 1;
+}
+\end{lstlisting}
+
+\section{Skills \& Pitfalls}
+
+\begin{remark}
+    A major pitfall in Quick Sort is the $O(n^2)$ worst-case, which occurs on already sorted arrays when the pivot is consistently the maximum or minimum element. Using a random pivot or "median of three" is a critical skill for optimization.
+\end{remark}
+
+\begin{exercise}[Complexity Analysis]
+    Why does Merge Sort require $O(n)$ space while Selection Sort only requires $O(1)$? Explain in terms of auxiliary data structures.
+\end{exercise}

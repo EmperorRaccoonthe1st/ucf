@@ -1,0 +1,155 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Lists, Stacks, and Queues}
+
+\section{Theoretical Core}
+
+\begin{definition}[Linked List]
+A collection of sequential nodes (linear). Each node contains data and a reference (pointer) to the next node. Only the last node does not have a reference to the next node (i.e., \texttt{NULL}). The list maintains a reference to the \texttt{head} (first node).
+\end{definition}
+
+\begin{itemize}
+    \item \textbf{Singly Linked List}: Standard linear collection where each node points to the next.
+    \item \textbf{Doubly Linked List}: Nodes keep track of three fields: \texttt{data}, \texttt{next}, and \texttt{prev}. A node knows both which node comes after it and which node comes before it.
+    \item \textbf{Circular Linked List}: Keeping track of the \texttt{tail} is sufficient, as accessing the \texttt{head} simply requires accessing the \texttt{next} field of the \texttt{tail}.
+\end{itemize}
+
+\begin{remark}
+\textbf{Array vs. Linked Implementation}:
+\begin{itemize}
+    \item \textbf{Arrays} store data contiguously and can be dynamically allocated. However, moving elements around (shifting) for insertion or removal in the middle is an expensive operation. Arrays can also waste memory if allocated with a capacity significantly larger than their logical size.
+    \item \textbf{Linked Lists} dynamically allocate memory per node, providing flexibility. They avoid the overhead of shifting elements during insertions and deletions, but they require sequential traversal to access arbitrary elements.
+\end{itemize}
+\end{remark}
+
+\begin{definition}[Queue]
+An Abstract Data Type (ADT) representing a collection of items following the \textbf{First In, First Out (FIFO)} principle. Implementation requires tracking both the \texttt{front} (first element to be removed) and the \texttt{rear} (last element added).
+\end{definition}
+
+\begin{definition}[Stack]
+An Abstract Data Type (ADT) representing a collection of elements following the \textbf{Last In, First Out (LIFO)} principle. Implementation requires tracking only the \texttt{topmost} element of the stack.
+\end{definition}
+
+\section{Algorithmic Tracing \& Code Implementation}
+
+\subsection{Linked Lists: Traversal \& Generic Deletion}
+
+\begin{lstlisting}[language=C, caption={Linked List Traversal and Deletion}]
+typedef struct SLLNode_s {
+    int data;
+    struct SLLNode_s *next;
+} SLLNode;
+
+typedef struct SLList_s {
+    SLLNode *head;
+} SLList;
+
+// Traversal pattern
+void sll_print_list(SLList *list) {
+    SLLNode *ptr = list->head;
+    while(ptr != NULL) {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    }
+}
+
+// Generic node deletion utilizing a trailing pointer
+SLLNode* remove_element(SLList *list, int target) {
+    SLLNode *ptr = list->head;
+    SLLNode *trail = NULL;
+    
+    while (ptr != NULL && ptr->data != target) {
+        trail = ptr;
+        ptr = ptr->next;
+    }
+    
+    if (ptr == NULL) return NULL; // Target not found
+    
+    if (trail == NULL) {
+        list->head = ptr->next;   // Target is at the head
+    } else {
+        trail->next = ptr->next;  // Target is in the middle or end
+    }
+    
+    ptr->next = NULL;
+    return ptr; // Caller is responsible for free()
+}
+\end{lstlisting}
+
+\subsection{Stacks: Push and Pop}
+
+\begin{lstlisting}[language=C, caption={Stack Implementation (Linked List)}]
+typedef struct Stack_s {
+    SLLNode *top;
+} Stack;
+
+void push(Stack *s, int val) {
+    SLLNode *newNode = malloc(sizeof(SLLNode));
+    newNode->data = val;
+    newNode->next = s->top;
+    s->top = newNode;
+}
+
+int pop(Stack *s) {
+    if (s->top == NULL) return -1; // Stack is empty
+    
+    SLLNode *tmp = s->top;
+    int val = tmp->data;
+    s->top = s->top->next;
+    
+    free(tmp);
+    return val;
+}
+\end{lstlisting}
+
+\subsection{Queues: Enqueue and Dequeue}
+
+\begin{lstlisting}[language=C, caption={Queue Implementation (Linked List)}]
+typedef struct Queue_s {
+    SLLNode *front;
+    SLLNode *rear;
+} Queue;
+
+void enqueue(Queue *q, int val) {
+    SLLNode *newNode = malloc(sizeof(SLLNode));
+    newNode->data = val;
+    newNode->next = NULL;
+    
+    if (q->rear == NULL) {
+        q->front = q->rear = newNode;
+        return;
+    }
+    
+    q->rear->next = newNode;
+    q->rear = newNode;
+}
+
+int dequeue(Queue *q) {
+    if (q->front == NULL) return -1; // Queue is empty
+    
+    SLLNode *tmp = q->front;
+    int val = tmp->data;
+    q->front = q->front->next;
+    
+    if (q->front == NULL) {
+        q->rear = NULL; // Queue became empty
+    }
+    
+    free(tmp);
+    return val;
+}
+\end{lstlisting}
+
+\section{Skills \& Pitfalls}
+
+\begin{remark}
+\textbf{Common Mistakes}:
+\begin{itemize}
+    \item \textbf{Losing the head pointer:} Never modify the \texttt{head} pointer directly when traversing the list. Always use a temporary pointer to iterate through nodes.
+    \item \textbf{Ignoring NULL checks:} Failing to check if \texttt{ptr} \texttt{!= NULL} before accessing \texttt{ptr->}\allowbreak\texttt{next} will lead to segmentation faults.
+    \item \textbf{Memory Leaks:} Forgetting to store the reference to the next node before deallocating the current node.
+\end{itemize}
+\end{remark}
+
+\begin{exercise}[Must-Know Skills]
+Master the use of a \textbf{trailing pointer} (\texttt{trail}) that stays one step behind the main traversal pointer (\texttt{ptr}). This is crucial for generic insertion and deletion operations.
+\end{exercise}

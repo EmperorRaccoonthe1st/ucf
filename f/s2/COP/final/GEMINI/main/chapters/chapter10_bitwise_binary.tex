@@ -1,0 +1,86 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Bitwise Operators \& Binary Numbers}
+
+\section{Theoretical Core}
+
+Understanding the binary representation of data is crucial for low-level optimization and manipulating hardware flags.
+
+\begin{definition}[Binary Systems]
+    \begin{itemize}
+        \item \textbf{Binary (Base-2):} A system using digits 0 and 1.
+        \item \textbf{Two's Complement:} The standard for representing signed integers. To negate a number: invert all bits and add 1.
+        \item \textbf{MSB \& LSB:} The Most Significant Bit (sign bit in signed types) and Least Significant Bit (rightmost bit).
+    \end{itemize}
+\end{definition}
+
+\subsection{Core Bitwise Operators}
+
+\begin{theorem}[Bitwise Operations]
+    The following operators allow for bit-level manipulation:
+    \begin{itemize}
+        \item \texttt{\&} (AND): 1 if both bits are 1.
+        \item \texttt{|} (OR): 1 if either bit is 1.
+        \item \texttt{\^} (XOR): 1 if bits are different.
+        \item \texttt{\textasciitilde} (NOT): Inverts all bits.
+        \item \texttt{<<} (Left Shift): Multiplies by $2^n$.
+        \item \texttt{>>} (Right Shift): Divides by $2^n$.
+    \end{itemize}
+\end{theorem}
+
+\section{Algorithmic Tracing}
+
+\begin{example}[Bit Masking Tricks]
+    Using a \texttt{MASK} (e.g., \texttt{1 << n} for the $n$-th bit):
+    \begin{itemize}
+        \item \textbf{Set Bit On:} \texttt{flags |= MASK;}
+        \item \textbf{Set Bit Off:} \texttt{flags \&= \textasciitilde MASK;}
+        \item \textbf{Toggle Bit:} \texttt{flags \^= MASK;}
+        \item \textbf{Check Bit:} \texttt{if (flags \& MASK)}
+    \end{itemize}
+\end{example}
+
+\begin{example}[Power of Two Check]
+    A clever use of bitwise logic to check if $n$ is a power of 2:
+    \texttt{(n \& (n - 1)) == 0}
+    If $n = 8 (1000_2)$, then $n-1 = 7 (0111_2)$. Their AND is $0$.
+\end{example}
+
+\section{Code Implementation}
+
+\begin{lstlisting}[language=C, caption=Common Bitwise Functions]
+// Check if a number is odd
+int is_odd(int num) {
+    return num & 1;
+}
+
+// Find value of rightmost 1 bit
+int rightmost_one_bit_value(int N) {
+    int m = 1;
+    while ((N & m) == 0) {
+        m = m << 1;
+    }
+    return m;
+}
+
+// Bitmask demo
+void apply_mask() {
+    unsigned int flags = 0;
+    unsigned int MASK = 1 << 3; // 4th bit
+    flags |= MASK;  // Set on
+    flags &= ~MASK; // Set off
+}
+\end{lstlisting}
+
+\section{Skills \& Pitfalls}
+
+\begin{remark}
+    \textbf{Operator Precedence:} Bitwise operators (\texttt{\&}, \texttt{|}, \texttt{\^}) have lower precedence than relational operators (\texttt{==}, \texttt{!=}). Always use parentheses: \texttt{(x \& mask) == mask}.
+\end{remark}
+
+\begin{remark}
+    \textbf{Sign Extension:} Right shifting signed negative integers (\texttt{int}) often results in an arithmetic shift (filling with 1s), while unsigned types (\texttt{unsigned int}) use a logical shift (filling with 0s). Prefer \texttt{unsigned} types for bit manipulation.
+\end{remark}
+
+\begin{exercise}[Base Conversion]
+    Convert $41_{10}$ to binary. Then, convert the binary result to hexadecimal.
+\end{exercise}
