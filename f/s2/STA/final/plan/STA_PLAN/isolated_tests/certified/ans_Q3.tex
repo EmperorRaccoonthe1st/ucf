@@ -1,0 +1,35 @@
+\bindcontent{
+\section*{Question 3}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \begin{formula}{Probability of Event A}
+        $\displaystyle P(A) = \frac{n(A)}{N}$
+    \end{formula}
+    \begin{enumerate}[label=\roman*.]
+        \item $\displaystyle P(L) = \frac{120}{200} = 0.6000$
+        \item $\displaystyle P(T) = \frac{80}{200} = 0.4000$
+        \item $\displaystyle P(L \cap T) = \frac{50}{200} = 0.2500$
+    \end{enumerate}
+
+    \item \begin{formula}{General Addition Rule}
+        $P(L \cup T) = P(L) + P(T) - P(L \cap T)$
+    \end{formula}
+    $\displaystyle P(L \cup T) = 0.6000 + 0.4000 - 0.2500 = 0.7500$
+
+    \item \begin{formula}{Conditional Probability}
+        $\displaystyle P(T | L) = \frac{P(T \cap L)}{P(L)}$
+    \end{formula}
+    $\displaystyle P(T | L) = \frac{0.2500}{0.6000} \approx 0.4167$
+
+    \item \begin{formula}{Independence Check}
+        $P(L) \times P(T) = P(L \cap T)$
+    \end{formula}
+    Calculation: $0.6000 \times 0.4000 = 0.2400$. \\
+    \textbf{No}, the events are not independent because $0.2400 \neq 0.2500$.
+
+    \item \begin{formula}{Multiplication Rule (Without Replacement)}
+        $P(L_1 \cap L_2 \cap L_3) = P(L_1) \times P(L_2 | L_1) \times P(L_3 | L_1 \cap L_2)$
+    \end{formula}
+    $\displaystyle P(L_1 \cap L_2 \cap L_3) = \left(\frac{120}{200}\right) \times \left(\frac{119}{199}\right) \times \left(\frac{118}{198}\right) \approx 0.2138$
+\end{enumerate}
+}

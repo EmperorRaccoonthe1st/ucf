@@ -1,0 +1,91 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{Tries and Hashing}
+
+\section{Theoretical Core}
+
+\subsection{Tries}
+\begin{definition}[Trie]
+A multiway tree (often called a prefix tree) used to store a list of strings. Nodes represent characters (often implied by the index in a child pointer array), and the path from the root to a node defines a prefix or word.
+\end{definition}
+
+\begin{itemize}
+    \item \textbf{Node Structure:} Contains an array of 26 pointers (for 'a'-'z') and a boolean flag \texttt{is\_end\_}\allowbreak\texttt{of\_word}.
+    \item \textbf{Complexity:} $O(k)$ for Insert, Search, and Remove, where $k$ is the length of the string.
+    \item \textbf{Space Trade-off:} Fast prefix searches at the cost of high memory usage due to many NULL pointers.
+\end{itemize}
+
+\subsection{Hash Tables}
+\begin{definition}[Hash Table]
+An implementation of the Table ADT that stores (key, value) pairs and allows for $O(1)$ expected time retrieval using a hash function.
+\end{definition}
+
+\begin{itemize}
+    \item \textbf{Hash Function ($h(k)$):} Maps a key $k$ to a slot index. Common method: $h(k) = k \pmod m$.
+    \item \textbf{Load Factor ($\alpha$):} Ratio of elements $n$ to slots $m$ ($\alpha = n/m$).
+    \item \textbf{Collision Resolution:}
+    \begin{itemize}
+        \item \textbf{Separate Chaining:} Each slot points to a linked list.
+        \item \textbf{Open Addressing:} Probe for the next available slot.
+    \end{itemize}
+\end{itemize}
+
+\section{Algorithmic Tracing}
+
+\begin{example}[Hashing with Probing]
+Table size $m = 7$, $h(k) = k \pmod 7$. Insert keys: $A(6), B(6), C(5), D(5)$.
+
+\textbf{Linear Probing ($h(k, i) = (h'(k) + i) \pmod 7$):}
+\begin{enumerate}
+    \item $A$: $6 \pmod 7 = 6$. Insert at index 6.
+    \item $B$: $6 \pmod 7 = 6$ (Coll). Probe $i=1$: $(6+1) \pmod 7 = 0$. Insert at 0.
+    \item $C$: $5 \pmod 7 = 5$. Insert at index 5.
+    \item $D$: $5 \pmod 7 = 5$ (Coll). Probe $i=1$: $(5+1) \pmod 7 = 6$ (Coll). Probe $i=2, 3$: Insert at 1.
+\end{enumerate}
+
+\textbf{Quadratic Probing ($h(k, i) = (h'(k) + i^2) \pmod 7$):}
+\begin{enumerate}
+    \item $A, B, C$: Same as linear (at indices 6, 0, 5).
+    \item $D$: $5 \pmod 7 = 5$ (Coll). Probe $i=1$: $(5+1^2) \pmod 7 = 6$ (Coll). Probe $i=2$: $(5+2^2) \pmod 7 = 2$. Insert at 2.
+\end{enumerate}
+\end{example}
+
+\section{Code Implementation}
+
+\begin{lstlisting}[language=C]
+#define MAX_CHILD_COUNT 26
+
+typedef struct TrieNode_s {
+    struct TrieNode_s *children[MAX_CHILD_COUNT];
+    int is_end_of_word;
+} TrieNode;
+
+// Simple String Hash Function
+int string_to_int(char *str) {
+    int sum = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        sum += str[i];
+    }
+    return sum;
+}
+
+int hash_function(int key, int m) {
+    return key % m;
+}
+\end{lstlisting}
+
+\section{Skills \& Pitfalls}
+
+\subsection{Must-Know Skills}
+\begin{itemize}
+    \item \textbf{Prefix Matching:} Tries are superior for finding all words starting with "pre" by traversing to the "e" node and exploring the subtree.
+    \item \textbf{Table Sizing:} For Quadratic Probing, ensure the table size $m$ is a prime number and the load factor $\alpha < 0.5$ to guarantee finding an empty slot.
+\end{itemize}
+
+\subsection{Common Mistakes (Pitfalls)}
+\begin{remark}
+\begin{itemize}
+    \item \textbf{Clustering:} Linear probing suffers from \textbf{primary clustering}, where long runs of occupied slots increase search time. Quadratic probing mitigates this but can cause \textbf{secondary clustering}.
+    \item \textbf{Tombstones:} When deleting from an open-addressing table, use a \texttt{DELETED} marker. Clearing the slot to \texttt{NULL} breaks the probe sequence for other keys.
+    \item \textbf{Trie Memory Management:} Always use a post-order traversal to \texttt{free()} trie nodes to avoid massive memory leaks.
+\end{itemize}
+\end{remark}

@@ -1,0 +1,33 @@
+\bindcontent{
+\section*{Question 2}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Five-number summary:}
+    \begin{enumerate}[label=\roman*.]
+        \item Minimum = 45
+        \item $Q_1 = 61.5$
+        \item Median $Q_2 = 72$
+        \item $Q_3 = 87.5$
+        \item Maximum = 120
+    \end{enumerate}
+
+    \item \textbf{Boxplot Construction:}
+    \begin{formula}{Interquartile Range}
+        $IQR = Q_3 - Q_1$
+    \end{formula}
+    \begin{formula}{Outlier Fences}
+        $\text{Lower Fence} = Q_1 - 1.5 \times IQR$ \\
+        $\text{Upper Fence} = Q_3 + 1.5 \times IQR$
+    \end{formula}
+    Substitution and Calculation:
+    \begin{itemize}
+        \item $IQR = 87.5 - 61.5 = 26$
+        \item $\text{Lower Fence} = 61.5 - 1.5(26) = 22.5$
+        \item $\text{Upper Fence} = 87.5 + 1.5(26) = 126.5$
+    \end{itemize}
+    \textbf{Final Answer:} A boxplot drawn with a box extending from $Q_1 = 61.5$ to $Q_3 = 87.5$, with a vertical line inside at the Median = $72$. The left whisker extends to the Minimum = $45$, and the right whisker extends to the Maximum = $120$. Outliers: None.
+
+    \item \textbf{Shape of the Distribution:}
+    \textbf{Right-skewed.} The distance from the median to $Q_3$ ($87.5 - 72 = 15.5$) is greater than the distance from $Q_1$ to the median ($72 - 61.5 = 10.5$), and the right whisker ($120 - 72 = 48$) is longer than the left whisker ($72 - 45 = 27$), indicating a longer tail on the right side.
+\end{enumerate}
+}

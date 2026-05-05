@@ -1,0 +1,138 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{Heaps}
+
+\section{Theoretical Core}
+
+\begin{definition}[Binary Heap]
+A complete binary tree that strictly follows a specific heap property. A complete binary tree has all levels fully populated except possibly the last, where leaves are placed as far left as possible.
+\end{definition}
+
+\begin{definition}[Min-Heap Property]
+The value of an arbitrary node must be less than or equal to the value of its children. The root inherently contains the smallest element in the tree.
+\end{definition}
+
+\begin{definition}[Max-Heap Property]
+The value of an arbitrary node must be greater than or equal to the value of its children. The root contains the largest element.
+\end{definition}
+
+\subsection{Array Representation (0-Indexed)}
+Binary heaps are efficiently implemented using 0-indexed arrays without using linked pointers.
+Given a node at index $i$:
+\begin{itemize}
+    \item \textbf{Index of Left Child:} $2i + 1$
+    \item \textbf{Index of Right Child:} $2i + 2$
+    \item \textbf{Index of Parent:} $(i - 1) / 2$ (integer division)
+\end{itemize}
+\begin{remark}
+Child node indices must be strictly validated as $< size$, while parent indices must be $\ge 0$.
+\end{remark}
+
+\subsection{Key Operations \& Time Complexity}
+\begin{itemize}
+    \item \textbf{Heapify / Percolate Down:} Pushes a node down the tree to its correct position. Time Complexity: $O(\log n)$.
+    \item \textbf{Percolate Up / Heapify Up:} Pushes a node up the tree. Used during insertion. Time Complexity: $O(\log n)$.
+    \item \textbf{Build-Heap (Floyd's Method):} A bottom-up approach to build a heap from an unsorted array. Time Complexity: $O(n)$.
+    \item \textbf{Heap Insertion:} Place at the end and percolate up. Time Complexity: $O(\log n)$.
+\end{itemize}
+
+\section{Mathematical Proof: O(n) Build-Heap}
+
+\begin{theorem}[O(n) Build-Heap Complexity]
+The \texttt{BuildHeap} operation takes $O(n)$ time in the worst case. This is proven by summing the effort of calling \texttt{Heapify} on all internal nodes.
+\end{theorem}
+
+\begin{proof}
+Let $n$ be the number of nodes and $h = \lfloor \lg n \rfloor$ be the height. At level $i$, there are $2^i$ nodes. The effort for \texttt{Heapify} at level $i$ is $h - i$.
+The total effort $S$ is:
+$$S = \sum_{i=0}^{h-1} 2^i (h - i)$$
+
+\textbf{Derivation:}
+Expand $S$:
+$$S = 2^0(h) + 2^1(h-1) + 2^2(h-2) + \dots + 2^{h-1}(1)$$
+Multiply by 2:
+$$2S = 2^1(h) + 2^2(h-1) + 2^3(h-2) + \dots + 2^h(1)$$
+Subtract $S$ from $2S$:
+$$S = -h + 2^1 + 2^2 + \dots + 2^h = -h + \sum_{i=1}^{h} 2^i$$
+Using the geometric series formula $\sum_{i=0}^{h} 2^i = 2^{h+1} - 1$:
+$$S = -h + (2^{h+1} - 1) - 2^0 = 2^{h+1} - h - 2$$
+Since $2^h \approx n$:
+$$S \approx 2n - \lg n - 2$$
+Thus, the operation is $O(n)$.
+\end{proof}
+
+\newpage
+\section{Algorithmic Tracing}
+
+\begin{example}[Floyd's Method Trace]
+Unsorted array: $[4, 1, 9, 2, 16, 5, 10, 14, 3, 7]$, $size = 10$.
+\begin{enumerate}
+    \item \textbf{Last internal node:} Index $(9-1)/2 = 4$ (value 16).
+    \item \textbf{i = 4:} Swap 16 with child 7. Array: $[4, 1, 9, 2, 7, 5, 10, 14, 3, 16]$.
+    \item \textbf{i = 3:} Value 2. Minimum. No swap.
+    \item \textbf{i = 2:} Swap 9 with child 5. Array: $[4, 1, 5, 2, 7, 9, 10, 14, 3, 16]$.
+    \item \textbf{i = 1:} Value 1. Minimum. No swap.
+    \item \textbf{i = 0:} Swap 4 with child 1, then with 2, then with 3.
+    \item \textbf{Final Array:} $[1, 2, 5, 3, 7, 9, 10, 14, 4, 16]$.
+\end{enumerate}
+\end{example}
+
+\section{Code Implementation}
+
+\begin{lstlisting}[language=C]
+// Heapify Down for a Min-Heap
+void percolateDown(int *arr, int size, int idx) {
+    int min = idx;
+    int left_idx = 2 * idx + 1;
+    int right_idx = 2 * idx + 2;
+
+    if (left_idx < size && arr[left_idx] < arr[min]) {
+        min = left_idx;
+    }
+    if (right_idx < size && arr[right_idx] < arr[min]) {
+        min = right_idx;
+    }
+
+    if (min != idx) {
+        int tmp = arr[idx];
+        arr[idx] = arr[min];
+        arr[min] = tmp;
+        percolateDown(arr, size, min);
+    }
+}
+
+// Insertion into a Min-Heap
+void insert(int *arr, int *size, int capacity, int val) {
+    if (*size >= capacity) return; 
+    
+    int idx = *size;
+    arr[idx] = val;
+    (*size)++;
+    
+    int parent_idx = (idx - 1) / 2;
+    while (idx > 0 && arr[idx] < arr[parent_idx]) {
+        int tmp = arr[idx];
+        arr[idx] = arr[parent_idx];
+        arr[parent_idx] = tmp;
+        
+        idx = parent_idx;
+        parent_idx = (idx - 1) / 2;
+    }
+}
+\end{lstlisting}
+
+\section{Skills \& Pitfalls}
+
+\subsection{Must-Know Skills}
+\begin{itemize}
+    \item \textbf{Heapify Selection:} Use \texttt{Percolate Up} for insertions and \texttt{Percolate Down} for deletions and $O(n)$ build-heap.
+    \item \textbf{Array Mapping:} Fluidly convert between tree visualization and array indices.
+\end{itemize}
+
+\subsection{Common Mistakes (Pitfalls)}
+\begin{remark}
+\begin{itemize}
+    \item \textbf{Index Math:} Using $i/2$ instead of $(i-1)/2$ in 0-indexed heaps leads to incorrect parent pointers.
+    \item \textbf{Bounds Checking:} Always verify $2i+1 < size$ and $2i+2 < size$ before accessing children.
+    \item \textbf{Memory Management:} Ensure the array has sufficient capacity before performing insertions to avoid buffer overflows.
+\end{itemize}
+\end{remark}

@@ -1,0 +1,40 @@
+\bindcontent{
+\section*{Question 5}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \begin{formula}{Sampling Distribution Mean and Standard Error}
+        $\displaystyle \mu_{\bar{x}} = \mu$ \\
+        $\displaystyle \sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
+    \end{formula}
+    $\mu_{\bar{x}} = 180$ \\[0.5em]
+    $\displaystyle \sigma_{\bar{x}} = \frac{20}{\sqrt{64}} = 2.5$
+
+    \item \begin{formula}{Z-score for Sample Mean}
+        $\displaystyle Z = \frac{\bar{x} - \mu_{\bar{x}}}{\sigma_{\bar{x}}}$
+    \end{formula}
+    $\displaystyle Z_1 = \frac{175 - 180}{2.5} = -2.00$ \\[0.5em]
+    $\displaystyle Z_2 = \frac{185 - 180}{2.5} = 2.00$ \\[0.5em]
+    $P(-2.00 < Z < 2.00) = 0.9772 - 0.0228 = 0.9544$
+
+    \item \textbf{Normal Approximation Check:}
+    \begin{formula}{Success-Failure Condition}
+        $n \times p \ge 10 \text{ and } n \times (1-p) \ge 10$
+    \end{formula}
+    $100 \times 0.30 = 30 \ge 10$ \\[0.5em]
+    $100 \times 0.70 = 70 \ge 10$ \\[0.5em]
+    \textbf{Yes}, the condition is satisfied.
+
+    \item \begin{formula}{Sampling Distribution for Proportion}
+        $\displaystyle \mu_{\hat{p}} = p$ \\
+        $\displaystyle \sigma_{\hat{p}} = \sqrt{\frac{p(1-p)}{n}}$
+    \end{formula}
+    $\mu_{\hat{p}} = 0.3000$ \\[0.5em]
+    $\displaystyle \sigma_{\hat{p}} = \sqrt{\frac{0.30(0.70)}{100}} \approx 0.0458$
+
+    \item \begin{formula}{Z-score for Sample Proportion}
+        $\displaystyle Z = \frac{\hat{p} - \mu_{\hat{p}}}{\sigma_{\hat{p}}}$
+    \end{formula}
+    $\displaystyle Z = \frac{0.35 - 0.30}{0.0458257} \approx 1.09$ \\[0.5em]
+    $P(Z > 1.09) = 1 - 0.8621 = 0.1379$
+\end{enumerate}
+}

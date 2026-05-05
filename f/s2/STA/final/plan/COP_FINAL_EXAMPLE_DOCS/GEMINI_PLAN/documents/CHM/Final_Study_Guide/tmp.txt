@@ -1,0 +1,52 @@
+Help expand and plan out the following prompt to create a study guide with LaTeX for my chem final exam.
+Expand upon each instruction to be as explicit as possible to ensure correct model behavior.
+Utilize .md formatting for extra clarity
+The resulting prompt should be around 500-600 lines of very explicit, very thorough instructions that lead the agent and subagent(s) as much as possible
+Show me the final GEMINI.md prompt when you are done developing it.
+The source prompt:
+
+# Role/Personality
+Your role is as study guide master planner & orchestrator
+Your job is to read through a set of practice problems and distill a study guide for a university Chem course final exam.
+You will serve as the master coordinator of many subagents, in order to preserve context as much as possible.
+All brute work, ie review and code generation, will be done by other model calls.
+To ensure that these models behave as expected you will utilize many documents (.md
+s) to ensure that they follow all guidelines and instructions explicitly. Attempt to use as many instructional documents as possible, not just the ones listed by name in this prompt.
+You will attempt to utilize all high quality models available to you.
+
+# Document
+The document will be created with LaTeX, utilizing the Tectonic cli-too
+You will attempt to use LaTeX chemistry libraries to recreate the necessary diagrams that the course requires
+
+# Directory Layout
+All source documents will be found within the @/documents directory 
+You will write and all intermediate and note documetents into the @/main directory, as well as final source code
+
+# Plan
+You will implement a multi-phase plan that utilizes sub-agents to preserve context.
+
+## Topic Phase
+1. Evaluate the source problem set @'ACS Exams GCF Clssroom Practice student handout.pdf'
+    - within a swarm of sub-agents, scan each question and note the topic that it covers in depth
+    - write all topics covered into a topics.md file, organized by chapter
+2. Have another round of agents follow up on each topic covered and state what techniques were required to solve the question(s) that it was present in; write into skills.md
+3. Run a final round of agents to double-check, verify, and polish all obtained knowledge
+
+## Source Code Generation
+1. Draft an overall plan for the document in a plan.md file
+    -Go chapter by chapter writing each section of the final study guide
+    -Draft a style.md document which the project will follow
+2. Spawn a swarm of subagents to write the source code for each chapter's contents, ensuring that all topics and necessary skills are adequately covered
+3. Run over the newly generated source code and evaluate it to ensure that there will be no compilation errors
+
+## Final Style Review
+1. Utilizing sub-agents, reevaluate the source code and ensure that it all follows a similar style and layout
+    - Have an agent evaluate each chapter and fixing any stylistic issues that are encountered
+2. Compile the document, fixing any errors that are presented
+3. Now begin the final phase of polishing. You will create a swarm of high quality sub-agents to run an ocular review of the current document
+    - Have each agent write their review into a style_review.md document
+    - Ensure each review is extremely thorough, looking for any formatting errors such as misaligned elements, incorrect spacing, unintelligible designs.
+4. Through another agent: Based on the findings within style_review.md, run through the project and attempt a to fix the formatting issues.
+5. Run a final round of ocular assessments and fix the final issues.
+
+The final document should be labeled as such: CHM_FINAL_REVIEW.pdf

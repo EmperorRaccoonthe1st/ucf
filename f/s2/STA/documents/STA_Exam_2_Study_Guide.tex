@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{sectsty}
+\usepackage{booktabs}
+\usepackage{titlesec}
+
+% Style adjustments to match the notes
+\sectionfont{\color{blue!70!black}}
+\subsectionfont{\color{blue!60!black}}
+\titleformat{\section}{\large\bfseries\color{blue!70!black}}{}{0em}{\uppercase}
+\titleformat{\subsection}{\normalsize\bfseries\color{blue!60!black}}{}{0em}{}
+
+\title{STA2023 - Statistical Methods I\\ \Large Comprehensive Study Guide: Chapters 4--7}
+\author{Dr. Emil Agbemade (Content Summary)}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Chapter 4: Probability}
+\subsection{Basic Rules and Definitions}
+\begin{itemize}
+    \item \textbf{Random Process:} A situation where the outcome cannot be predicted with certainty for a single trial, but a long-term pattern exists.
+    \item \textbf{Sample Space ($S$):} The collection of all possible outcomes.
+    \item \textbf{Event ($E$):} A subset of the sample space.
+    \item \textbf{Basic Rules:} 
+        \begin{itemize}
+            \item $0 \leq P(E) \leq 1$
+            \item The sum of probabilities for all outcomes in $S$ must equal 1.
+        \end{itemize}
+    \item \textbf{Unusual Event:} Typically an event with a probability less than 0.05 (or 5\%).
+\end{itemize}
+
+\subsection{Probability Rules}
+\begin{itemize}
+    \item \textbf{Addition Rule (Disjoint Events):} If $E$ and $F$ cannot occur at the same time:
+    \[ P(E \text{ or } F) = P(E) + P(F) \]
+    \item \textbf{General Addition Rule:} For any two events:
+    \[ P(E \text{ or } F) = P(E) + P(F) - P(E \text{ and } F) \]
+    \item \textbf{Complement Rule:} $P(E^c) = 1 - P(E)$.
+    \item \textbf{Multiplication Rule (Independent Events):} If the occurrence of $E$ does not affect $F$:
+    \[ P(E \text{ and } F) = P(E) \times P(F) \]
+    \item \textbf{Conditional Probability:} The probability of $F$ given $E$ has occurred:
+    \[ P(F|E) = \frac{P(E \text{ and } F)}{P(E)} \]
+    \item \textbf{Independence Test:} $E$ and $F$ are independent if $P(F|E) = P(F)$ or $P(E \text{ and } F) = P(E)P(F)$.
+\end{itemize}
+
+\subsection{Counting Techniques}
+\begin{itemize}
+    \item \textbf{Factorial:} $n! = n(n-1)(n-2)\dots(1)$. Note: $0! = 1$.
+    \item \textbf{Permutations (Order Matters):} Selecting $r$ objects from $n$ where position/rank is important.
+    \[ _nP_r = \frac{n!}{(n-r)!} \]
+    \item \textbf{Combinations (Order Doesn't Matter):} Selecting $r$ objects from $n$ where the group composition is all that matters.
+    \[ _nC_r = \frac{n!}{r!(n-r)!} \]
+\end{itemize}
+
+\section{Chapter 5: Random Variables}
+\subsection{Discrete vs. Continuous}
+\begin{itemize}
+    \item \textbf{Discrete:} Countable outcomes (e.g., number of students, number of flat tires).
+    \item \textbf{Continuous:} Measured outcomes, usually on an interval (e.g., weight, time, height).
+\end{itemize}
+
+\subsection{Discrete Probability Distributions}
+\begin{itemize}
+    \item \textbf{Mean (Expected Value):} $\mu_X = E(X) = \sum [x \cdot P(x)]$
+    \item \textbf{Standard Deviation:} $\sigma_X = \sqrt{\sum [(x - \mu_X)^2 \cdot P(x)]}$
+\end{itemize}
+
+\subsection{Binomial Probability Distribution}
+\textbf{Requirements:} Fixed number of trials ($n$), independent trials, two mutually exclusive outcomes (Success/Failure), and constant probability of success ($p$).
+\begin{itemize}
+    \item \textbf{Mean:} $\mu = np$
+    \item \textbf{Standard Deviation:} $\sigma = \sqrt{np(1-p)}$
+\end{itemize}
+
+\section{Chapter 6: The Normal Distribution}
+\subsection{Properties of the Normal Curve}
+\begin{itemize}
+    \item Bell-shaped, symmetric about the mean $\mu$.
+    \item Total area under the curve = 1.
+    \item \textbf{Empirical Rule:} 68\% within $1\sigma$, 95\% within $2\sigma$, 99.7\% within $3\sigma$.
+\end{itemize}
+
+\subsection{Z-Scores and Standardizing}
+The Z-score represents the number of standard deviations an observation $x$ is from the mean.
+\[ z = \frac{x - \mu}{\sigma} \]
+\begin{itemize}
+    \item \textbf{Standard Normal Distribution:} $\mu = 0, \sigma = 1$.
+    \item \textbf{Finding $x$ from Area:} $x = \mu + z\sigma$.
+\end{itemize}
+
+\subsection{Assessing Normality}
+\begin{itemize}
+    \item \textbf{Histogram:} Should be roughly bell-shaped and symmetric.
+    \item \textbf{Normal Probability Plot:} Points should fall roughly along a straight line.
+\end{itemize}
+
+\section{Chapter 7: Sampling Distributions}
+\subsection{Sample Mean ($\bar{x}$)}
+\begin{itemize}
+    \item \textbf{Center:} $\mu_{\bar{x}} = \mu$
+    \item \textbf{Spread (Standard Error):} $\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
+    \item \textbf{Shape:} 
+        \begin{enumerate}
+            \item If the population is Normal, $\bar{x}$ is Normal for any $n$.
+            \item \textbf{Central Limit Theorem (CLT):} If the population is NOT Normal, $\bar{x}$ is approximately Normal if $n \geq 30$.
+        \end{enumerate}
+\end{itemize}
+
+\subsection{Sample Proportion ($\hat{p}$)}
+\begin{itemize}
+    \item \textbf{Calculation:} $\hat{p} = \frac{x}{n}$
+    \item \textbf{Center:} $\mu_{\hat{p}} = p$
+    \item \textbf{Spread:} $\sigma_{\hat{p}} = \sqrt{\frac{p(1-p)}{n}}$
+    \item \textbf{Normality Requirement:} $np(1-p) \geq 10$ and $n \leq 0.05N$.
+\end{itemize}
+
+\section{Practice Exam Problem Types}
+\begin{enumerate}
+    \item \textbf{Coin Tossing:} Finding sample space (e.g., $2^3 = 8$ outcomes for 3 flips) and calculating $P(\text{exactly 2 heads})$.
+    \item \textbf{Defective Items:} Using multiplication rule without replacement (e.g., selecting 2 monitors from a batch).
+    \item \textbf{Contingency Tables:} Calculating $P(A|B)$ and checking independence by comparing $P(A|B)$ to $P(A)$.
+    \item \textbf{Rank vs. Committee:} Identifying when to use Permutations (President, VP, Sec) vs. Combinations (Committee of 3).
+    \item \textbf{SAT/Weight Problems:} Converting raw scores to Z-scores to find percentiles or areas "between" two values.
+\end{enumerate}
+
+\end{document}

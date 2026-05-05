@@ -1,0 +1,103 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Trees}
+
+\section{Binary Search Trees (BST)}
+
+\begin{definition}[Binary Search Tree]
+A hierarchical, node-based structure where for any given node $y$:
+\begin{itemize}
+    \item All nodes in its left subtree have values less than or equal to $y.data$.
+    \item All nodes in its right subtree have values strictly greater than $y.data$.
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+\textbf{Deletion Scenarios}:
+\begin{enumerate}
+    \item \textbf{No Children (Leaf)}: Remove the node and set the parent's pointer to \texttt{NULL}.
+    \item \textbf{One Child}: ``Promote'' the target's single child to take its place.
+    \item \textbf{Two Children}: Find the \textbf{successor} (min in right subtree) or \textbf{predecessor} (max in left subtree). Overwrite target data and recursively delete the successor/predecessor.
+\end{enumerate}
+\end{remark}
+
+\begin{lstlisting}[language=C, caption={Recursive BST Insertion}]
+BSTNode* insertRec(BSTNode* root, int value) {
+    if (root == NULL) {
+        BSTNode* newNode = (BSTNode*)malloc(sizeof(BSTNode));
+        newNode->data = value;
+        newNode->left = NULL;
+        newNode->right = NULL;
+        return newNode;
+    }
+    
+    if (value < root->data) {
+        root->left = insertRec(root->left, value);
+    } else if (value > root->data) {
+        root->right = insertRec(root->right, value);
+    }
+    
+    return root;
+}
+\end{lstlisting}
+
+\section{AVL Trees}
+
+\begin{definition}[AVL Tree]
+A self-balancing BST that ensures the tree's height remains $O(\log n)$. It uses a \textbf{Balance Factor (BF)}: $Height_{Left} - Height_{Right}$. Valid BFs are -1, 0, and +1.
+\end{definition}
+
+\begin{definition}[AVL Rotation Cases]
+When a node's BF reaches $\pm 2$, rotations are applied based on the configuration:
+\begin{itemize}
+    \item \textbf{LL (Left-Left)}: Pivot BF = +2, Left Child BF = +1 (or 0). Fix: \textbf{Single Right Rotation}.
+    \item \textbf{RR (Right-Right)}: Pivot BF = -2, Right Child BF = -1 (or 0). Fix: \textbf{Single Left Rotation}.
+    \item \textbf{LR (Left-Right)}: Pivot BF = +2, Left Child BF = -1. Fix: \textbf{Left Rotation at child}, then \textbf{Right Rotation at pivot}.
+    \item \textbf{RL (Right-Left)}: Pivot BF = -2, Right Child BF = +1. Fix: \textbf{Right Rotation at child}, then \textbf{Left Rotation at pivot}.
+\end{itemize}
+\end{definition}
+
+\begin{example}[RL Double Rotation Trace]
+Inserting \textbf{10, 30, 20}:
+\begin{enumerate}
+    \item \textbf{10} is root.
+    \item \textbf{30} added as right child of 10.
+    \item \textbf{20} added as left child of 30.
+    \item Pivot 10 has BF = -2. Right child 30 has BF = +1. Configuration is \textbf{RL}.
+    \item \textbf{Step 1}: Right Rotate at 30. 20 moves up, 30 becomes its right child.
+    \item \textbf{Step 2}: Left Rotate at 10. 20 becomes root, 10 is left child, 30 is right child.
+\end{enumerate}
+\end{example}
+
+\begin{lstlisting}[language=C, caption={AVL Single Rotations}]
+// Single Right Rotation (Fixes LL)
+AVLNode* rightRotate(AVLNode* y) {
+    AVLNode* x = y->left;
+    AVLNode* T2 = x->right;
+    x->right = y;
+    y->left = T2;
+    y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+    x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+    return x;
+}
+
+// Single Left Rotation (Fixes RR)
+AVLNode* leftRotate(AVLNode* x) {
+    AVLNode* y = x->right;
+    AVLNode* T2 = y->left;
+    y->left = x;
+    x->right = T2;
+    x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+    y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+    return y;
+}
+\end{lstlisting}
+
+\section{Skills \& Pitfalls}
+
+\begin{remark}
+\textbf{Height Updates}: After every modification (insertion/deletion) and rotation, heights must be updated bottom-up. Failing to do so breaks the balance factor calculations.
+\end{remark}
+
+\begin{exercise}[Deletion Cascades]
+While an insertion causes at most one imbalance that needs fixing, a \textbf{deletion} can cause cascading imbalances all the way up the tree. You must check every ancestor after a deletion.
+\end{exercise}

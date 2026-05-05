@@ -1,0 +1,38 @@
+\bindcontent{
+\section*{Solution to Question 2}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Five-Number Summary}
+    Data set: $40, 42, 45, 48, 50, 52, 55, 58, 62, 70, 85, 110, 145$ ($n = 13$).
+    \begin{enumerate}[label=\roman*.]
+        \item \textbf{Minimum:} $40$
+        \item \textbf{First quartile, $Q_1$:} Median of the lower half ($40, 42, 45, 48, 50, 52$).
+        $Q_1 = \displaystyle\frac{45 + 48}{2} = 46.5$
+        \item \textbf{Median, $Q_2$:} The $7^{th}$ item. $55$
+        \item \textbf{Third quartile, $Q_3$:} Median of the upper half ($58, 62, 70, 85, 110, 145$).
+        $Q_3 = \displaystyle\frac{70 + 85}{2} = 77.5$
+        \item \textbf{Maximum:} $145$
+    \end{enumerate}
+
+    \item \textbf{Boxplot Construction}
+    \begin{formula}{Outlier Check}
+        $IQR = Q_3 - Q_1 = 77.5 - 46.5 = 31$ \\
+        $1.5 \times IQR = 1.5 \times 31 = 46.5$ \\
+        $\text{Upper Boundary} = Q_3 + 46.5 = 77.5 + 46.5 = 124$ \\
+        $\text{Lower Boundary} = Q_1 - 46.5 = 46.5 - 46.5 = 0$
+    \end{formula}
+    Since $145 > 124$, \textbf{$145$ is an outlier}.
+    \begin{itemize}
+        \item Box from $46.5$ to $77.5$ with a line at $55$.
+        \item Left whisker extends to $40$.
+        \item Right whisker extends to $110$ (the largest value $\le 124$).
+        \item An asterisk (*) at $145$ represents the outlier.
+    \end{itemize}
+
+    \item \textbf{Distribution Shape}
+    \begin{itemize}
+        \item \textbf{Answer:} \textbf{Right-Skewed}.
+        \item \textbf{Justification:} The median ($55$) is closer to $Q_1$ ($46.5$) than to $Q_3$ ($77.5$), and there is a high-value outlier ($145$) on the right side, pulling the mean higher than the median.
+    \end{itemize}
+\end{enumerate}
+}

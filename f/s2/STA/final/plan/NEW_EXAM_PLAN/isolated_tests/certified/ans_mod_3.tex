@@ -1,0 +1,38 @@
+\bindcontent{
+\section*{Solution to Question 3}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Basic Probabilities}
+    Given: Total $N = 250$, $n(N) = 150$, $n(D) = 100$, $n(N \cap D) = 60$.
+    \begin{enumerate}[label=\roman*.]
+        \item $P(N) = \displaystyle\frac{150}{250} = 0.6000$
+        \item $P(D) = \displaystyle\frac{100}{250} = 0.4000$
+        \item $P(N \cap D) = \displaystyle\frac{60}{250} = 0.2400$
+    \end{enumerate}
+
+    \item \textbf{Probability of At Least One}
+    \begin{formula}{Addition Rule}
+        $P(N \cup D) = P(N) + P(D) - P(N \cap D)$ \\
+        $P(N \cup D) = 0.6000 + 0.4000 - 0.2400 = 0.7600$
+    \end{formula}
+
+    \item \textbf{Conditional Probability}
+    \begin{formula}{Conditional Probability Formula}
+        $P(D|N) = \displaystyle\frac{P(N \cap D)}{P(N)}$ \\
+        $P(D|N) = \displaystyle\frac{0.2400}{0.6000} = 0.4000$
+    \end{formula}
+
+    \item \textbf{Independence}
+    \begin{itemize}
+        \item \textbf{Check:} Does $P(D|N) = P(D)$?
+        \item \textbf{Comparison:} $0.4000 = 0.4000$.
+        \item \textbf{Answer:} \textbf{Yes, the events are independent}. Because the occurrence of $N$ does not change the probability of $D$ occurring.
+    \end{itemize}
+
+    \item \textbf{Multiplication Rule (Without Replacement)}
+    \begin{formula}{General Multiplication Rule}
+        $P(N_1 \cap N_2 \cap N_3) = \displaystyle\frac{150}{250} \times \frac{149}{249} \times \frac{148}{248}$ \\
+        $P(N_1 \cap N_2 \cap N_3) \approx 0.6 \times 0.5984 \times 0.5968 \approx 0.2143$
+    \end{formula}
+\end{enumerate}
+}

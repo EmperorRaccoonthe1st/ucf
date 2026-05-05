@@ -1,0 +1,67 @@
+% --- STA 2023 Unified Style Guide ---
+% This file contains the preamble and global style settings for the 
+% Answer Key and Study Guide.
+
+% Packages for Math and Formatting
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{xcolor}
+
+% Color Definitions
+\definecolor{STAblue}{RGB}{0, 51, 102} % UCF Blue alternative
+\definecolor{STAgray}{RGB}{240, 240, 240}
+
+% Global List Settings (enumitem)
+\setlist{itemsep=0.5em, topsep=0.5em, parsep=0.25em}
+
+% Page Header/Footer (fancyhdr)
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{STA 2023: Statistical Methods I}
+\lhead{Final Exam Preparation}
+\cfoot{\thepage}
+
+% Custom Environments
+% Formula Box (Unbreakable to keep formulas with their context)
+\newtcolorbox{formula}[1]{
+    colback=STAblue!5!white,
+    colframe=STAblue,
+    fonttitle=\bfseries,
+    title=#1,
+    unbreakable,
+    sharp corners,
+    boxrule=1pt,
+    before upper=\raggedright
+}
+
+% Definition Box
+\newtcolorbox{concept}[1]{
+    colback=STAgray,
+    colframe=black!70,
+    fonttitle=\bfseries,
+    title=#1,
+    unbreakable,
+    sharp corners,
+    boxrule=0.5pt,
+    before upper=\raggedright
+}
+
+% Section Styling
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\sffamily\color{STAblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily}{\thesubsection}{1em}{}
+
+% Binding Macro (to prevent splits)
+\newcommand{\bindcontent}[1]{%
+    \needspace{8\baselineskip}%
+    \noindent\begin{minipage}{\textwidth}%
+        \raggedright
+        #1%
+    \end{minipage}%
+}

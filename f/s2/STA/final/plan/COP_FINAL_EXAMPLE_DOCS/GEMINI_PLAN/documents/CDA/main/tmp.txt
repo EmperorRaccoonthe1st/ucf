@@ -1,0 +1,13 @@
+# Prompt
+I want you to switch roles from study guide designer to reviewer/graphic designer.
+You will now fill the role of a reviewer has been given this study guide and must fix numerous graphical/layout mistakes based on a .pdf template.
+
+You are to meticulously inspect the layout of each page within the document and identify all graphical errors present.
+
+# Errors
+The document is mostly complete in content, but majorly malformed in design and layout.
+The header images are not sized correctly and are obstructing text in most sections.
+Many elements are improperly centered, with a noticeable offset.
+There are sections where bullet points are not placed on a new line and definitions are placed too closely to their terms.
+
+

@@ -1,0 +1,43 @@
+\bindcontent{
+\section*{Solution to Question 4}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Probability Distribution of $X$}
+    Given $52$ cards: Hearts ($13$), Aces not Heart ($3$), Others ($52 - 13 - 3 = 36$).
+    \begin{itemize}
+        \item $P(X = 5) = \displaystyle\frac{13}{52} = 0.2500$
+        \item $P(X = 10) = \displaystyle\frac{3}{52} \approx 0.0577$
+        \item $P(X = -4) = \displaystyle\frac{36}{52} \approx 0.6923$
+    \end{itemize}
+
+    \item \textbf{Expected Value $E(X)$}
+    \begin{formula}{Expected Value Formula}
+        $E(X) = \sum x \cdot P(x)$ \\
+        $E(X) = 5(0.25) + 10(0.0577) - 4(0.6923)$ \\
+        $E(X) = 1.25 + 0.577 - 2.7692 = -0.9422$
+    \end{formula}
+
+    \item \textbf{Standard Deviation of $X$}
+    \begin{formula}{Variance and SD}
+        $E(X^2) = 5^2(0.25) + 10^2(0.0577) + (-4)^2(0.6923) = 23.0968$ \\
+        $\sigma^2 = E(X^2) - [E(X)]^2 = 23.0968 - (-0.9422)^2 = 22.2091$ \\
+        $\sigma = \sqrt{22.2091} = 4.7127$
+    \end{formula}
+
+    \item \textbf{Binomial Probability $P(Y \ge 3)$}
+    Given: $n = 12, p = 0.25, q = 0.75$.
+    \begin{formula}{Complement Rule}
+        $P(Y \ge 3) = 1 - [P(0) + P(1) + P(2)]$ \\
+        $P(0) = (0.75)^{12} = 0.0317$ \\
+        $P(1) = 12 \times (0.25)^1 \times (0.75)^{11} = 0.1267$ \\
+        $P(2) = \binom{12}{2} \times (0.25)^2 \times (0.75)^{10} = 0.2323$ \\
+        $P(Y \ge 3) = 1 - (0.0317 + 0.1267 + 0.2323) = 0.6093$
+    \end{formula}
+
+    \item \textbf{Mean and SD of $Y$}
+    \begin{formula}{Binomial Mean and SD}
+        $E(Y) = np = 12 \times 0.25 = 3.0$ \\
+        $\sigma_Y = \sqrt{npq} = \sqrt{12 \times 0.25 \times 0.75} = 1.5$
+    \end{formula}
+\end{enumerate}
+}

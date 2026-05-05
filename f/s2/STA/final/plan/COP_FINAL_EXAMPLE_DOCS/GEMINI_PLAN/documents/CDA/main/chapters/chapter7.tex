@@ -1,0 +1,166 @@
+\chapterimage{chapter_head_1.pdf}
+\chapter{Assembly Programming}
+
+\section{Introduction to MIPS Assembly}
+
+When a higher-level programming language (like C) is compiled, it is first converted into an assembly language, and then processed into machine code (binary) capable of running on a processor. The ``instruction set architecture'' (ISA) represents the processor's capability to run a particular set of commands. MIPS is a classic RISC (Reduced Instruction Set Computer) ISA. 
+
+\begin{vocabulary}[MIPS Instructions]\index{MIPS Instructions}
+Individual commands that the MIPS processor can understand, categorized mainly into R-Type (Register), I-Type (Immediate), and J-Type (Jump).
+\end{vocabulary}
+
+\section{Conditionals and Branching}\index{Conditionals}\index{Branching}
+
+Conditionals allow programs to execute different code paths based on dynamic evaluations. In MIPS, this is achieved through branch and jump instructions.
+
+\begin{definition}[Branch Instructions]\index{Branch Instructions}
+
+\begin{itemize}
+    \item \texttt{beq \$s1, \$s2, L} (Branch if equal): If \texttt{\$s1 == \$s2}, jump to label \texttt{L}.
+    \item \texttt{bne \$s1, \$s2, L} (Branch if not equal): If \texttt{\$s1 != \$s2}, jump to label \texttt{L}.
+\end{itemize}
+
+Branches are \textbf{I-Type instructions}. The offset (16 bits) is used to calculate the ``branch target address''.
+\end{definition}
+
+\begin{definition}[Jump Instructions]\index{Jump Instructions}
+
+\begin{itemize}
+    \item \texttt{j L} (Jump): Unconditionally jump to label \texttt{L}.
+\end{itemize}
+
+Jumps are \textbf{J-Type instructions}. The 26-bit address is a ``pseudo-direct address''. It is shifted left by 2 (multiplied by 4) and concatenated with the top 4 bits of the current Program Counter (PC) to calculate the next instruction address.
+\end{definition}
+
+\begin{remark}[spimcore Implementation Context]
+In the \texttt{spimcore} project (\texttt{project.c}), the datapath for conditionals is explicit. For a \texttt{beq} (opcode \texttt{4}), the control signals are set as \texttt{Branch = 1} and \texttt{ALUOp = 1} (subtraction). The ALU subtracts the two registers, and if the result is 0, the \texttt{Zero} flag is set. The \texttt{PC\_update} function checks \texttt{if (Branch \&\& Zero)} to add the left-shifted extended offset to the PC. For a jump \texttt{j} (opcode \texttt{2}), \texttt{Jump = 1}, and the PC directly inherits the left-shifted 26-bit \texttt{jsec} combined with the upper 4 bits of the PC.
+\end{remark}
+
+\section{Loops (While, For, Do-While)}\index{Loops}
+
+High-level loop constructs are synthesized in MIPS using a combination of initialization, condition checking (via \texttt{slt}, \texttt{slti}), branching (\texttt{beq}, \texttt{bne}), and unconditional jumps (\texttt{j}).
+
+\begin{example}[While Loop Execution]
+Consider the C code:
+
+\vspace{10pt}
+\begin{lstlisting}[language=C]
+i = 0;
+while (i <= 20) {
+    A[i] = i;
+    i++;
+}
+\end{lstlisting}
+
+\textbf{MIPS Assembly Conversion:}
+\begin{lstlisting}
+        addi $s1, $zero, 0      # Initialize i = 0 in $s1
+loop:   slti $t1, $s1, 21       # Check if i < 21 (i.e., i <= 20). $t1 = 1 if true
+        beq  $t1, $zero, end    # If $t1 == 0 (i > 20), exit loop
+        
+        # Calculate address of A[i]
+        sll  $t2, $s1, 2        # $t2 = i * 4 (byte offset)
+        add  $t2, $t2, $s0      # $t2 = base address of A ($s0) + offset
+        
+        sw   $s1, 0($t2)        # Store i ($s1) into A[i]
+        addi $s1, $s1, 1        # i++
+        j    loop               # Jump back to start of loop
+end:    ...                     # Loop termination
+\end{lstlisting}
+\end{example}
+
+\subsection{For Loops}
+Similar to while loops, but the initialization happens once before the loop label, and the increment happens right before the jump back to the loop.
+
+\subsection{Do-While Loops}
+The condition check (\texttt{slt}, \texttt{beq}) is placed at the \textit{end} of the loop, branching back to the start if the condition is true. This saves an unconditional jump instruction.
+
+\section{Procedure Calls}\index{Procedure Calls}
+
+Programming languages separate individual tasks into functions or methods. In assembly, these are called ``procedures''.
+
+\begin{vocabulary}[Procedure Registers]\index{Registers!Procedure}
+
+\begin{itemize}
+    \item \texttt{\$a0} -- \texttt{\$a3}: Argument registers used to pass parameters to the procedure.
+    \item \texttt{\$v0} -- \texttt{\$v1}: Return value registers used to pass results back to the caller.
+    \item \texttt{\$ra}: Return address register (\texttt{\$31}), storing where the procedure should return.
+\end{itemize}
+\end{vocabulary}
+
+\begin{definition}[Procedure Instructions]
+
+\begin{itemize}
+    \item \textbf{Jump and Link (\texttt{jal}):}\index{jal} e.g., \texttt{jal 10000}. Sets \texttt{\$ra = PC + 4} (saving the return address) and sets \texttt{PC = 40000} (jumping to the procedure).
+    \item \textbf{Jump Register (\texttt{jr}):}\index{jr} e.g., \texttt{jr \$ra}. Sets \texttt{PC = \$ra}, returning control to the calling function.
+\end{itemize}
+\end{definition}
+
+\section{Stack Usage}\index{Stack}
+
+When executing procedures, the processor has a limited number of registers. If a procedure needs to use registers that the caller also needs, or if the procedure calls another procedure (overwriting \texttt{\$ra}), we must use memory to temporarily save these values.
+
+\begin{definition}[The Stack]\index{Stack!Pointer}
+A region of memory used for dynamic storage during procedure execution. It typically grows downwards in memory.
+
+\begin{itemize}
+    \item \texttt{\$sp}: The Stack Pointer register (\texttt{\$29}). It points to the top (lowest address) of the stack.
+\end{itemize}
+\end{definition}
+
+\subsection{Mechanism (Prologue and Epilogue)}\index{Prologue}\index{Epilogue}
+
+\begin{itemize}
+    \item \textbf{Prologue:} The start of a procedure. We move the stack pointer down to allocate space, then store (\texttt{sw}) registers. 
+    \textit{Example:} \texttt{addi \$sp, \$sp, -8} (allocate 8 bytes for 2 words), followed by \texttt{sw \$ra, 4(\$sp)} and \texttt{sw \$a0, 0(\$sp)}.
+    \item \textbf{Epilogue:} The end of a procedure. We load (\texttt{lw}) the saved values back into the registers, then move the stack pointer up to deallocate the space.
+    \textit{Example:} \texttt{lw \$ra, 4(\$sp)}, \texttt{lw \$a0, 0(\$sp)}, followed by \texttt{addi \$sp, \$sp, 8}.
+\end{itemize}
+
+\section{Recursion in MIPS}\index{Recursion}
+
+Recursion occurs when a procedure calls itself. Because every call to the procedure overwrites the return address (\texttt{\$ra}) and potentially the arguments (\texttt{\$a0}), a recursive function \textbf{must} utilize the stack heavily to preserve state across recursive descents.
+
+\begin{example}[Recursive Sum]
+Convert the C function:
+
+\vspace{10pt}
+\begin{lstlisting}[language=C]
+int recSum(int n) {
+    if (n <= 1) return n;
+    else return n + recSum(n-1);
+}
+\end{lstlisting}
+
+\textbf{MIPS Assembly Implementation:}
+\begin{lstlisting}
+recSum: slti $t0, $a0, 2        # Base case check: if n <= 1
+        beq  $t0, $zero, else   # If n > 1, jump to recursive 'else' branch
+        
+        # Base case: return n
+        add  $v0, $a0, $zero    # Place n ($a0) into return register ($v0)
+        jr   $ra                # Return to caller
+        
+else:   # Recursive case: preserve state on stack
+        addi $sp, $sp, -8       # Make room on stack for 2 words
+        sw   $ra, 4($sp)        # Preserve the return address
+        sw   $a0, 0($sp)        # Preserve the original argument (n)
+        
+        # Prepare for recursive call: recSum(n-1)
+        addi $a0, $a0, -1       # Argument becomes n - 1
+        jal  recSum             # Jump and link to recSum
+        
+        # Return from recursion: restore state
+        lw   $a0, 0($sp)        # Restore original n
+        lw   $ra, 4($sp)        # Restore original return address
+        addi $sp, $sp, 8        # Deallocate stack space
+        
+        # Calculate: n + recSum(n-1)
+        add  $v0, $v0, $a0      # $v0 currently holds recSum(n-1), add n
+        jr   $ra                # Return to caller
+\end{lstlisting}
+\end{example}
+
+\begin{remark}
+Notice that without saving \texttt{\$ra} on the stack, the \texttt{jal recSum} instruction would overwrite the original return address, causing an infinite loop upon trying to return. Without saving \texttt{\$a0}, the final addition \texttt{add \$v0, \$v0, \$a0} would use \texttt{1} (the base case argument) instead of the caller's value of \texttt{n}.
+\end{remark}

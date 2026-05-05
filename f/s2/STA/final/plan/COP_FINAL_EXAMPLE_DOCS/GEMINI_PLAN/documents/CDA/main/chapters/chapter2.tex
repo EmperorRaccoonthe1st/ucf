@@ -1,0 +1,163 @@
+\chapterimage{chapter_head_2.pdf}
+\chapter{Number Systems and Binary Representation}
+
+\section{Representations of Integers}
+In the modern world, we use decimal (base 10) notation to represent integers. However, we can represent numbers using any base $b$, where $b$ is a positive integer greater than 1. Computers represent integers and perform arithmetic using binary (base 2) expansions, which only use the digits 0 and 1.
+
+\begin{theorem}[Base $b$ Expansion]
+Let $b$ be a positive integer greater than 1. Then if $n$ is a positive integer, it can be expressed uniquely in the form:
+
+\[ n = a_k b^k + a_{k-1} b^{k-1} + \dots + a_1 b + a_0 \]
+
+where $k$ is a nonnegative integer and $a_0, a_1, \dots, a_k$ are nonnegative integers less than $b$.
+\end{theorem}
+
+\section{Base Conversions}
+
+\subsection{Binary to Decimal (Unsigned)}
+To convert an unsigned binary number to decimal, express the binary number $n$ in the polynomial form using base $b=2$:
+
+\[ n = a_k 2^k + a_{k-1} 2^{k-1} + \dots + a_1 2^1 + a_0 2^0 \]
+
+Start with $k=0$ for the least significant bit (rightmost) and count upward to the most significant bit (leftmost).
+
+\begin{example}[Binary to Decimal]
+Convert $(11011)_2$ to decimal.
+
+\begin{itemize}
+    \item $(1 \cdot 2^4) + (1 \cdot 2^3) + (0 \cdot 2^2) + (1 \cdot 2^1) + (1 \cdot 2^0)$
+    \item $= 16 + 8 + 0 + 2 + 1 = 27$
+\end{itemize}
+
+\end{example}
+
+\subsection{Decimal to Binary (Unsigned)}
+
+To construct the base $b$ expansion of an integer $n$ (such as converting to binary where $b=2$, or potentially to octal/hex by changing $b$):
+
+\begin{enumerate}
+    \item Divide $n$ by $b$ using integer division to obtain a quotient and remainder. ($n = b \cdot q_0 + a_0$)
+    \item The remainder, $a_0$, is the rightmost (least significant) digit.
+    \item Next, divide the quotient $q_0$ by $b$. ($q_0 = b \cdot q_1 + a_1$)
+    \item The new remainder, $a_1$, is the next digit to the left.
+    \item Continue successively dividing the quotients by $b$ until the quotient is 0. The remainders read from bottom to top (or last to first) form the binary result.
+\end{enumerate}
+
+\begin{example}[Decimal to Binary]
+Convert $(19)_{10}$ to binary.
+
+\begin{itemize}
+    \item $19 \div 2 = 9$ R $1$ (Least Significant Bit)
+    \item $9 \div 2 = 4$ R $1$
+    \item $4 \div 2 = 2$ R $0$
+    \item $2 \div 2 = 1$ R $0$
+    \item $1 \div 2 = 0$ R $1$ (Most Significant Bit)
+\end{itemize}
+
+Result: $(10011)_2$
+\end{example}
+
+\section{Signed Integer Representations}
+
+To represent negative numbers, we use a \textbf{sign bit}.
+
+\vspace{10pt}
+\begin{vocabulary}[Sign Bit]
+The most significant bit (MSB) that acts as the sign: \texttt{0} represents a positive number, and \texttt{1} represents a negative number.
+\end{vocabulary}
+
+\subsection{Method 1: Sign-Magnitude}
+
+The first bit represents the sign, and the remaining bits represent the absolute value (magnitude).
+
+\begin{remark}
+It features cumbersome addition/subtraction (must compare magnitudes to determine the sign of the result) and has two representations for zero ($+0$ and $-0$).
+\end{remark}
+
+\begin{example}[Sign-Magnitude]
+Represent $-55$ in 8 bits. Magnitude of $55 = (0011 0111)_2$. Set MSB to $1 \rightarrow (1011 0111)_2$.
+\end{example}
+
+\subsection{Method 2: 1's Complement}
+
+If a number is negative, its representation is the bitwise inverse (complement) of its positive counterpart.
+
+\begin{remark}
+Like Sign-Magnitude, it still has the "Zero Problem" with two representations of zero: $+0 = 0000$ and $-0 = 1111$.
+\end{remark}
+
+\begin{example}[1's Complement]
+Represent $-55$ in 8 bits. Positive $55 = (0011 0111)_2$. Bitwise inverse $\rightarrow (1100 1000)_2$.
+\end{example}
+
+\subsection{Method 3: 2's Complement}
+
+This is the standard representation for signed integers in modern computing (e.g., used by the \texttt{int} data type in C).
+
+To represent a negative value:
+
+\begin{enumerate}
+    \item Find the binary representation of the positive magnitude.
+    \item Perform a bitwise inverse (1's complement).
+    \item Add \texttt{1} to the result.
+\end{enumerate}
+
+\begin{proposition}[2's Complement Advantage]
+It fixes the Zero Problem. $+0 = 0000$. Inverting yields $1111$. Adding $1$ yields $0000$ (the carry-out is ignored), resulting in a single zero. It also simplifies binary arithmetic.
+\end{proposition}
+
+\begin{example}[2's Complement]
+Represent $-55$ in 8 bits. Positive $55 = (0011 0111)_2$. Inverse $\rightarrow 1100 1000$. Add $1 \rightarrow (1100 1001)_2$.
+\end{example}
+
+\subsection{Sign Extension}
+
+When moving a value to a larger data type (e.g., 4 bits to 8 bits), we use sign extension to fill the new bits:
+
+\begin{itemize}
+    \item \textbf{Unsigned:} Pad with leading \texttt{0}s (e.g., \texttt{0110} $\rightarrow$ \texttt{0000 0110}).
+    \item \textbf{Signed (2's Complement):} Pad with copies of the MSB.
+
+    \begin{itemize}
+        \item Positive: \texttt{0110} $\rightarrow$ \texttt{0000 0110}
+        \item Negative: \texttt{1010} $\rightarrow$ \texttt{1111 1010}
+    \end{itemize}
+
+\end{itemize}
+
+\section{Binary Arithmetic and Overflow Detection}
+
+\subsection{Binary Addition and Subtraction}
+
+Binary numbers are added the same way decimal numbers are added.
+For subtraction, we implement it by adding the 2's complement equivalent of the subtrahend: $A - B = A + (-B)$. The extra carry-out from the MSB during 2's complement arithmetic is normally ignored.
+
+\subsection{Overflow Detection}
+
+\begin{definition}[Overflow]
+Overflow occurs when the result of an arithmetic operation is too large or too small to be represented in the allocated number of bits.
+\end{definition}
+
+\textbf{Unsigned Addition:}
+
+In unsigned addition, an overflow occurs simply if the final carry-out from the most significant bit is \texttt{1}.
+
+\textbf{Signed Addition (2's Complement):}
+
+In signed addition, examining the final carry-out is not enough. Overflow happens when:
+
+\begin{itemize}
+    \item Two positive numbers are added, and the result appears negative.
+    \item Two negative numbers are added, and the result appears positive.
+    \item \textit{(Note: Adding a positive and a negative number can never cause an overflow).}
+\end{itemize}
+
+\begin{theorem}[The XOR Rule for Signed Overflow]
+An easy hardware/algorithmic way to spot overflow is to compare the \textbf{"Carry-in"} of the MSB to the \textbf{"Carry-out"} of the MSB.
+
+\begin{itemize}
+    \item If \texttt{CarryIn(MSB) != CarryOut(MSB)} (Mathematically: $\text{CarryIn} \oplus \text{CarryOut} = 1$), then an overflow has occurred.
+    \item If they are the same, no overflow occurred.
+\end{itemize}
+
+\end{theorem}

@@ -1,0 +1,38 @@
+\bindcontent{
+\section*{Solution to Question 5}
+
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Sampling Distribution of $\bar{X}$}
+    Given: $\mu = 15, \sigma = 4, n = 49$.
+    \begin{formula}{Sampling Distribution of the Mean}
+        $\mu_{\bar{X}} = \mu = 15.0$ \\
+        $\sigma_{\bar{X}} = \displaystyle\frac{\sigma}{\sqrt{n}} = \frac{4}{\sqrt{49}} \approx 0.5714$
+    \end{formula}
+
+    \item \textbf{Probability $P(14 < \bar{X} < 16)$}
+    \begin{formula}{Z-score for Sample Mean}
+        $Z_1 = \displaystyle\frac{14 - 15}{0.5714} = -1.75, \quad Z_2 = \frac{16 - 15}{0.5714} = 1.75$ \\
+        $P(-1.75 < Z < 1.75) = P(Z < 1.75) - P(Z < -1.75)$ \\
+        $0.9599 - 0.0401 = 0.9198$
+    \end{formula}
+
+    \item \textbf{Normal Approximation Verification}
+    \begin{formula}{Normality Conditions}
+        $np = 150 \times 0.40 = 60 \ge 10$ \\
+        $n(1-p) = 150 \times 0.60 = 90 \ge 10$
+    \end{formula}
+    \textbf{Conclusion:} Yes, the normal approximation can be used.
+
+    \item \textbf{Sampling Distribution of $\hat{p}$}
+    \begin{formula}{Sampling Distribution of the Proportion}
+        $\mu_{\hat{p}} = p = 0.40$ \\
+        $\sigma_{\hat{p}} = \sqrt{\displaystyle\frac{p(1-p)}{n}} = \sqrt{\frac{0.4 \times 0.6}{150}} = 0.04$
+    \end{formula}
+
+    \item \textbf{Probability $P(\hat{p} > 0.45)$}
+    \begin{formula}{Z-score for Sample Proportion}
+        $Z = \displaystyle\frac{0.45 - 0.40}{0.04} = 1.25$ \\
+        $P(Z > 1.25) = 1 - P(Z < 1.25) = 1 - 0.8944 = 0.1056$
+    \end{formula}
+\end{enumerate}
+}

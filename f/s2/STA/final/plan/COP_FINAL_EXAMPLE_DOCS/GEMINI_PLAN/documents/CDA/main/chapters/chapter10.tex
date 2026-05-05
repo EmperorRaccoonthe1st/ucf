@@ -1,0 +1,221 @@
+\chapterimage{chapter_head_2.pdf} % Image missing in repository
+\chapter{Midterm \& Final Synthesis}
+
+This chapter provides a comprehensive review of key Computer Organization and Design (CDA) concepts, ranging from low-level binary conversions and combinational logic design to the complete MIPS processor datapath. It also serves as the ultimate synthesis by detailing the requirements and implementation of a MIPS processor simulator in C (the \texttt{spimcore} project).
+
+\section{Midterm Review \& Core Concepts}
+
+\subsection{Binary Conversions \& Representations}
+
+\begin{remark}[Recall: Unsigned Integers]
+\index{Unsigned Integers}
+Unsigned integers are represented using the standard positional weighted sum, where each bit position $i$ corresponds to a value of $2^i$.
+\end{remark}
+
+\begin{example}[Binary to Decimal Conversion]
+Convert $(1100\ 1111)_2$ to decimal:
+\begin{equation}
+128 + 64 + 8 + 4 + 2 + 1 = 207_{10}
+\end{equation}
+\end{example}
+
+\begin{example}[Decimal to Binary (Unsigned)]
+To convert $55_{10}$ to binary, use successive division by 2, where remainders form the binary digits (least significant bit first):
+\begin{center}
+\begin{align*}
+55 / 2 &= 27 \text{ remainder } 1 \\
+27 / 2 &= 13 \text{ remainder } 1 \\
+13 / 2 &= 6 \text{ remainder } 1 \\
+6 / 2 &= 3 \text{ remainder } 0 \\
+3 / 2 &= 1 \text{ remainder } 1 \\
+1 / 2 &= 0 \text{ remainder } 1 \\
+\text{Result: } &(0011\ 0111)_2
+\end{align*}
+\end{center}
+\end{example}
+
+\begin{remark}[Recall: 2's Complement]
+\index{2's Complement}
+2's Complement is used to represent signed integers. The most significant bit (MSB) carries a negative weight. It is the standard representation for signed values in modern computer systems.
+\end{remark}
+
+\begin{example}[Signed Conversions]
+
+\begin{itemize}
+    \item \textbf{Binary to Decimal:} $(1100\ 1111)_2$ has a sign bit of 1 (negative). Inverting the bits gives $(0011\ 0000)_2$, and adding 1 gives $(0011\ 0001)_2 = 49_{10}$. Therefore, the original value is $-49_{10}$.
+    \item \textbf{Decimal to Binary:} To represent $-55_{10}$, first convert $+55$ to binary $(0011\ 0111)_2$, then invert the bits to $(1100\ 1000)_2$ and add 1 to get $(1100\ 1001)_2$.
+\end{itemize}
+
+\end{example}
+
+\subsection{Binary Arithmetic \& ALU Operations}
+
+\begin{remark}[Recall: Binary Subtraction]
+$A - B$ is calculated using addition and the 2's complement of B:
+\begin{equation}
+A - B = A + (\text{bitwise inverse of } B) + 1
+\end{equation}
+\end{remark}
+
+\begin{remark}[Recall: Overflow Detection]
+\index{Overflow}
+Overflow occurs when the addition of two numbers with the same sign produces a result with the opposite sign. For example, adding two positive numbers yields a negative result, or adding two negative numbers yields a positive result.
+\end{remark}
+
+\begin{remark}[Recall: Booth's Algorithm]
+\index{Booth's Algorithm}
+Booth's Algorithm is a multiplication algorithm for signed 2's complement numbers that utilizes arithmetic shifting and conditional addition/subtraction.
+
+\begin{enumerate}
+    \item Initialize the Product and set the Previous LSB to 0.
+    \item Analyze the current LSB and the Previous LSB:
+    \begin{itemize}
+        \item \texttt{01}: Add Multiplicand.
+        \item \texttt{10}: Subtract Multiplicand.
+        \item \texttt{00} or \texttt{11}: No arithmetic action.
+    \end{itemize}
+    \item Perform an Arithmetic Right Shift.
+\end{enumerate}
+\end{remark}
+
+\begin{vocabulary}[32-bit ALU Interface]
+\index{ALU}
+The Arithmetic Logic Unit (ALU) is the core of the processor's datapath. In the \texttt{spimcore} project, this is implemented in the \texttt{ALU} and \texttt{ALU\_operations} functions.
+
+\begin{itemize}
+    \item \textbf{Inputs:} \texttt{A} (32 bits), \texttt{B} (32 bits), \texttt{ALUControl} (control signal).
+    \item \textbf{Outputs:} \texttt{ALUresult} (32 bits), \texttt{Zero} flag (1 bit).
+\end{itemize}
+\end{vocabulary}
+
+\subsection{Combinational \& Sequential Logic Design}
+
+\begin{remark}[Recall: Karnaugh Maps (K-Maps)]
+\index{K-Map}
+K-Maps are used for boolean logic simplification to find the minimal sum-of-products equation. Groupings of adjacent 1s must be in powers of 2 (1, 2, 4, 8) and can wrap around the edges.
+\end{remark}
+
+\begin{remark}[The Logic Design Process]
+The Logic Design Process involves defining inputs/outputs, creating a truth table, mapping to a K-Map, deriving a boolean equation, and drawing the logic gate diagram.
+\end{remark}
+
+\section{Final Synthesis - MIPS Processor Simulation Project (spimcore)}
+
+\subsection{Project Overview}
+
+\begin{remark}
+The capstone project requires simulating the datapath and control of a complete MIPS processor using the C programming language. The core implementation resides in \texttt{project.c}, driven by the \texttt{spimcore.c} framework.
+\end{remark}
+
+\begin{itemize}
+    \item Do \textbf{NOT} modify \texttt{spimcore.c} or \texttt{spimcore.h}.
+    \item Compilation: \texttt{gcc -o spimcore spimcore.c project.c}.
+    \item Execution: The program executes \texttt{.asc} files containing hexadecimal MIPS instructions.
+\end{itemize}
+
+\subsection{Memory Architecture Details}
+
+\begin{vocabulary}[Word-Aligned Array]
+The main memory (\texttt{Mem}) is modeled as an array of 32-bit unsigned integers (\texttt{unsigned int}).
+\end{vocabulary}
+
+\begin{proposition}[Addressing \& Indexing]
+Standard MIPS memory addresses are byte-addressed. Because the C array holds words (4 bytes), you must convert the byte address to a word index by shifting right by 2.
+\begin{equation}
+\text{Index} = \text{Address} \gg 2
+\end{equation}
+Example: \texttt{Mem[PC >> 2]}
+\end{proposition}
+
+\begin{remark}
+Address alignment must be tested \textit{before} any shifting occurs. Functions like \texttt{rw\_memory} and \texttt{instruction\_fetch} must verify word alignment (\texttt{address \% 4 == 0}) and halt if unaligned.
+\end{remark}
+
+\section{Datapath Execution Stages (Implementation in C)}
+
+The step-by-step execution of a MIPS instruction is divided into specific functions within \texttt{project.c}.
+
+\subsection{\texttt{instruction\_fetch}}
+Retrieves the instruction from memory.
+
+\begin{itemize}
+    \item Check alignment: \texttt{PC \% 4 == 0}.
+    \item Fetch: \texttt{Instruction = Mem[PC >> 2]}.
+\end{itemize}
+
+\subsection{\texttt{instruction\_partition}}
+Slices the 32-bit instruction into its component fields.
+
+\begin{itemize}
+    \item Use bitwise AND (\texttt{\&}) for masking and right shifts (\texttt{>>}) for positioning.
+    \item Example: \texttt{unsigned op = (instruction \& 0xFC000000) >> 26;}
+    \item Extract \texttt{r1}, \texttt{r2}, \texttt{r3}, \texttt{funct}, \texttt{offset}, and \texttt{jsec}.
+\end{itemize}
+
+\subsection{\texttt{instruction\_decode}}
+Sets the specific processor control signals in the \texttt{struct\_controls} struct based on the \texttt{op} code.
+
+\begin{itemize}
+    \item Signals are \texttt{char} types (0 or 1), except \texttt{ALUOp} (3 bits).
+    \item For R-type instructions, \texttt{ALUOp} is set to 7 (\texttt{111}), signaling \texttt{ALU\_operations} to decode the \texttt{funct} field.
+\end{itemize}
+
+\subsection{\texttt{read\_register}}
+Retrieves operand data from the Register File (\texttt{Reg} array) using \texttt{r1} and \texttt{r2}.
+
+\subsection{\texttt{sign\_extend}}
+Extends a 16-bit immediate \texttt{offset} to 32 bits. If the sign bit (bit 15) is 1, the upper 16 bits must be padded with 1s.
+
+\subsection{\texttt{ALU\_operations}}
+Prepares inputs and multiplexer logic for the ALU.
+
+\begin{itemize}
+    \item Use \texttt{ALUSrc} to choose between \texttt{data2} and \texttt{extended\_value}.
+    \item If \texttt{ALUOp == 7}, decode \texttt{funct} to determine the specific operation.
+\end{itemize}
+
+\subsection{\texttt{rw\_memory}}
+Handles Data Memory operations.
+
+\begin{itemize}
+    \item Verify alignment: \texttt{ALUresult \% 4 == 0}.
+    \item Read/Write using the index: \texttt{Mem[ALUresult >> 2]}.
+\end{itemize}
+
+\subsection{\texttt{write\_register}}
+Writes data back to the register file.
+
+\begin{itemize}
+    \item Use \texttt{MemtoReg} to select data source (ALU or Memory).
+    \item Use \texttt{RegDst} to select destination index (\texttt{r2} or \texttt{r3}).
+    \item Commit change if \texttt{RegWrite == 1}.
+\end{itemize}
+
+\subsection{\texttt{PC\_update}}
+Updates the Program Counter for the next cycle.
+
+\begin{itemize}
+    \item Sequential: \texttt{PC = PC + 4}.
+    \item Branching: If \texttt{Branch == 1} and \texttt{Zero == 1}, add shifted \texttt{offset} to \texttt{PC}.
+    \item Jumping: If \texttt{Jump == 1}, combine shifted \texttt{jsec} with upper bits of updated \texttt{PC}.
+\end{itemize}
+
+\section{Critical Control Signals Reference}
+
+The following signals are defined in \texttt{spimcore.h} within the \texttt{struct\_controls} structure.
+
+\begin{vocabulary}[RegDst]
+Determines the destination register index source. \texttt{0} for I-type (uses \texttt{r2}), \texttt{1} for R-type (uses \texttt{r3}).
+\end{vocabulary}
+
+\begin{vocabulary}[ALUSrc]
+Determines the second input to the ALU. \texttt{0} for R-type and branches, \texttt{1} for most I-types.
+\end{vocabulary}
+
+\begin{vocabulary}[MemtoReg]
+Selects the data to be written to the register file. \texttt{0} routes the ALU result, \texttt{1} routes Memory read data.
+\end{vocabulary}
+
+\begin{vocabulary}[Zero]
+ALU output flag indicating a zero result, used with the \texttt{Branch} signal to resolve conditional branches.
+\end{vocabulary}
