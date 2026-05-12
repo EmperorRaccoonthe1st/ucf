@@ -52,11 +52,17 @@ Hashmaps	lessons.md	/^## Hashmaps$/;"	s	chapter:Lessons-Learned
 Heaps	lessons.md	/^## Heaps$/;"	s	chapter:Lessons-Learned
 ID	deamm.c	/^    int ID;      \/\/ Employee ID.$/;"	m	struct:Employee	typeref:typename:int	file:
 Lessons-Learned	lessons.md	/^# Lessons-Learned$/;"	c
+Linked Lists	lessons.md	/^## Linked Lists$/;"	s	chapter:Lessons-Learned
 Summations	lessons.md	/^## Summations$/;"	s	chapter:Lessons-Learned
 Tries	lessons.md	/^## Tries$/;"	s	chapter:Lessons-Learned
+addValue3	inwv3isll.c	/^node* addValue3(node* head) {$/;"	f	typeref:typename:node *
 cleanUp	dmfbs.c	/^void cleanUp(book_t * lib, int numBooks){$/;"	f	typeref:typename:void
 createEmployees	deacic.c	/^Employee* createEmployees(char names[][50], double *salaries, int empCount)$/;"	f	typeref:typename:Employee *
 create_case	aaijcs.c	/^struct juice_case* create_case(char *new_name, int new_number) {$/;"	f	typeref:struct:juice_case *
+data	dnfdll.c	/^    int data;$/;"	m	struct:node	typeref:typename:int	file:
+data	inwv3isll.c	/^    int data;$/;"	m	struct:node	typeref:typename:int	file:
+data	mhntslill.c	/^    int data;$/;"	m	struct:node_s	typeref:typename:int	file:
+deleteMe	dnfdll.c	/^node* deleteMe(node* head, node* me) {$/;"	f	typeref:typename:node *
 delete_present_list	fdaosic.c	/^struct present* delete_present_list(struct present* present_list, int num) {$/;"	f	typeref:struct:present *
 delete_show_list	ddatsl.c	/^struct tv_show * delete_show_list (struct tv_show *show_list, int length) {$/;"	f	typeref:struct:tv_show *
 first	deamm.c	/^    char *first; \/\/ Employee's first name.$/;"	m	struct:Employee	typeref:typename:char *	file:
@@ -64,11 +70,22 @@ freeEmployeeArray	deamm.c	/^void freeEmployeeArray(Employee *array, int n)$/;"	f
 juice_case	aaijcs.c	/^struct juice_case {$/;"	s	file:
 last	deamm.c	/^    char *last;  \/\/ Employee's last name.$/;"	m	struct:Employee	typeref:typename:char *	file:
 makeArray	deamm.c	/^Employee *makeArray(char **firstNames, char **lastNames, int *IDs, int n)$/;"	f	typeref:typename:Employee *
+moveHeadNearTail	mhntslill.c	/^node_t * moveHeadNearTail(node_t * head) {$/;"	f	typeref:typename:node_t *
 name	aaijcs.c	/^    char name[128];$/;"	m	struct:juice_case	typeref:typename:char[128]	file:
+next	dnfdll.c	/^    struct node* next;$/;"	m	struct:node	typeref:struct:node *	file:
+next	inwv3isll.c	/^    struct node* next;$/;"	m	struct:node	typeref:struct:node *	file:
+next	mhntslill.c	/^    struct node_s* next;$/;"	m	struct:node_s	typeref:struct:node_s *	file:
+node	dnfdll.c	/^typedef struct node {$/;"	s	file:
+node	dnfdll.c	/^} node;$/;"	t	typeref:struct:node	file:
+node	inwv3isll.c	/^typedef struct node {$/;"	s	file:
+node	inwv3isll.c	/^} node;$/;"	t	typeref:struct:node	file:
+node_s	mhntslill.c	/^typedef struct node_s {$/;"	s	file:
+node_t	mhntslill.c	/^} node_t;$/;"	t	typeref:struct:node_s	file:
 num_bottles	aaijcs.c	/^    int num_bottles;$/;"	m	struct:juice_case	typeref:typename:int	file:
 number_of_seasons	ddatsl.c	/^    int number_of_seasons;$/;"	m	struct:tv_show	typeref:typename:int	file:
 present	fdaosic.c	/^struct present {$/;"	s	file:
 present_name	fdaosic.c	/^    char *present_name;$/;"	m	struct:present	typeref:typename:char *	file:
+prev	dnfdll.c	/^    struct node* prev;$/;"	m	struct:node	typeref:struct:node *	file:
 price	fdaosic.c	/^    float price;$/;"	m	struct:present	typeref:typename:float	file:
 show_name	ddatsl.c	/^    char *show_name;$/;"	m	struct:tv_show	typeref:typename:char *	file:
 triangularSum	dtsc.c	/^int ** triangularSum(int * base, int n) {$/;"	f	typeref:typename:int **

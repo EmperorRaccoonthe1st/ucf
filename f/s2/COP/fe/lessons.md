@@ -7,6 +7,9 @@
 - If deallocating from an array of structs, use `arr[i].` not `arr[i]->`
 - "Heap Space" really means an array of structs.
 
+## Linked Lists
+- If deleting, make sure to check if 'head' is being deleted
+
 ## Summations
 - When doing a \Sigma I summation, take the 1/2 out after.
 
