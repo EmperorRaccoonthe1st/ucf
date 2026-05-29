@@ -6,6 +6,7 @@ typedef struct node_s {
 node_t * moveHeadNearTail(node_t * head) {
     
     // WRITE YOUR CODE HERE
+<<<<<<< HEAD
 
     node_t *cur = head;    
     while (cur->next->next != NULL) {
@@ -18,4 +19,7 @@ node_t * moveHeadNearTail(node_t * head) {
     cur->next = head;
 
     return nHead;
+=======
+    
+>>>>>>> 8fa313e (some pracitce)
 }

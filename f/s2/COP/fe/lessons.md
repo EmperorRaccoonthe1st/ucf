@@ -1,6 +1,7 @@
 # Lessons-Learned
 
 - _Slow Down_, make sure you read the question carefully!
+- Attempt to address all edge cases, such as function parameters being NULL.
 
 ## DMA
 - Make sure question uses `typedef struct StructName`, otherwise you use `struct StructName` when referencing a struct.
@@ -8,7 +9,11 @@
 - "Heap Space" really means an array of structs.
 
 ## Linked Lists
+<<<<<<< HEAD
 - If deleting, make sure to check if 'head' is being deleted
+=======
+-
+>>>>>>> 8fa313e (some pracitce)
 
 ## Summations
 - When doing a \Sigma I summation, take the 1/2 out after.
