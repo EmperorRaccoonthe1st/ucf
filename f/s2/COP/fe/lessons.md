@@ -9,11 +9,7 @@
 - "Heap Space" really means an array of structs.
 
 ## Linked Lists
-<<<<<<< HEAD
 - If deleting, make sure to check if 'head' is being deleted
-=======
--
->>>>>>> 8fa313e (some pracitce)
 
 ## Summations
 - When doing a \Sigma I summation, take the 1/2 out after.
