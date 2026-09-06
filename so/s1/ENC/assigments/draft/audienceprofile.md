@@ -19,24 +19,16 @@ What constraints affect their ability to use your document?
 What do you want your audience to know?
 What do you want them to think or understand?
 What do you want them to do after reading your document?
-Rhetorical Situation
 
 ## Complete the following:
 
 I am writing to:
-
 My purpose is to:
-
 My audience already knows:
-
 My audience may not know:
-
 My audience is likely to care about:
-
 My audience may have questions about:
-
 I want my audience to:
-
 Because of this analysis, my document should:
 
 Your final response should explain how your audience analysis will affect your decisions about content, organization, tone, and design.
@@ -57,6 +49,8 @@ These are all skills required to properly utilize the contents of the document a
 
 Although the audience will possess common technical knowledge and skills, the program will be completely unfamiliar to them as it's methodology and philosophy is distinctive.
 Additionally the program by nature is operated primarily through the use of the keyboard and requires users to have an extensive set of typing skills.
-These skills will only be developed within a subset of those who consume the document while those without them will experience additional difficulty following.
+These skills will only be developed within a subset of those who consume the document, while those without them will experience additional difficulty following.
 
-The document 
+The content presented within will be presented as a means in which to increase one's efficiency in writing code. 
+This promise will serve as the main draw behind the document and the practice required to properly 
+
