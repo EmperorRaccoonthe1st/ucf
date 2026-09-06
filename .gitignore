@@ -1,2 +1,5 @@
 # Ignore the Temurin installations
 jdk*/
+
+# Ignore one specific document
+*henze*
