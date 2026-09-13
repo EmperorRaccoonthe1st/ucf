@@ -52,5 +52,16 @@ Additionally the program by nature is operated primarily through the use of the 
 These skills will only be developed within a subset of those who consume the document, while those without them will experience additional difficulty following.
 
 The content presented within will be presented as a means in which to increase one's efficiency in writing code. 
-This promise will serve as the main draw behind the document and the practice required to properly 
+The overarching promise of performance enhancement will serve as the main draw behind the document and the practice required to properly utilize the advice provided.
+While the surface level use of _Vim_ can be challenging to learn in a single sitting, overall the amount of knowledge required to use it is manageable.
+This amateur use of the application is the goal of the document, but the tool itself contains leagues of depth and complex behavior.
+Much like other examples of professional software, for instance _Photoshop_ or _Blender_, it would take thousands of hours of investment to master _Vim_ in it's entirety.
+Such an environment is bound to draw inquiry from an audience that is engaged with the content, as each presentation of introductory features can easily lead to a multitude of supplementary questions.
 
+Ideally upon the completion of the document and an their initial trial of the program my audience would show a continued interest in using the program and have a desire to continue practicing.
+The majority of people have either never been exposed to text editing in this manner or have never attempted to use _Vim_ due to a perception of overcomplexity.
+My goal with this project is to provide a proper introduction to a subject that has genuinely changed the manner in which I interact with computers.
+
+As a result of my collective analysis, my _Professional Information Project_ will be catered to an audience that while lacking domain experience still has a overall expertise in technology.
+It will be designed to promote the idea that learning to use the program _Vim_ will greatly improve their ability to write and edit code.
+In order to achieve this, the format and tone of the project will be designed to provide a guide that is as approachable as possible.
