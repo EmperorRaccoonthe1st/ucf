@@ -1,0 +1,358 @@
+{
+  "id": "kit-9",
+  "title": "Chapter 4",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Structural Isomer",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "diff bonds",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Cis Isomer",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "Same Side",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Trans Isomer",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "diff side",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Enantiomers",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "mirrored",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Hydroxyl Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "-OH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Hydroxyl Hydrophilic/Hydrophobic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "hydrophilic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Hydryoxyl Polar/NonPolar",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "Polar",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Carbonyl Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "\u003eC=O",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Carbonyl Hydrophilic/Hyrophobic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "Hydrophilic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Carbonyl Polar/NonPolar",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "polar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Ketone",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "middle",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Aldehyde",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "end",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "Carboxyl Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "-COOH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Carboxyl Hydrophilic/Hydrophobic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q14-a1",
+          "text": "Hyrdrophilic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "Carboxyl Polar/NonPolar",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q15-a1",
+          "text": "Polar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "text": "Carboxyl Fun Fact",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q16-a1",
+          "text": "acid",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "text": "Amino Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q17-a1",
+          "text": "-NH2 NH3",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "text": "Amino Hydrophilic/Hydrophobic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q18-a1",
+          "text": "hydrophilic",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "text": "Amino Polar/NonPolar",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q19-a1",
+          "text": "polar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "text": "Sulfhydryl Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q20-a1",
+          "text": "-SH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "text": "Sulfhydryl Hydrophilic/Hydrophobic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q24-a1",
+          "text": "kinda hydrophilic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "text": "Sulfhydryl Polar/NonPolar",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "kinda polar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "text": "Phosphate Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "-OPO3",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "text": "Phosphate is important for:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q24-a1",
+          "text": "ATP",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "text": "Methyl Lewis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q25-a1",
+          "text": "-CH3",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "text": "Methyl fun fact:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q26-a1",
+          "text": "affects sex hormones",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "text": "Which element has Ketone's \u0026 Aldehyde's",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q27-a1",
+          "text": "Carbonyl",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    }
+  ]
+}

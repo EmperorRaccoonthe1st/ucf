@@ -1,0 +1,202 @@
+{
+  "id": "kit-6",
+  "title": "Exam 1",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "A hypothesis is:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "Testable",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "A hypothesis with no relationship between observations.",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "null",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "A hypothesis that states a relationship between observations:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "Alternative",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Taxonomic Levels of Organization",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "dkpcofgs",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Four Essential Elements of Life",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "CHON",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Electron Shells",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "2 8 18",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Ice is:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "less dense more ordered",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Cohesion can act like:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "surface tension",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Adhesion is when water molecules..",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "bonds w/other",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Hydrophilic molecules..",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "bonds w/polar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Hydrophobic molecules..",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "Bonds w/nonpolar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Valence Number is:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "electrons needed",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "C-H Polar/Nonpolar",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "strong nonpolar",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Low pH",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q14-a1",
+          "text": "Acid",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "High pH",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q15-a1",
+          "text": "Base",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    }
+  ]
+}
