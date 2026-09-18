@@ -1,0 +1,14 @@
+{
+  "theme": "base",
+  "look": "classic",
+  "themeVariables": {
+    "primaryColor": "#f8fafc",
+    "primaryTextColor": "#0f172a",
+    "primaryBorderColor": "#1e293b",
+    "lineColor": "#334155",
+    "edgeLabelBackground": "#ffffff",
+    "tertiaryColor": "#ffffff",
+    "fontFamily": "Helvetica, Arial, sans-serif",
+    "fontSize": "12px"
+  }
+}
