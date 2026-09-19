@@ -125,8 +125,8 @@ graph TD
 
 ## 4. Navigation
 
-In order to navigate without utilizing the mouse, you must use the keyboard in normal mode to move the cursor around.
-Each key in normal mode has a function, but you do not need to know all of them.
+In order to navigate without utilizing the mouse, you must use the keyboard in normal mode to move the cursor.
+Each key in normal mode performer a function, but it is not necessary to know the behavior of every single key.
 We're going to cover the keys fundamental to basic movement through your document.
 It is essential that you place your hands in the _Touch Typing_ position, with each index finger on 'f' and 'j'.
 
@@ -144,16 +144,16 @@ It is essential that you place your hands in the _Touch Typing_ position, with e
 | `gg` or `go` | File Top | Moves cursor immediately to the first line of file. |
 | `G` | File Bottom | Moves cursor immediately to the last line of file. |
 
-> **Go Practice!** Take the time now to practice your navigation in a document. There is a learning curve but once you performed the movements a couple times the skills will develop and it will feel completely natural.
+> **Go Practice!** Take the time now to practice your navigation in a document. There is an initial learning curve, but once you have practiced the movements a couple times navigation with the keyboard will feel completely natural.
 
 ---
 
 ## 5. Editing
 
-Now that you've learnt to navigate a document we have to start editing it.
-There a couple of important editing commands in normal mode, but not nearly as many as those required for moving the cursor.
-Importantly, hitting 'i' will place you into insert mode and 'a' will place you into insert mode, but after your current cursor.
-If you hold shift while using those keys your cursor will jump to the beginning or end of the line respectively.
+Now that you've learnt to navigate a throughout a document, we must now start editing it.
+There a couple of important commands for editing in normal mode, but not nearly as many as those required for moving the cursor.
+Importantly, hitting 'i' or 'a' will place you into insert mode, the former to the left of your cursor and the latter to the right your cursor.
+If you hold shift while using them your cursor will jump to the beginning or end of the line respectively.
 
 | Keystroke | Operator Action | Operational Scope |
 | :--- | :--- | :--- |
@@ -165,24 +165,24 @@ If you hold shift while using those keys your cursor will jump to the beginning 
 | `<Ctrl-r>` | Redo | Reapplies changes previously reversed by undo. |
 | `r` | Replace Character | Replaces single character under cursor with next keypress. |
 
-> **Note:** The operator 'u' will be your _best friend_. If you ever accidentally hit a key, or made a mistake just hit 'u' as fast as possible. It is common to make many mistakes while learning, so do not be afraid to utilize undo as often as possible.
+> **Note:** The operator 'u' will be your _best friend_. If you ever accidentally hit a key, or made a mistake, just hit 'u' as fast as possible. It is common to make many mistakes while learning, so do not be afraid to utilize undo as often as possible.
 
 ---
 
 ## 6. Operator Combination
 
 Now we have covered the skills required to edit a document, everything presented in the following sections is designed to increase your efficiency exponentially.
-Now I have not explained the last core component of the Vim philosophy, **you can chain operators together**.
-Essentially almost every operator is designed to be paired with another of the same type, ie: navigation, editing, or control.
-This requires a couple of examples to fully grasp its power.
-The simplest example of this behavior is by utilizing number with movement keys.
+The final core component of the Vim philosophy is that **you can chain operators together**.
+Almost every operator is designed to be paired with another of the same type, ie: navigation, editing, or control.
+This concept requires a couple of examples to fully grasp its power.
+The simplest use of this behavior is by utilizing numbers with movement keys.
 
-In NORMAL mode, hit a number and then hit a movement key (h, j, k, l).
-Your cursor will be moved as many times as you chose the number!
-This also applies for any other command.
+In NORMAL mode, hit a number key and then hit a movement key (h, j, k, l).
+Your cursor will be moved as many times as the value of the number.
 You could even paste 100 times in one button press if you wanted to!
+This applies for any other command in normal mode, you can use them repeatedly for any arbitrary number.
 
-The real efficiency boon comes from chaining selection commands (w, b, $, or t) and editing commands like d or c.
+The real efficiency boon comes from chaining selection commands (w, b, $, or t) and editing commands like 'd' or 'c'.
 
 >**Note** The 'c' key, which represents the _change_ action, will remove a selected piece of text and place the user in insert mode. Essentially allowing them to change whole words or sentences in just two keypresses.
 

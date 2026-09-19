@@ -136,7 +136,7 @@ def build_rational_pdf(md_path=None, output_pdf=None, date_str=None, start_page=
     if output_pdf is None:
         output_pdf = os.path.join(base_dir, "rational.pdf")
     if date_str is None:
-        date_str = "16 September 2026"
+        date_str = datetime.now().strftime("%-d %B %Y")
 
     if not os.path.exists(md_path):
         print(f"[FAIL] Source markdown not found: {md_path}")
@@ -320,13 +320,12 @@ def main():
 
     # Step 1: Ensure document.pdf is up to date with document.md
     if os.path.exists(document_md):
-        if not os.path.exists(document_pdf) or os.path.getmtime(document_md) > os.path.getmtime(document_pdf):
-            try:
-                import compile_document
-                print("[INFO] Rebuilding document.pdf from latest document.md...")
-                compile_document.build_pdf()
-            except Exception as e:
-                print(f"[WARN] Could not auto-rebuild document.pdf: {e}")
+        try:
+            import compile_document
+            print("[INFO] Rebuilding document.pdf from latest document.md...")
+            compile_document.build_pdf()
+        except Exception as e:
+            print(f"[WARN] Could not auto-rebuild document.pdf: {e}")
 
     # Step 2: Compile rational.md to rational.pdf
     success = build_rational_pdf(md_path, rational_pdf)
