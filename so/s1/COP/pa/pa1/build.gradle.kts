@@ -16,8 +16,9 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation(libs.junit)
+    // Use JUnit Jupiter for testing.
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 
     // This dependency is used by the application.
     implementation(libs.guava)
@@ -32,9 +33,15 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "Lopez_Owen"
+    mainClass = "assignment1.Lopez_Owen"
 }
 
 tasks.named<JavaExec>("run") {
     standardInput = System.`in`
 }
+
+tasks.named<Test>("test") {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+

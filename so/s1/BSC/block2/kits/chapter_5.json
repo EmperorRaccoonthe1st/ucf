@@ -1,0 +1,475 @@
+{
+  "id": "kit-9",
+  "title": "Chapter_5",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "List the Macromolecules",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "Carbs Lipids Proteins Nuc Acids",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "condensation does:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "makes polymers",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "codenstation releases how much H2O",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "n-1",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Hydrolysis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "breaks polymers",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "hydrolysis requires how much H2O",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q23-a1",
+          "text": "n-1",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "The Monosaccharides are:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "Glu Galact Fruct",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "In glucose ring structures alpha beta is:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "a H top b OH top",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Monosaccharide Bond",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "glycosidic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Common Disaccharides",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "Lact Malt Sucr",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Lactose is composed of",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "glu gala b",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Maltose is composed of",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "Glu Glu a",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Sucrose is composed of",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "Glu Fruc a",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "Lipid Fat Bond",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "ester",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Triglycerides are",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q14-a1",
+          "text": "Fats",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "Saturated Fats are filled with:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q15-a1",
+          "text": "H",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "text": "Non Saturated Fats have",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q16-a1",
+          "text": "C double bonds",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "text": "Phospholipid Head Hydrophoblic/Hyrdrophilic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q17-a1",
+          "text": "philic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "text": "Phosolipid Tail Hydrophobic/Hyrdrophilic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q18-a1",
+          "text": "phobic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "text": "Phospholipid Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q17-a1",
+          "text": "Phosphate-Glyerol-fat",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "text": "Steroid Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "4 C rings",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "text": "Amino Acid Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q21-a1",
+          "text": "a carbon-amino-carboxyl-h-R group",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "text": "Amino Acid Bond",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q22-a1",
+          "text": "peptide",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "text": "Amino Acid Primary Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q31-a1",
+          "text": "polypetide chain",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "text": "Amino Acid Secondary Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q24-a1",
+          "text": "fold type",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "text": "Amino Acid Tertiary Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q25-a1",
+          "text": "3d shape",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "text": "Amino Acid Quaternary Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q26-a1",
+          "text": "multi protein",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "text": "In Eukaryotic Cells DNA",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q27-a1",
+          "text": "bonds w/histone -\u003e chromatin",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "text": "RNA does what",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q28-a1",
+          "text": "leaves nucleus",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "text": "DNA Structure",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q29-a1",
+          "text": "N base-pentose-Phosphate",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "text": "DNA Bond",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "Phosphodiester Linkage",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "text": "DNA Pairs",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q30-a1",
+          "text": "AT GC 53",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "text": "RNA Bonds",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q32-a1",
+          "text": "AU GC",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "text": "Pyrimidines",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q33-a1",
+          "text": "ctu",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "text": "Purines",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q34-a1",
+          "text": "ag",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "text": "Pyrmidines have how many rings:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q35-a1",
+          "text": "1",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "text": "Purines have how many rings:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q36-a1",
+          "text": "2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    }
+  ]
+}
