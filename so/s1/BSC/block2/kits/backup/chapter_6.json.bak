@@ -1,0 +1,644 @@
+{
+  "id": "kit-9",
+  "title": "chapter_6",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Fluid within the Cytoplasm:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "cytosol",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Regulates Cell IO",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "Plasma Membrane",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Prokaryote DNA Area",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "nucleoid",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Area within the Plasma Membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q31-a1",
+          "text": "cytoplasm",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Unique Plant Cell Traits",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "cell wall central vacuole",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Unique Animal Cell Traits",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "lysosomes centrosomes",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Organelle: membrane enclosing the nucleus",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "nuclear envelop",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "DNA w/hetone",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "chromatin",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Organelle: Condensed region where ribosomes are formed",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "Nucleolus",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Organelle: Metabolizes waste",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "Paroxisome",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Organelle: has ribosomes, makes secretory \u0026 membrane proteins",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "Rough ER",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Organelle: Makes lipids",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "smooth ER",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "Organelle: Hold water \u0026 other resources.",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "Vacoule",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Organelle: Forms spindle \u0026 holds cell shape",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q14-a1",
+          "text": "microtubules",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "Organelle: Micortubule organizing center",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q15-a1",
+          "text": "Centrosome",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "text": "Organelle: Within the microtubules. Formes Cellular cortex",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q16-a1",
+          "text": "Microfilaments",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "text": "Organelle: Digests food \u0026 waste",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q17-a1",
+          "text": "Lysosome",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "text": "Organelle: Modfies proties \u0026 packages up materials",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q18-a1",
+          "text": "Golgi Apparatus",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "text": "Organelle: Stores pigment",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q19-a1",
+          "text": "plastid",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "text": "The channel between plant cells",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q20-a1",
+          "text": "Plasmodesmata",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "text": "The plasma membrane is composed of:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q21-a1",
+          "text": "Phospholipid Bilayer",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "text": "The Nucleolus does what:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q22-a1",
+          "text": "Directs synthosis of ribosomes",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "text": "Organelle: Site of protein systhesis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q23-a1",
+          "text": "Ribosome",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "text": "Two types of ribosome:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q24-a1",
+          "text": "Free Bound",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "text": "Group of organelles that work together to modify, package, and transports lipids \u0026 proteins.",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q25-a1",
+          "text": "Endomembrane System",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "text": "Endomembrane System Organelles",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q26-a1",
+          "text": "Nuclear Envelop ER Golgi Vesicles",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "text": "Cis Golgi",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q27-a1",
+          "text": "towards ER",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "text": "trans Golgi",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q28-a1",
+          "text": "away from ER",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "text": "Mitocondria Folds",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q29-a1",
+          "text": "Cristae",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "text": "Mitrocondria Area",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q30-a1",
+          "text": "Mitochondrial Matrix",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "text": "Free Ribosomes make",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q31-a1",
+          "text": "cell proteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "text": "Bound Ribosomes make",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q32-a1",
+          "text": "exported proteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "text": "RER adds what to polypeptides",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q33-a1",
+          "text": "carbohydrates",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "text": "RER sends proteins to:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q34-a1",
+          "text": "Golgi",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "text": "Smooth ER stores",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q35-a1",
+          "text": "Ca ions",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "text": "Smooth ER sends to:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q36-a1",
+          "text": "Golgi",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q37",
+      "text": "The Golgi does 3 main things:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q37-a1",
+          "text": "process, sort, export",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q38",
+      "text": "Chloroplast contains:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q38-a1",
+          "text": "Thylakoid",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q39",
+      "text": "A stack of Thylakoids is:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q39-a1",
+          "text": "granum",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q40",
+      "text": "Microfiliments are composed of:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q40-a1",
+          "text": "actin",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q41",
+      "text": "Component of the cytoskeleton that bares tension, serving only a structural purpose:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q41-a1",
+          "text": "Intermediate Filaments",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q42",
+      "text": "Organelle: A series of small hair structures on the outide of the cell. Many, thin",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q42-a1",
+          "text": "Cilia",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q43",
+      "text": "Organelle: Larger, longer structures outsideo of cell wall",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q43-a1",
+          "text": "Flagella",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q44",
+      "text": "Flagella Cellia Structural Arrangement",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q44-a1",
+          "text": "9+2",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q45",
+      "text": "Peroxisomes perform:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q45-a1",
+          "text": "Remove H into water",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q46",
+      "text": "Animal Cell Junctions",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q46-a1",
+          "text": "Tight Demosomes Gap",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q47",
+      "text": "Junction where plasma membranes forms continuous seal",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q47-a1",
+          "text": "Tight",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q48",
+      "text": "Anchors cells together",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q48-a1",
+          "text": "Desmosomes",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q49",
+      "text": "Cytoplasm channels between cells, in animals",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q49-a1",
+          "text": "Gap Junctions",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    }
+  ]
+}

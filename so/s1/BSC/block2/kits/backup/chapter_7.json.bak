@@ -1,0 +1,696 @@
+{
+  "id": "kit-9",
+  "title": "chapter_7",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Membrane Model Name",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "Fluid Mosaic Model",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Molecules with both hydrophilic and hydrophobic regions:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "Amphipathic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Main lipid component of biological membranes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "Phospholipids",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Phospholipid head property",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "Hydrophilic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Phospholipid tail property",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "Hydrophobic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Most common type of phospholipid movement in membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "Lateral",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Rare phospholipid movement across bilayer leaflets",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "Flip-flop",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "How temperature drop affects membrane state",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "Solidifies",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Fatty acid type that increases membrane fluidity",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "Unsaturated",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Structural feature of unsaturated tails that prevents tight packing",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "Kinks",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Steroid acting as a membrane fluidity buffer in animals",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "Cholesterol",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Effect of cholesterol at warm body temperatures (37 C)",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "Decreases fluidity",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "Effect of cholesterol at cool temperatures",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "Prevents solidification",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Proteins that penetrate the hydrophobic interior of the bilayer",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q14-a1",
+          "text": "Integral Proteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "Proteins loosely bound to the surface of the membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q15-a1",
+          "text": "Peripheral Proteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "text": "Integral proteins that span the entire membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q16-a1",
+          "text": "Transmembrane Proteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "text": "Secondary structure commonly found in transmembrane protein domains",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q17-a1",
+          "text": "Alpha Helix",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "text": "6 Major Functions of Membrane Proteins",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q18-a1",
+          "text": "Transport Enzymatic Signal Recognition Junctions Attachment",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "text": "Carbohydrates covalently bonded to lipids on the outer membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q19-a1",
+          "text": "Glycolipids",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "text": "Carbohydrates covalently bonded to proteins on the outer membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q20-a1",
+          "text": "Glycoproteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "text": "Primary cellular role of surface carbohydrates",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q21-a1",
+          "text": "Cell-cell recognition",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "text": "Molecules that cross the lipid bilayer easily without transport proteins",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q22-a1",
+          "text": "Nonpolar",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "text": "Examples of small nonpolar molecules crossing freely",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q23-a1",
+          "text": "O2 CO2",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "text": "Class of solutes that cannot cross the hydrophobic core without transport proteins",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q24-a1",
+          "text": "Ions",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "text": "Channel protein specifically facilitating water osmosis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q25-a1",
+          "text": "Aquaporin",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "text": "Transport protein that changes shape to translocate solutes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q26-a1",
+          "text": "Carrier Protein",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "text": "Movement of particles to spread out evenly in available space",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q27-a1",
+          "text": "Diffusion",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "text": "Direction of substance diffusion relative to concentration gradient",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q28-a1",
+          "text": "Down",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "text": "Diffusion of free water across a selectively permeable membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q29-a1",
+          "text": "Osmosis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "text": "Direction of water flow in osmosis relative to solute concentration",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q30-a1",
+          "text": "Lower to higher",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "text": "Ability of a surrounding solution to cause a cell to gain or lose water",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q31-a1",
+          "text": "Tonicity",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "text": "Solution with equal solute concentration to cell interior",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q32-a1",
+          "text": "Isotonic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "text": "Solution with higher solute concentration than inside cell",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q33-a1",
+          "text": "Hypertonic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "text": "Solution with lower solute concentration than inside cell",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q34-a1",
+          "text": "Hypotonic",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "text": "Fate of animal cell in hypertonic solution",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q35-a1",
+          "text": "Shrivels",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "text": "Fate of animal cell in hypotonic solution",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q36-a1",
+          "text": "Lyses",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q37",
+      "text": "Ideal healthy osmotic state for plant cells",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q37-a1",
+          "text": "Turgid",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q38",
+      "text": "Plant cell state in isotonic solution",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q38-a1",
+          "text": "Flaccid",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q39",
+      "text": "Lethal plant cell shrinkage away from cell wall in hypertonic solution",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q39-a1",
+          "text": "Plasmolysis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q40",
+      "text": "Regulation of solute concentrations and water balance in organisms",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q40-a1",
+          "text": "Osmoregulation",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q41",
+      "text": "Transport requiring cellular energy (ATP) to move substances against gradients",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q41-a1",
+          "text": "Active Transport",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q42",
+      "text": "Primary active transport pump in animal cells",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q42-a1",
+          "text": "Sodium-Potassium Pump",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q43",
+      "text": "Na/K Pump Stoichiometry (ions moved per ATP)",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q43-a1",
+          "text": "3 Na Out 2 K In",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q44",
+      "text": "A transport protein that generates voltage across a membrane",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q44-a1",
+          "text": "Electrogenic Pump",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q45",
+      "text": "Major electrogenic pump of plants, fungi, and bacteria",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q45-a1",
+          "text": "Proton Pump",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q46",
+      "text": "Combined chemical concentration force and electrical membrane potential force",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q46-a1",
+          "text": "Electrochemical Gradient",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q47",
+      "text": "Active transport driven by an established ion concentration gradient",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q47-a1",
+          "text": "Cotransport",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q48",
+      "text": "Vesicle fusion with plasma membrane to release cargo outside",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q48-a1",
+          "text": "Exocytosis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q49",
+      "text": "Cellular eating via pseudopodia engulfment into food vacuoles",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q49-a1",
+          "text": "Phagocytosis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q50",
+      "text": "Cellular drinking of extracellular fluid droplets",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q50-a1",
+          "text": "Pinocytosis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q51",
+      "text": "Bulk uptake triggered by specific solute binding to surface receptors",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q51-a1",
+          "text": "Receptor-Mediated Endocytosis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q52",
+      "text": "Protein coating the cytoplasmic surface of coated pits in endocytosis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q52-a1",
+          "text": "Clathrin",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q53",
+      "text": "Genetic disorder caused by defective LDL receptor endocytosis",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q53-a1",
+          "text": "Familial Hypercholesterolemia",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    }
+  ]
+}
