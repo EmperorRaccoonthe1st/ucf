@@ -243,8 +243,8 @@
       "type": "text",
       "answers": [
         {
-          "id": "q17-a1",
-          "text": "Phosphate-Glyerol-fat",
+          "id": "q5-a1",
+          "text": "Phosphate-Glyerol-fats",
           "correct": true,
           "textType": "contains"
         }
@@ -438,7 +438,7 @@
       "type": "text",
       "answers": [
         {
-          "id": "q34-a1",
+          "id": "q23-a1",
           "text": "ag",
           "correct": true,
           "textType": "exact"
