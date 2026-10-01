@@ -226,11 +226,11 @@
     },
     {
       "id": "q18",
-      "text": "Organelle: Modfies proties \u0026 packages up materials",
+      "text": "Organelle: Modfies proteins \u0026 packages up materials",
       "type": "text",
       "answers": [
         {
-          "id": "q18-a1",
+          "id": "q19-a1",
           "text": "Golgi Apparatus",
           "correct": true,
           "textType": "contains"
@@ -282,8 +282,8 @@
       "type": "text",
       "answers": [
         {
-          "id": "q22-a1",
-          "text": "Directs synthosis of ribosomes",
+          "id": "q30-a1",
+          "text": "makes ribosomes",
           "correct": true,
           "textType": "contains"
         }
@@ -425,8 +425,8 @@
       "type": "text",
       "answers": [
         {
-          "id": "q33-a1",
-          "text": "carbohydrates",
+          "id": "q23-a1",
+          "text": "carbs",
           "correct": true,
           "textType": "contains"
         }
