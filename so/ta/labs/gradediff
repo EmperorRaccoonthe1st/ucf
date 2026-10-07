@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""
+gradediff - Side-by-side word-level diff checker for grading labs.
+Highlights mismatches in RED on the output side and GREEN on the key side.
+"""
+
+import sys
+import os
+import difflib
+import re
+import shutil
+
+RED = '\033[91m'
+GREEN = '\033[92m'
+GRAY = '\033[90m'
+BOLD = '\033[1m'
+RESET = '\033[0m'
+
+def visible_len(s):
+    return len(re.sub(r'\033\[[0-9;]*m', '', s))
+
+def pad(s, width):
+    v = visible_len(s)
+    return s + ' ' * max(0, width - v)
+
+def diff_words(o_str, k_str):
+    o_toks = re.findall(r'\S+|\s+', o_str)
+    k_toks = re.findall(r'\S+|\s+', k_str)
+    sm = difflib.SequenceMatcher(None, o_toks, k_toks)
+    o_out, k_out = [], []
+    has_diff = False
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        o_chunk = ''.join(o_toks[i1:i2])
+        k_chunk = ''.join(k_toks[j1:j2])
+        if tag == 'equal':
+            o_out.append(o_chunk)
+            k_out.append(k_chunk)
+        else:
+            has_diff = True
+            if o_chunk:
+                o_out.append(f"{RED}{BOLD}{o_chunk}{RESET}")
+            if k_chunk:
+                k_out.append(f"{GREEN}{BOLD}{k_chunk}{RESET}")
+    return ''.join(o_out), ''.join(k_out), has_diff
+
+def main():
+    if len(sys.argv) < 2:
+        print("Usage:", file=sys.stderr)
+        print("  <command> | ./gradediff <key_file>", file=sys.stderr)
+        print("  ./gradediff <output_file> <key_file>", file=sys.stderr)
+        sys.exit(2)
+
+    suppress_common = '--suppress-common-lines' in sys.argv or '-s' in sys.argv
+    ignore_trailing = '-Z' in sys.argv or '--ignore-trailing-space' in sys.argv
+    ignore_all_space = '-w' in sys.argv or '--ignore-all-space' in sys.argv
+    args = [a for a in sys.argv[1:] if not a.startswith('-')]
+
+    def clean_line(l):
+        if ignore_all_space:
+            return ' '.join(l.split())
+        if ignore_trailing:
+            return l.rstrip()
+        return l.rstrip('\r\n')
+
+    if len(args) == 1:
+        # stdin vs key_file
+        key_file = args[0]
+        out_lines = [clean_line(l) for l in sys.stdin]
+    elif len(args) >= 2:
+        # file1 vs file2
+        with open(args[0], 'r', errors='replace') as f:
+            out_lines = [clean_line(l) for l in f]
+        key_file = args[1]
+    else:
+        sys.exit(2)
+
+    if not os.path.exists(key_file):
+        print(f"Error: Key file '{key_file}' not found.", file=sys.stderr)
+        sys.exit(2)
+
+    with open(key_file, 'r', errors='replace') as f:
+        key_lines = [clean_line(l) for l in f]
+
+    term_width = shutil.get_terminal_size((80, 24)).columns
+    gutter_width = 5
+    col_w = max(10, (term_width - gutter_width) // 2)
+
+    header_out = pad("STUDENT OUTPUT", col_w)
+    header_key = pad("EXPECTED KEY", col_w)
+    print(f"{BOLD}{header_out}  |  {header_key}{RESET}")
+    print("=" * term_width)
+
+    sm_lines = difflib.SequenceMatcher(None, out_lines, key_lines)
+    mismatches = 0
+
+    for tag, i1, i2, j1, j2 in sm_lines.get_opcodes():
+        if tag == 'equal':
+            for o_l, k_l in zip(out_lines[i1:i2], key_lines[j1:j2]):
+                if not suppress_common:
+                    print(f"{pad(o_l, col_w)} {GRAY} | {RESET} {pad(k_l, col_w)}")
+        elif tag == 'replace':
+            for o_l, k_l in zip(out_lines[i1:i2], key_lines[j1:j2]):
+                mismatches += 1
+                ho, hk, _ = diff_words(o_l, k_l)
+                print(f"{pad(ho, col_w)} {RED}{BOLD} | {RESET} {pad(hk, col_w)}")
+        elif tag == 'delete':
+            for o_l in out_lines[i1:i2]:
+                mismatches += 1
+                print(f"{pad(RED + BOLD + o_l + RESET, col_w)} {RED}{BOLD} < {RESET} {pad('', col_w)}")
+        elif tag == 'insert':
+            for k_l in key_lines[j1:j2]:
+                mismatches += 1
+                print(f"{pad('', col_w)} {GREEN}{BOLD} > {RESET} {pad(GREEN + BOLD + k_l + RESET, col_w)}")
+
+    print("=" * term_width)
+    if mismatches == 0:
+        print(f"{GREEN}{BOLD}✓ PASS: Output matches expected key perfectly.{RESET}")
+        sys.exit(0)
+    else:
+        print(f"{RED}{BOLD}✗ FAIL: {mismatches} mismatched line(s) found.{RESET}")
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()

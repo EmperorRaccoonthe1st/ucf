@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPTC: Ethics & Rhetoric in Technical Communication | Catppuccin Mocha</title>
+    <style>
+        :root {
+            --ctp-rosewater: #f5e0dc;
+            --ctp-flamingo: #f2cdcd;
+            --ctp-pink: #f5c2e7;
+            --ctp-mauve: #cba6f7;
+            --ctp-red: #f38ba8;
+            --ctp-maroon: #eba0ac;
+            --ctp-peach: #fab387;
+            --ctp-yellow: #f9e2af;
+            --ctp-green: #a6e3a1;
+            --ctp-teal: #94e2d5;
+            --ctp-sky: #89dceb;
+            --ctp-sapphire: #74c7ec;
+            --ctp-blue: #89b4fa;
+            --ctp-lavender: #b4befe;
+            --ctp-text: #cdd6f4;
+            --ctp-subtext1: #bac2de;
+            --ctp-subtext0: #a6adc8;
+            --ctp-overlay2: #9399b2;
+            --ctp-overlay1: #7f849c;
+            --ctp-overlay0: #6c7086;
+            --ctp-surface2: #585b70;
+            --ctp-surface1: #45475a;
+            --ctp-surface0: #313244;
+            --ctp-base: #1e1e2e;
+            --ctp-mantle: #181825;
+            --ctp-crust: #11111b;
+            
+            --font-serif: 'Charter', 'Bitstream Charter', 'Sitka Text', 'Cambria', 'Georgia', serif;
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+
+            --body-bg: var(--ctp-base);
+            --body-color: var(--ctp-text);
+            --sidebar-bg: var(--ctp-mantle);
+            --header-bg: rgba(24, 24, 37, 0.92);
+            --border-color: var(--ctp-surface0);
+            --border-hover: var(--ctp-surface1);
+            
+            --content-max-width: 820px;
+            --base-font-size: 18px;
+            --base-line-height: 1.78;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            color: var(--body-color);
+            font-family: var(--font-serif);
+            font-size: var(--base-font-size);
+            line-height: var(--base-line-height);
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body.font-sans {
+            font-family: var(--font-sans);
+        }
+
+        /* Progress Bar */
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--ctp-mauve), var(--ctp-lavender), var(--ctp-sapphire));
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(203, 166, 247, 0.5);
+            transition: width 0.1s ease-out;
+        }
+
+        /* Sticky Header */
+        header.site-header {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.65rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .site-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--ctp-surface0);
+            color: var(--ctp-lavender);
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid var(--ctp-surface1);
+            text-transform: uppercase;
+        }
+
+        .chapter-tabs {
+            display: flex;
+            background: var(--ctp-crust);
+            padding: 0.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            gap: 0.2rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--ctp-subtext0);
+            border: none;
+            padding: 0.45rem 0.9rem;
+            border-radius: 7px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--ctp-text);
+            background: var(--ctp-surface0);
+        }
+
+        .tab-btn.active {
+            background: var(--ctp-surface1);
+            color: var(--ctp-mauve);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Search Bar */
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            background: var(--ctp-crust);
+            color: var(--ctp-text);
+            border: 1px solid var(--border-color);
+            padding: 0.45rem 2.2rem 0.45rem 0.8rem;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            width: 210px;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--ctp-mauve);
+            width: 270px;
+            box-shadow: 0 0 0 3px rgba(203, 166, 247, 0.2);
+        }
+
+        .search-count {
+            position: absolute;
+            right: 0.6rem;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            color: var(--ctp-overlay1);
+            pointer-events: none;
+        }
+
+        .search-nav-btn {
+            background: var(--ctp-surface0);
+            color: var(--ctp-subtext1);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.35rem 0.55rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.15s;
+        }
+        .search-nav-btn:hover {
+            background: var(--ctp-surface1);
+            color: var(--ctp-text);
+        }
+
+        .control-btn {
+            background: var(--ctp-crust);
+            color: var(--ctp-subtext1);
+            border: 1px solid var(--border-color);
+            padding: 0.45rem 0.7rem;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .control-btn:hover {
+            background: var(--ctp-surface0);
+            color: var(--ctp-text);
+            border-color: var(--ctp-surface1);
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* Sidebar */
+        aside.site-sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 1.2rem;
+            overflow-y: auto;
+            position: sticky;
+            top: 56px;
+            height: calc(100vh - 56px);
+            font-family: var(--font-sans);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.8rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ctp-overlay1);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .toc-link {
+            display: block;
+            color: var(--ctp-subtext0);
+            text-decoration: none;
+            font-size: 0.84rem;
+            padding: 0.4rem 0.65rem;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            line-height: 1.4;
+            border-left: 2px solid transparent;
+        }
+
+        .toc-link:hover {
+            color: var(--ctp-text);
+            background: var(--ctp-surface0);
+            padding-left: 0.8rem;
+        }
+
+        .toc-link.active {
+            color: var(--ctp-mauve);
+            background: rgba(203, 166, 247, 0.1);
+            border-left: 2px solid var(--ctp-mauve);
+            font-weight: 600;
+        }
+
+        .toc-link.level-3 {
+            padding-left: 1.2rem;
+            font-size: 0.8rem;
+            color: var(--ctp-overlay2);
+        }
+        .toc-link.level-3:hover {
+            padding-left: 1.35rem;
+        }
+
+        .toc-link.level-4 {
+            padding-left: 1.8rem;
+            font-size: 0.76rem;
+            color: var(--ctp-overlay1);
+        }
+        .toc-link.level-4:hover {
+            padding-left: 1.95rem;
+        }
+
+        /* Page Jump Grid */
+        .page-jump-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.35rem;
+        }
+
+        .page-jump-pill {
+            background: var(--ctp-surface0);
+            color: var(--ctp-subtext1);
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.2rem;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .page-jump-pill:hover {
+            background: var(--ctp-mauve);
+            color: var(--ctp-crust);
+            border-color: var(--ctp-mauve);
+        }
+
+        /* Metadata Card */
+        .meta-card {
+            background: var(--ctp-crust);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 0.82rem;
+        }
+
+        .meta-item {
+            margin-bottom: 0.6rem;
+        }
+
+        .meta-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .meta-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ctp-overlay1);
+            font-weight: 700;
+        }
+
+        .meta-val {
+            color: var(--ctp-text);
+            margin-top: 0.15rem;
+        }
+
+        .citation-btn-group {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: 0.8rem;
+        }
+
+        .btn-cite {
+            flex: 1;
+            background: var(--ctp-surface0);
+            color: var(--ctp-lavender);
+            border: 1px solid var(--border-color);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35rem 0.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+
+        .btn-cite:hover {
+            background: var(--ctp-lavender);
+            color: var(--ctp-crust);
+        }
+
+        /* Main Content */
+        main.site-content {
+            flex: 1;
+            padding: 2.5rem 3rem 6rem;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .content-container {
+            width: 100%;
+            max-width: var(--content-max-width);
+            transition: max-width 0.25s ease;
+        }
+
+        .container-wide {
+            max-width: 1040px;
+        }
+
+        .container-full {
+            max-width: 1300px;
+        }
+
+        /* Chapter Article */
+        article.chapter-view {
+            display: none;
+        }
+
+        article.chapter-view.active {
+            display: block;
+            animation: fadeIn 0.25s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chapter Banner */
+        .chapter-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .chapter-supertitle {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .chapter-number-badge {
+            background: linear-gradient(135deg, var(--ctp-mauve), var(--ctp-blue));
+            color: var(--ctp-crust);
+            font-family: var(--font-sans);
+            font-weight: 900;
+            font-size: 0.88rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .page-range-badge {
+            background: var(--ctp-surface0);
+            color: var(--ctp-subtext1);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        h1.chapter-title {
+            font-family: var(--font-serif);
+            font-size: 2.35rem;
+            line-height: 1.25;
+            color: var(--ctp-text);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+        }
+
+        .chapter-author-card {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            font-family: var(--font-sans);
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ctp-surface1), var(--ctp-surface2));
+            color: var(--ctp-mauve);
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--ctp-surface0);
+        }
+
+        .author-info h4 {
+            font-size: 1.05rem;
+            color: var(--ctp-lavender);
+            font-weight: 700;
+        }
+
+        .author-info p {
+            font-size: 0.82rem;
+            color: var(--ctp-subtext0);
+        }
+
+        /* Headings */
+        h2.sec-heading {
+            font-size: 1.65rem;
+            color: var(--ctp-lavender);
+            margin: 2.8rem 0 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--ctp-surface0);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        h3.sec-heading {
+            font-size: 1.35rem;
+            color: var(--ctp-sapphire);
+            margin: 2.2rem 0 0.9rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        h4.sec-heading {
+            font-size: 1.15rem;
+            color: var(--ctp-teal);
+            margin: 1.7rem 0 0.75rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* Body paragraphs */
+        article p {
+            margin-bottom: 1.35rem;
+            color: var(--ctp-text);
+            text-align: justify;
+        }
+
+        /* Page marker row & chip */
+        .page-marker-row {
+            position: relative;
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .page-marker-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: dashed var(--ctp-surface0);
+            border-top: 1px dashed var(--ctp-surface1);
+            z-index: 1;
+        }
+
+        .page-chip {
+            position: relative;
+            z-index: 2;
+            background: var(--ctp-mantle);
+            color: var(--ctp-overlay2);
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid var(--ctp-surface1);
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .page-chip:hover {
+            color: var(--ctp-mauve);
+            border-color: var(--ctp-mauve);
+            background: var(--ctp-surface0);
+            box-shadow: 0 0 8px rgba(203, 166, 247, 0.3);
+        }
+
+        body.hide-page-markers .page-marker-row {
+            display: none;
+        }
+
+        /* Summary card */
+        .summary-card {
+            background: rgba(249, 226, 175, 0.05);
+            border: 1px solid rgba(249, 226, 175, 0.3);
+            border-left: 4px solid var(--ctp-yellow);
+            border-radius: 10px;
+            padding: 1.5rem 1.6rem;
+            margin: 1.8rem 0 2.2rem;
+        }
+
+        .summary-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--ctp-yellow);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-card p {
+            color: var(--ctp-text);
+            margin-bottom: 0.8rem;
+        }
+        .summary-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Case study callouts */
+        .case-study-card {
+            background: rgba(203, 166, 247, 0.05);
+            border: 1px solid rgba(203, 166, 247, 0.25);
+            border-left: 4px solid var(--ctp-mauve);
+            border-radius: 10px;
+            padding: 1.5rem 1.6rem;
+            margin: 2rem 0;
+        }
+
+        .case-study-badge {
+            display: inline-block;
+            background: var(--ctp-mauve);
+            color: var(--ctp-crust);
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Heuristic Question items */
+        .heuristic-question {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            background: var(--ctp-crust);
+            border: 1px solid var(--border-color);
+            padding: 0.9rem 1.1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            transition: all 0.15s ease;
+        }
+
+        .heuristic-question:hover {
+            border-color: var(--ctp-sapphire);
+            background: rgba(116, 199, 236, 0.04);
+            transform: translateX(3px);
+        }
+
+        .q-bullet {
+            color: var(--ctp-sapphire);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+
+        .q-text {
+            color: var(--ctp-text);
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+
+        /* Table 5.1 */
+        .table-container {
+            background: var(--ctp-crust);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2.2rem 0;
+        }
+
+        .card-accent-teal {
+            border-top: 4px solid var(--ctp-teal);
+        }
+
+        .table-caption {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            color: var(--ctp-text);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-family: var(--font-sans);
+        }
+
+        .badge-teal {
+            background: var(--ctp-teal);
+            color: var(--ctp-crust);
+        }
+
+        .badge-mauve {
+            background: var(--ctp-mauve);
+            color: var(--ctp-crust);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table.academic-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+        }
+
+        table.academic-table th, table.academic-table td {
+            padding: 0.75rem 0.85rem;
+            text-align: left;
+            border-bottom: 1px solid var(--ctp-surface0);
+        }
+
+        table.academic-table th {
+            background: var(--ctp-mantle);
+            color: var(--ctp-teal);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .table-group-header td {
+            background: var(--ctp-surface0);
+            color: var(--ctp-yellow);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .rating {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .rating-good {
+            background: rgba(166, 227, 161, 0.18);
+            color: var(--ctp-green);
+            border: 1px solid rgba(166, 227, 161, 0.4);
+        }
+
+        .rating-may {
+            background: rgba(249, 226, 175, 0.15);
+            color: var(--ctp-yellow);
+            border: 1px solid rgba(249, 226, 175, 0.35);
+        }
+
+        .table-footer {
+            margin-top: 1rem;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--ctp-subtext0);
+            border-top: 1px solid var(--ctp-surface0);
+            padding-top: 0.8rem;
+        }
+
+        /* Figure 5.1 */
+        .figure-container {
+            background: var(--ctp-crust);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2.2rem 0;
+        }
+
+        .card-accent-mauve {
+            border-top: 4px solid var(--ctp-mauve);
+        }
+
+        .figure-caption {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            color: var(--ctp-text);
+        }
+
+        .figure-svg-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        .depaa-diagram {
+            max-width: 680px;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Search highlights */
+        mark.search-highlight {
+            background: var(--ctp-peach);
+            color: var(--ctp-crust);
+            padding: 0.1em 0.25em;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+
+        mark.search-highlight.current-match {
+            background: var(--ctp-yellow);
+            outline: 2px solid var(--ctp-red);
+        }
+
+        /* Toast notifications */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--ctp-surface1);
+            color: var(--ctp-text);
+            border: 1px solid var(--ctp-mauve);
+            padding: 0.75rem 1.4rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            font-weight: 600;
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                font-size: 11pt !important;
+                line-height: 1.5 !important;
+            }
+            #reading-progress, header.site-header, aside.site-sidebar, .page-marker-row, .citation-btn-group, .header-controls {
+                display: none !important;
+            }
+            main.site-content {
+                padding: 0 !important;
+            }
+            .content-container {
+                max-width: 100% !important;
+            }
+            article.chapter-view {
+                display: block !important;
+                page-break-after: always;
+            }
+            h1.chapter-title {
+                color: #000 !important;
+            }
+            h2.sec-heading, h3.sec-heading, h4.sec-heading {
+                color: #000 !important;
+                border-bottom: 1px solid #ccc !important;
+            }
+            .summary-card, .case-study-card, .table-container, .figure-container {
+                background: #fdfdfd !important;
+                border: 1px solid #ccc !important;
+                color: #000 !important;
+            }
+            table.academic-table th {
+                background: #eee !important;
+                color: #000 !important;
+            }
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 992px) {
+            aside.site-sidebar {
+                position: fixed;
+                left: -330px;
+                top: 56px;
+                z-index: 950;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+            }
+            aside.site-sidebar.mobile-open {
+                transform: translateX(330px);
+            }
+            main.site-content {
+                padding: 1.5rem 1.2rem;
+            }
+            .search-input {
+                width: 140px;
+            }
+            .search-input:focus {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="reading-progress"></div>
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="control-btn" id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Table of Contents">
+                ☰
+            </button>
+            <div class="site-badge">SPTC Readings</div>
+            <nav class="chapter-tabs">
+                <button class="tab-btn active" id="tab-scott" onclick="switchChapter('scott')">
+                    📘 Chapter 9 (Scott: Ethics)
+                </button>
+                <button class="tab-btn" id="tab-porter" onclick="switchChapter('porter')">
+                    📗 Chapter 5 (Porter: Rhetoric)
+                </button>
+                <button class="tab-btn" id="tab-both" onclick="switchChapter('both')">
+                    📑 Combined View
+                </button>
+            </nav>
+        </div>
+
+        <div class="header-controls">
+            <!-- Search -->
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="Search document..." onkeyup="handleSearch(event)">
+                <span id="search-count" class="search-count"></span>
+            </div>
+            <button class="search-nav-btn" onclick="navigateMatch(-1)" title="Previous match">▲</button>
+            <button class="search-nav-btn" onclick="navigateMatch(1)" title="Next match">▼</button>
+
+            <!-- Typography controls -->
+            <button class="control-btn" onclick="adjustFontSize(-1)" title="Decrease font size">A-</button>
+            <button class="control-btn" onclick="adjustFontSize(1)" title="Increase font size">A+</button>
+            <button class="control-btn" id="font-family-btn" onclick="toggleFontFamily()" title="Toggle Serif / Sans">Font: Serif</button>
+            <button class="control-btn" id="width-btn" onclick="toggleWidth()" title="Cycle reading column width">Width</button>
+            <button class="control-btn" id="page-toggle-btn" onclick="togglePageMarkers()" title="Show or hide book page markers">Pages</button>
+            <button class="control-btn" onclick="window.print()" title="Print or save as PDF">🖨️ Print</button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="site-sidebar" id="site-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Book Information</div>
+                <div class="meta-card">
+                    <div class="meta-item">
+                        <div class="meta-label">Book Volume</div>
+                        <div class="meta-val"><em>Solving Problems in Technical Communication</em></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Editors</div>
+                        <div class="meta-val">Johndan Johnson-Eilola &amp; Stuart A. Selber</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Publisher</div>
+                        <div class="meta-val">The University of Chicago Press</div>
+                    </div>
+                    <div class="citation-btn-group">
+                        <button class="btn-cite" onclick="copyCitation('APA')">APA</button>
+                        <button class="btn-cite" onclick="copyCitation('MLA')">MLA</button>
+                        <button class="btn-cite" onclick="copyCitation('Chicago')">Chicago</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section" id="sidebar-jump-section">
+                <div class="sidebar-title">Jump to Book Page</div>
+                <div class="page-jump-grid" id="page-jump-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Table of Contents</div>
+                <ul class="toc-list" id="toc-container">
+                    <!-- Populated dynamically via JS -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="site-content">
+            <div class="content-container" id="content-container">
+                <!-- SCOTT CHAPTER -->
+                <article class="chapter-view active" id="chapter-scott">
+                    <div class="chapter-header">
+                        <div class="chapter-supertitle">
+                            <span class="chapter-number-badge">CHAPTER 9</span>
+                            <span class="page-range-badge">Pages 213–236</span>
+                        </div>
+                        <h1 class="chapter-title">How Can Technical Communicators Work in an Ethical and Legal Manner?</h1>
+                        <div class="chapter-author-card">
+                            <div class="author-avatar">JS</div>
+                            <div class="author-info">
+                                <h4>J. Blake Scott</h4>
+                                <p>University of Central Florida • Rhetoric &amp; Technical Communication</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chapter-body">
+                        <section id="scott-sec-intro" class="sec-block">
+<h2 class="sec-heading">Chapter Overview &amp; Summary</h2>
+<div class="page-marker-row"><span class="page-chip" id="p-213" onclick="copyPageAnchor('p-213')" title="Original Book Page 213 • Click to copy link">Page 213</span></div>
+</section>
+<section id="scott-sec-summary" class="sec-block">
+<h2 class="sec-heading">Summary</h2>
+<p>Because technical communicators help shape meaning as authors, they need to be familiar with the laws and ethical norms (including organizational and professional ones) that can affect their work and the various relationships (with employers, users, etc.) to which it attends. Because ethical deliberation is a process, technical communicators also need to know not only how to identify relevant principles and laws to consider but also -how to position themselves in relations of power across communicative situations, engage with other stakeholders in an open search for the best a commitment to action. This chapter will take you through examples of and provide you with a heuristic for this process.</p>
+</section>
+<section id="scott-sec-bioinfo" class="sec-block">
+<h2 class="sec-heading">Two Technical Communication Projects at BioInfo</h2>
+<p>The following fictional scenario presents several ethical and legal issues faced by a technical communicator working for BioInfo, a small e-learning company based in Baltimore,1 This company conducts business with Vaccitech, a midsize biotech firm, and with MegaPharm, a large, multinational, research-based pharmaceutical company. The management team at BioInfo is thrilled but also concerned after landing a big pharmaceutical company as a new client. A relatively new start-up company without much venture-capital backing, BioInfo had survived project by project, creating online courses about biomedicine for smaller biotechnology companies. Sometimes these courses were generic, predesigncd courses, and sometimes they were customized to highlight the client&#x27;s research and products for investors (existing or prospective), health-care professionals, and other audiences. Teams comprising scientists, technical communicators, programmers, and project managers developed the courses, which were typically modular (i.e., made up of separate but related segments that could be combined and arranged in various ways), designed for the web, and designed to serve both marketing and ed213</p>
+<div class="page-marker-row"><span class="page-chip" id="p-214" onclick="copyPageAnchor('p-214')" title="Original Book Page 214 • Click to copy link">Page 214</span></div>
+<p>ucational purposes. Trained in instructional design, among other things, Angela Williams is the head technical communicator on a BioInfo team. While most of the content for custom courses is provided and owned by the client, the content for generic courses (and generic versions of custom courses) is typically compiled by BioInfo from existing research. Over the past year, BioInfo designed materials for Vaccitech, a private biotechnology company specializing in the development of vaccines and other medicines for infectious diseases. As it was working to secure FDA approval for its ncw oral (under the tongue) flu vaccine FluEase, the company asked BioInfo to produce new material about the product and the research behind it, to be placed on the investor portion of its website, alongside initial product sales forecasts. This material would also include more general information about the science and type of research on which the FluEase research drew. Vaccitech provided BioInfo&#x27;s course development team with access to its FluEase research findings and a draft description of the general science, apparently compiled from several undocumented sources. Having created the content about the promise of FluEase and the research about it, Angela and the rest of the team&#x27;s technical communicators found themselves in an ethical quandary when Vaccitech asked them to revise this content in a couple of ways. First, Vaccitech wanted them to remove references specifying that FluEase was found to be safe and cffective only for people between five and forty-nine years of age (although trials were ongoing for children ages two to five). Because those outside of sumers for vaccines, the requested omission could create the impression of a larger market for FluEase. Second, Vaccitech wanted to add a section exaggerating the development stage of a new version of FluEase that would not require refrigeration for storage. Angela was concerned that these requested changes would mislead investors and other audiences as well as damage the e-learning company&#x27;s reputation for providing scientifically accurate content. Unfortunately, this would not be the only communicationrelated ethical dilemma that Angela and BioInfo would face. After Vaccitech secured FDA approval for FluEase, it attracted the inwith one-MegaPharm-for the production, distribution, and marketing of the new vaccine. For BioInfo, this meant developing expanded educational materials aimed at physicians, distributors, and others as well as new tutorials for the in-house training of the pharmaceutical company&#x27;s sales force; both tasks involved a great deal of technical writing. Some of this content might later be adapted for marketing and instructional materials aimed at consumers as well. In fact, MegaPharm indicated that it</p>
+<div class="page-marker-row"><span class="page-chip" id="p-215" onclick="copyPageAnchor('p-215')" title="Original Book Page 215 • Click to copy link">Page 215</span></div>
+<p>might hire BioInfo to do further work for a direct-to-consumer marketing campaign and product labels and instructions if it was pleased with the first round of materials. Because gaining MegaPharm as a customer gave BioInfo a way into the lucrative pharmaceutical market, the stakes were high for this project. In addition, because the materials created for pharmaceutical training would be even more modular, BioInfo saw the opportunity to refine and secure property rights for its knowledge-management software in order to sell it to other e-learning companies. MegaPharm provided BioInfo with most of the information to include in the educational material and training modules; unlike Vaccitech, however, it did not provide all of the scientific research findings to support this information. This led to a problem when MegaPharm wanted both sets of content to promote the increased efficacy of standard flu shots when used along with FluEase; beyond receiving no supporting evidence from MegaPharm, the scientists on Angela&#x27;s project team had research from Vaccitech appearing to contradict this claim. The BioInfo team faced another ethical dilemma when MegaPharm insisted on including images of patients who look younger than five and older than forty-nine years old, even though FluEase was only approved for ages five to forty-nine. And yet a third ethical challenge was posed by MegaPharm&#x27;s directive that the physician- and distributor-directed material emphasize FluEase&#x27;s ease of use and deemphasize its storage requirements. Angela and her team were even more unsure about how to negotiate the ethical issues involved in the MegaPharm project, partly because of their limited access to research and partly because of the high stakes of accommodating the client and users. Angela&#x27;s team realized that pleasing this client and thereby positioning BioInfo for the larger pharmaceutical market was the ticket to BioInfo&#x27;s financial stability. This scenario, to which we will later return, raises a number of ethical and legal challenges faced by technical communicators of different stripes, challenges ranging from respecting intellectual property to protecting users from harm. By ethics, I mean deliberation about how to determine and act on what is good, right, just, beneficial, desirable, or commendable (see Dombrowski 20oo, 7). Sometimes ethical and legal issues overlap, as with the Socicty for Technical Communication&#x27;s (STC&#x27;s) principles of providing truthful and accurate communication and respecting the confidentiality of a client&#x27;s business-sensitive information. In what follows, this chapter reviews some of what others have written about ethical and legal concerns for tcchnical communicators before detailing an approach, adapted largely from James Porter (1998), that treats ethics as a situated process of negotiation for developing what the an-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-216" onclick="copyPageAnchor('p-216')" title="Original Book Page 216 • Click to copy link">Page 216</span></div>
+<p>cient Greeks called phronesis, or practical wisdom. Often, as the BioInfo scenario illustrates, this process requires stakeholders to weigh conflicting values that come out of interpersonal, organizational, professional, disciplinary, and larger sociocultural spheres of influence. Further, this process should involve, in the words of Porter (1998, 157), &quot;some careful deliberation, some marshalling of options and alternatives, some care in determining the conditions of one&#x27;s rhetorical setting, and some respect for the variances of human action.&quot; Although technical communicators need to know specific values, norms, conventions, and laws related to their work and the relationships to which it attends, the most important thing they can learn about this topic is how to engage in ethical negotiation, including how to position themselves in the power dynamics across situations (where power is understood as an ability to act effectively, influence outcomes, and achieve goals), how to discover the relevant principles and laws to consider, how to engage others in an open search for the best course, and how to arrive at a contingent commitment to action. This chapter offers a heuristic for arriving at ethical judgment and action, posto others. After discussing the process of ethical inquiry and presenting the heuristic, the chapter returns to the opening set of scenarios to illustrate the heuristicatwork.</p>
+</section>
+<section id="scott-sec-deliberation" class="sec-block">
+<h2 class="sec-heading">The Process of Ethical Inquiry and Deliberation</h2>
+<p>Despite or perhaps because of the field&#x27;s pragmatic emphasis on efficiency and effectiveness, ethics has become a significant concern for many researchers and practitioners of technical communication. Articles about ethics frequently appear in academic and trade journals, and the Association of Teachers of Technical Writing and STC have developed codes of ethics to guide their members. All major technical communication textbooks now have sections addressing ethical and legal issues. Several ethics-focused textbooks, such as those by Lori Allen and Dan Voss (1997), Paul Dombrowski (2000), and Mike Markel (20o1), have been published for use in advanced technical communication courses, including courses dedicated solely to ethics. Why consider ethics as part of technical communication, you might ask. Answering this question first entails defining technical communication and the role of the technical communicator. Jennifer Darryl Slack, David James Miller, and Jeffrey Doak (1g93) argue for viewing the technical communicator as an active contributor to the meaning-making process as texts circulate across their contexts of production and use. They argue against relegating the technical communicator to the merely instrumen-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-217" onclick="copyPageAnchor('p-217')" title="Original Book Page 217 • Click to copy link">Page 217</span></div>
+<p>tal role of transmitter or sender of a fixed message determined by a technical expert such as an engineer, and they even argue that the technical communicator does more than translate an essentially static message to different audiences. Instead, the technical communicator is a full-fledged author who contributes to meaning making along with other producers and users, and who operates within and is constrained by channels of power, such as organizational pressures and cultural protocols. This view also attributes more agency to technical communication, which becomes less a transparent medium for transferring or even translating information than a means through which various actors negotiate and renegotiate meaning. When we position the technical communicator as an agent of meaning within specific power relations, we can also recognize, as Porter does, that technical communication necessarily entails ethical decisions about how to shape the parameters of meaning making and about possible effects; &quot;whenever you write,&quot; Porter (1998, 5o) explains, &quot;you take a position and you establish a value vis-a-vis existing systems [of power]&quot; In this way too, then, the study of technical communication should involve the study of ethics or ethical decision making. In their discussions of ethics, technical communication researchers have drawn on various philosophical traditions, including those that emphasize duties and obligations (e.g., Kantian ethics), respect for difference and care of others (e.g., feminist ethics of care), impacts or consequences (e.g., utilitarianism), and the communicator&#x27;s character (e.g., Aristotelian ethics). Although these and other approaches focus on different aspects of communicative acts, most emphasize the interpersonal or social relationships of those involved; according to Vincent Ruggiero (1997), respect for persons is a crucial value in most ethical systems, the core value behind numerous more specific obligations to others. Most legal concerns for technical communicators are also based on relationships and the obligations that accompany them. As Ruggiero explains, respect for persons is &quot;not mcrely a theoretical construct but a practical standard for the treatmentof others&quot; (72). This leads us to another common clement of the field&#x27;s various takes on ethics-that it is a situated, &quot;practical art&quot; (Markel 2001, 20; Bowdon 1999), a recognition illustrated by the widespread reliance on &quot;real-world&quot; scenarios and projccts to teach it. Yet another common element in approaches to ethics is the recognition that ethical principles come from various spheres of influence, including personal beliefs (which themselves come from various sources), organizational goals and values, professional and disciplinary standards, and larger sociocultural value systems. Sometimes the spheres are in conflict, as in the potential conflict</p>
+<div class="page-marker-row"><span class="page-chip" id="p-218" onclick="copyPageAnchor('p-218')" title="Original Book Page 218 • Click to copy link">Page 218</span></div>
+<p>between the professional values of the BioInfo communicators and their organization&#x27;s goal of financial stability. Taken together, these common takes on ethics endorse a definition something like the relational, situational, power-laden negotiation of principles derived from various value systems with the goal of arriving at the best course of action. This definition doesn&#x27;t quite capture legal concerns, which often overlap but can also diverge from ethical ones. Like ethics, the law has been formed out of various value systems and spheres of influence and is relational and at least somewhat context dependent. Most ethical codes, including that of sTC, include legal mandates, such as meeting the terms of contracts. Further, some ethical principles, such as the technical communicator&#x27;s duty to instruct and warn, are also legal ones. At the same time, the law is typically more codified and binding than ethical codes, though this doesn&#x27;t mean ethical principles can&#x27;t be binding and that the law is always defined or fixed. Intellectual property (IP) law regarding electronic texts, for example, is still very much in flux; emerging laws must negotiate the new forms of cormmunication that new media make possible and the competing interests of respecting the property of communicators and enabling the dlissemination of knowledge for the public good. Although technical communicators can seek help in clarifying their specific obligations under the law (indeed, some companies have staff specifically trained in legal issues), they still have a responsibility to know the basic types of relevant laws--including fiduciary duty (i.e., duty tied to legal financial relationships), the duty to instruct and warn, and respecting the intellectual property and privacy of others-and where to learn the details about them. Tyanna Herrington&#x27;s Legal Primer for the Digital Age (2oo3) is agood resourcefor suchdetails. Although the definition of ethics above is a good starting point, its assumptions and enactment require further explanation. Through this elaboration, we can also compare an approach to developing phronesis to other approaches discussed by technical communication professionals. In addition to the recognition that technical communication is always embedded in and regulated by power relations, the approach advocated here assumes that technical communication is transsituational, that is, occurring aeross multiple, interlinked contexts. We can conceptualize these contexts along the life cycle of a text&#x27;s production, distribution, interpretation and use, and continuing adaptation, and we can also imag ine these contexts as overlapping zones of activity (see Scott 2oo4). Take, for example, an online software manual developed by a team of technical communicators. The text might initially be developed in an organizational context by a team of technical communicators working across</p>
+<div class="page-marker-row"><span class="page-chip" id="p-219" onclick="copyPageAnchor('p-219')" title="Original Book Page 219 • Click to copy link">Page 219</span></div>
+<p>then tested on possible users in a testing lab before being revised. It might then be distributed to and accessed by various types of users, from novice to expert, through specific web technologies, and then interpreted, used, and adapted by these different user groups in their specific situations or settings of use (e.g., at home, work). Meaning is made from the text across these contexts, from the authors&#x27; intentions to users&#x27; interpretations and adaptations. As they circulate across such contexts of use, technical texts are continually taken up and transformed, promoting certain values and enabling certain effects for those involved. Along with moving and being transformed across multiple contexts, technical communication is, as Porter emphasizes, internetworked, and not only because it often moves across the Internet and World Wide Web. By internetworked, I mean created and performed across a network of communicative needs, interpersonal and social relations, and concrete settings or environments of use. Such an assumption expands the ethical &quot;actors&quot; of technical communication beyond the writers and their primary audiences to include various secondary audiences and other stakeholders impactedl by the communication, larger discourse communities and social groups to which communicators belong, organizations or institutions that sponsor and regulate communication, and the technologies and media through which the communication is delivered. By discourse communities, I mean groups of people bound by a common interest who share and regulate specialized kinds of knowledge and ways of communicating (Anson and Forsberg 199o, 202). Considering these various actors and their sometimes conflicting value systems complicates approaches that focus on the technical communicator&#x27;s personal sense of ethics or one common set of professional or social values. Given that technical communication is constructed and reconstructed across multiple contexts by various actors, its ethical dimension is not fixed, absolute, or determined before and outside of these communicative contexts. Although Markel (2ooi) advocates an approach to ethics in which various stakeholders collaboratively deliberate about the most ethical course of action (127), he also suggests that this deliberation should be separate from and prior to determining what the communicative action will look like when implemented (21). Deciding the most ethical course of action, Markel argues, is more difficult than implementing it. In contrast, the approach to ethics offered in this chapter does not separate the ethical scene from the communicative one; indeed, ethic okacal dimeusiou municative process, and ethical issues are raiser side eade prollonshuahe of technical communication. hot fted olkolule or Working in an Ethi coekswned Lefoe ond oudido</p>
+<div class="page-marker-row"><span class="page-chip" id="p-220" onclick="copyPageAnchor('p-220')" title="Original Book Page 220 • Click to copy link">Page 220</span></div>
+<p>Rejecting a universal, fixed, and absolute system of ethics does not require abandoning a binding commitment to a specific ethical stance; the ethical approach advocated in this chapter is not completely relativistic and does not avoid judgment about what is best, right, just, or desirable. To explain this position,I have turned to the classical Greek concept of nomos, a term that can refer to norm, convention, custom, and law, all standards of conduct that are socially constructed, accepted, and regulated by specific groups or communities (Scott 1995). Although nomoi are not universal or fixed, the connection between norms and the law through this term suggests that nomoi can be binding, at least for a time. According to classics researcher Martin Ostwald (1969, 54), the concept of nomos “signifies an &#x27;order&#x27; and implies that this order is, or ought to be, generally regarded as valid and binding by the members of the group[s] in which it prevails.&quot; In most cases, technical communicators will need to consider with others the relative importance of dlifferent types of nomoi--such as organizational goals, professional codes of conduct, business conventions, civic laws and regulations, and sociocultural traditions and belief systems --as they relate to specifie sets of communication contexts. Some of these, including laws and professional codes, might be more codified than others, but even these must usually be adapted to the specifics of the situation at hand. In his discussion of the term nomoi, Porter (1998, 3o) defines it both as &quot;the policies, conventions, and practices governing social relations&quot; and &quot;the processes of negotiating and constructing conventions.&quot; This notion of nomos as a process leads us to a similar conception of ethics as the process of arriving at and implementing the best course and, in a larger sense, the process of developing phronesis or practical wisdom. As Porter explains, phronesis can refer to the “art of considering divergent norms, principles, and conventions in light of particular circumstances that require action&quot; (29). Beyond calling for a phronesis-building process, Porter (1993, 218) begins to discuss what this process entails: “Ethics is not a set of answers but a mode of questioning and manner of positioning. That questioning certainly involves principles--but it always involves mediatof particular circumstances. Ethics is decision makingbut it is decision making that involves question and critique.&quot; Others, too, have outlined a process of ethical decision making. Ruggerio (1997), for example, outlines the steps of studying the situation, identifying relevant criteria, determining alternative courses of action, and deciding which one to take. Like Ruggerio&#x27;s, most discussions do not lay out specific tactics for enacting such steps, however.</p>
+<div class="page-marker-row"><span class="page-chip" id="p-221" onclick="copyPageAnchor('p-221')" title="Original Book Page 221 • Click to copy link">Page 221</span></div>
+<p>In what follows, I outline several tactics, grounded in nomoi, for ethical deliberation and decision making developed by Porter and others, illustrating them with the document-development process of user-centered design, User-centered design, sometimes called user-participatory design, is an approach to making a text more usable and better suited to its audience by inviting members of this audience to be active participants in its development, from the planning stage onward (see Johnson 1998, 32). Although it is more common for technical communicators to test a document&#x27;s usability with the target audience after the document has been creuser and designer,&quot; one that places even more value on users&#x27; perspectives and knowledges (Salvo 2001, 289). Because of this more sustained relationship, user-centered design can illustrate some of the tacties of ethics-as-phronesis, which include (1) studying the specifics of situations across which technical texts are produced, distributed, and used; (2) mapping your position relative to others to whom you have responsibilities or obligations; (3) engaging in sustained dialogue with other stakeholders (including targeted users, when possible) about the best course of action, a dialogue that respects the unique perspectives, needs, and concerns of stakeholders; and (4) collaboratively arriving at a commitment to specific action. The first tactic relates to Ruggerio&#x27;s call to study the specifics of a situation, though it expands this to include the multiple situations across which a technical text circulates. One way to do this is to visually represent the multiple scenes of a text&#x27;s production, reception, and use. Patricia Sullivan and James Porter (1997) propose drawing maps that show the relationships and flows of power among the actors, or stakeholders, in a particular communication situation. This first involves asking who will encounter, use, and be affected or impacted by the texts we create. Herrington (2003, 10), in her &quot;axis of power&quot; test, similarly calls on technical communicators to examine their positions in relations of power and the responsibilities such positions entail to others. Maps of communication relationships can also include other kinds of &quot;actors&quot; or influences on the communication, such as organizations, technologies, laws, and the texts themselves; indeed, doing so can help us remember that the various parts of communicative locales are more than just backgrounds for communication. Let&#x27;s say, for example, that you are part of a team developing a technical proposal for a construction project. Your map would include the relationships among your team members, supervisors, and audiences assessing and then using the proposal. Your map would need to show your competing obligations to these various stakeholders, such as your duty Working inan EthicalandLegal MannerI221</p>
+<div class="page-marker-row"><span class="page-chip" id="p-222" onclick="copyPageAnchor('p-222')" title="Original Book Page 222 • Click to copy link">Page 222</span></div>
+<p>to your employer and any legal obligations to the owners of the project derived from the terms of your proposal (e.g-, cost, deadlines). Or let&#x27;s say you were asked to write instructions for assembling and building an air cannon for a mechanical cngineering lab on campus. In accounting for the contexts of production and use, you&#x27;d need to consider your specific legal responsibilities to ensure the safety of users and, if applicable, to you planned to borrow. Although such maps can be a useful way for technical communicators to position ourselves, they should be recognized as the limited views of one stakeholder and as snapshots of larger, ongoing processes. As Herrington suggests, the point of this positioning is to become better attuned to the obligations and responsibilities (including legal ones) Some technical communication scholars based such responsibilities on one&#x27;s position relative to others: those with more power and expertise, in our case technical communicators with rhetorical power and expertise, also have greater responsibility to wield this power for the good of others (see Allen and Voss 1997, 9). Markel (2001, 160) puts it this way, pointing to the principle of due care: &quot;the more powerful party is responsible both for providing special assistance and protection and for refraining from harmful acts that exploit the power difference.&quot; In a user-centered design process, being attentive to the power dynamics of relationships can help the technical communicators ensure that users are positioned to share their contextual knowledge in the text-development process and that safety and efficacy concerns around their contexts of use are fully addressed. Such attentiveness can also foreground any constraints on and risks from our responses to ethical dilemmas. In the opening scenario, such constraints include the technical communicator&#x27;s position within the company, the company&#x27;s contractual obligation to the client, and the company&#x27;s need forfinancial resources. Beyond becoming more aware of our position(s) in shifting relations of power, we can work toward phronesis by approaching ethics as an open process of mutual inquiry. By open, I mean without predetermined or fixed procedures for valuation. Instead, participants mutually constitute how to arrive at the best course as well as what that course will be, Porter (1998, 135) also adlvocates for such procedural openness, arguing that specific procedural moves must be devcloped and adjusted on the spot in light of the specific contexts, communities, and nomoi involved. Like user-centered design, this approach to ethics entails engaging in a sustained dialogue with others about the best, most ethical course of</p>
+<div class="page-marker-row"><span class="page-chip" id="p-223" onclick="copyPageAnchor('p-223')" title="Original Book Page 223 • Click to copy link">Page 223</span></div>
+<p>action. Allen and Voss (1997) propose a process called “value analysis, in which those deliberating define the various stakeholders&#x27; interests and values, rank conflicting values in order of importance, and then base a collective decision on the most important values (see 20-21). Although they propose making this decision based on which path of action does the greatest good for as many stakeholders as possible (a utilitarian principle based on weighing the overall costs versus benefits), Allen and Voss seem to assume that this will be a relatively straightforward exercise and don&#x27;t consider the possibility that some stakeholders will or should have a greater voice in making such a determination. Some stakeholders might have more at stake than others; poorly designed instructional materials, for example, might have the most negative impact on users needing them to perform an action safely and effectively. Like other scholars advocating a consensus-building model of ethical deliberation, Allen and Voss could further focus on difficult questions about who has or should have more power to shape decisions, about who wins or loses from a particular decision, and how technical communicators should weigh competing obligations. Although the phronesis-building approach proposed by this chapter seeks a shared commitment to a particular course of action, it arrives at this end not by ignoring or squelching difference, but by acknowledging and embracing it, viewing it as a source of ethical invention. The goal is not to efficiently move beyond stakeholders&#x27; different perspectives, experiences, and values but to incorporate them into the communication&#x27;s design, preferably through the direct participation of the stakeholders themselves. Underpinned by this ethical imperative, user-centered design assumes that incorporating the unique and different perspectives of users, preferably a cross section of prospective audience members, will improvethetechnicaltext. Drawing on the feminist ethic of care developed by Nel Noddings and others, the approach advocated here moves beyond a respect for difference to a stance and practice of “caring&quot; for and being responsive to othtively work for the welfare of others,&quot; to take &quot;positive action&quot; for and with others. It requires us to ask whose needs our work addresses and how our positioning as technical communicators calls us to learn about and be responsive to these needs. To some extent, this ethic is embedded in the technical communicator&#x27;s role as user advocate and in the stance of user-centered design. As Robert Johnson (1998, 28) explains, the goal of user-centered design is to arm users with deeper knowledge about how Working inan Ethicaland Legal Manner/223</p>
+<div class="page-marker-row"><span class="page-chip" id="p-224" onclick="copyPageAnchor('p-224')" title="Original Book Page 224 • Click to copy link">Page 224</span></div>
+<p>sustainable way. He contrasts this goal with that of user-friendly design, which seeks to make tasks easy for users but can leave them unable to transfer “how-to&quot; knowledge or troubleshoot when things go wrong. Another difference between user-centered and user-friendly design is that the latter also involves the abstract consideration of users rather than their direct participation as codesigners and co-decision makers (Johnson 1998, 32). The concrete engagement of users throughout document development is the core tactic of user-centered design, and it&#x27;s also a tactic associated with the stance of caring. Porter (1998, 154) explains that the feminist ethic of care was developed in response to more abstract ethical approaches based on rights, and Melody Bowdon (1999, 16) similarly emphasizes a feminist ethic of action &quot;that values connection over abstract cthical principles and that grounds decision making in local, collaborative, and dialogic deliberation rather than universal rules or principles.&quot; A phronesis-oriented process of ethical deliberation, like user-centered design, strives for deliberation with, and not just on behalf of, other stakeholders. To the extent possible, the stakeholders of our texts should be invited to the table to deliberate about any ethical dilemmas connected take care in shaping how this dialogue actually functions. Michele Simmons (2o07, 129) encourages us to take a close look at who participates in decision-forming discussions, and in what roles, as well as when and how frequently they participate. In the case of user-centered design, users are invited to provide input and share in decision making from the initial problem-defining stage onward. Rather than treating rivaling per spectives, opinions, and options as &quot;noise&quot; to be avoided or muffled, Michael Salvo (2001, 289) argues, user-centered design values them as useful material for the ongoing development and improvement of a technical text. This is why it is important for technical communicators conducting than leading or limited responses. A phronesis-based approach to ethics involves arriving at a flexible judg ment (i.e., one that can be adapted to changing circumstances) about the best course and commitment to enacting it. This can be the most difficult part of ethical deliberation, especially when differing perspectives can&#x27;t be reconciled, but it is a crucial part of developing and enacting phronesis. Participants may, indeed, need to weigh various values, obligations, and clear legal directive applies. My own justice-based preference is to give 224  Chapter9</p>
+<div class="page-marker-row"><span class="page-chip" id="p-225" onclick="copyPageAnchor('p-225')" title="Original Book Page 225 • Click to copy link">Page 225</span></div>
+<p>the most weight to the values and voices of those most directly affected by the ethical decision, especially when they are in positions of relatively lesser power. However you collectively arrive at a contingent judgment, you will likely, as Markel (2001) advises, need to consider what courses of action are actually possible given the power dynamics and other constraints involved. The result of this collective decision making might be the construction of new, more diversely informed ethical judgments and forms of technical communication (254).</p>
+</section>
+<section id="scott-sec-heuristic" class="sec-block">
+<h2 class="sec-heading">A Heuristic of Guiding Questions</h2>
+<p>The following questions are offered as a set of invention tools, or heuristic, for moving through the process of ethical deliberation discussed above. Involving your relationships to others and the ethical obligations such relationships entail, these questions are not exhaustive and not meant to be followed in a lock-step manner. Dependling on the ethical issue and the contexts out of which it arises, some may be more useful than others. Finally, some will need to be adapted to changing circumstances within and across specific contexts. Embedded in some questions are specific nomoi about which you should be aware. Other technical communication scholars-particularly Porter, Dombrowski, Markel, and Herrington-discuss various types of ethical and legal principles in more detail and should be consulted in a fuller study of ethics. Some researchers have also developed categories of nomoi that might be useful in assessing the ethics of specific situations. Markel (2001, 128), for example, discusses a utility-justice-rights-care model that considers four types of ethical principles, and Ruggerio (1997, 73-74) categorizes principles as obligations, consequences, or ideals (i.e., notions of excellence). Most of the questions below focus on obligations that arise out of different types of relationships.</p>
+</section>
+<section id="scott-sec-positioning" class="sec-block">
+<h3 class="sec-heading">Positioning Across Situations</h3>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What are the contexts in which the technical communication will take place, in which the text will be created, distributed, encountered, used, and transformed? How might the text be taken up in unintended ways? Think through the text&#x27;s possible life cycle. Who is involved in the communicative acts across these contexts? Who is likely to be affected or impacted by this communication? What do they have at stake, how do they stand to benefit or lose? What are the interpersonal and social relationships among these</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-226" onclick="copyPageAnchor('p-226')" title="Original Book Page 226 • Click to copy link">Page 226</span></div>
+<p>various stakeholders? Who is linked to whom and how? How is power distributed across these relationships? How might these relationships and flows of power shift as communicative acts and contexts shift?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What, if any, agreements do stakeholders have with one another, and what rights and obligations might arise from such agreements (adapted from Herrington 2003, 131)?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">How would you describe the discourse communities of the various stakeholders? What other spheres--including organizational, professional, and cultural-shape stakeholders&#x27; viewpoints and their relative position and power?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What additional &quot;actors&quot;--including organizational or institutional structures, technologies, and communicative settings or environments-shape the communicator&#x27;s relationships and constraints?</span></div>
+</section>
+<section id="scott-sec-inquiry" class="sec-block">
+<h3 class="sec-heading">Ethical Inquiry and Deliberation</h3>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">How can you ensure the robust participation of other stakeholders? How could you engage them as partners in a mutually defined and reciprocally beneficial process of inquiry?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">How can you and other participants decide on how to proceed, and by what criteria? What roles, opportunities to provide input, and decision-making power will the various participants have?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">How can you strive to ensure that stakeholders&#x27; perspectives, knowledges, needs, values, and responses get voiced and incorporated into ethical problem solving?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">How can you encourage the expression and consideration of differing explanations of any ethical problems? How can you encourage the full and critical examination of different options for addressing the problem, how might these options be enacted, and what consequences might they have? How can you determine when values and positions are in conflict?</span></div>
+</section>
+<section id="scott-sec-users" class="sec-block">
+<h4 class="sec-heading">Obligations to and Consequences for Users or Audiences</h4>
+<p>What should you know about users or audiences, including both primary and secondary ones? What is the best way to get this information?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">How might you enlist users, and which specific users might you enlist, as codesigners of your communication?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to ensure the accessibility, clarity (i.e., 2261Chapter9</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-227" onclick="copyPageAnchor('p-227')" title="Original Book Page 227 • Click to copy link">Page 227</span></div>
+<p>understandability), accuracy, and completeness of your verbal and visual communication?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to accommodate users&#x27; needs and capabilities, including those of users with disabilities and users from different cultural backgrounds? When the needs of different users are in conflict, how will you decide which needs to accommodate? How can you ensure a fair distribution of benefits among users?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to ensure that no harm comes to users from your communication? If you are writing technical instructions, what are your legal obligations to describe the limits of use, provide clear and accurate instructions on all aspects of use, prominently warn about hazards that could arise from use, and tailor the communication to the audience&#x27;s background and needs?? What ethical and legal obligations are tied to your role as a user advocate? How might you ensure that your communication empowers users to understand its subject matter and to mobilize this knowledge in a transferable, sustainable way?</span></div>
+</section>
+<section id="scott-sec-client" class="sec-block">
+<h4 class="sec-heading">Obligations to Client</h4>
+<p>What obligation do you have to offer quality services in an equitable manner?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to respect the privacy of client information and communication?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to abide by the terms of contracts with clients?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to protect your client from legal or financial harm?</span></div>
+</section>
+<section id="scott-sec-employer" class="sec-block">
+<h4 class="sec-heading">Obligations to Employer</h4>
+<p>What are your legal and ethical obligations to act for your employer&#x27;s benefit and promote its interests? What obligation do you have to follow any code of conduct of your employer? What obligation do you have to abide by any contract with your employer, including a nondisclosure or confidentiality agreement (designed to prevent you from sharing speeified materials or information with a third party)?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What obligation do you have to respect and protect the confidenti-</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-228" onclick="copyPageAnchor('p-228')" title="Original Book Page 228 • Click to copy link">Page 228</span></div>
+<p>ality of company information, including trade secrets and materials they are paying you to create? tions for your employer, including copyright, trademark, and pat ent registration?3</p>
+</section>
+<section id="scott-sec-professional" class="sec-block">
+<h4 class="sec-heading">Professional and More General Obligations and Ideals</h4>
+<p>What obligations and ideals are tied to your professional status as a technical communicator?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">To follow the STC code of ethics, what obligations do you have to observe relevant laws and obligations, to communicate truthfully and accurately, to respect the confidentiality of others&#x27; businesssensitive information, and to fulfill contractual obligations in a timely manner?? What, if any, professional quality or regulatory standards should your text meet? What obligation do you have to safeguard public interests, such as human rights and environmental concerns? protected words, images, and multimedia in your communication? To stay within the bounds of fair use of this material (which may not cover use for commercial gain)? What obligation do you have to get permission to use the code or design of web texts? To not mislead users (through framing, linking, or use of metatags) about the ownership, scope, and content of your web texts?</span></div>
+</section>
+<section id="scott-sec-judgment" class="sec-block">
+<h3 class="sec-heading">Arriving at Flexible or Contingent Judgment and Commitment to Action</h3>
+<p>How can you determine when values are in conflict? How will you and the other participants negotiate competing values about what is best, right, just, and/or desirable?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What are the stakes of your communication for various stakeholdcrs (audiences, employer, client), and how do you weigh these relative to one another? How will you arrive at a contingent judgment about the most ethical course of action? Which of the considercd actions are most possible given the con textual constraints, such as your position in power relationships? Whose approval might you need to carry out the action?</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-229" onclick="copyPageAnchor('p-229')" title="Original Book Page 229 • Click to copy link">Page 229</span></div>
+</section>
+<section id="scott-sec-phronesis" class="sec-block">
+<h3 class="sec-heading">Developing Phronesis</h3>
+<p>What can you learn from comparing your position to that of other stakeholders? About other aspects of these stakeholders&#x27; knowledge, interpretations, and values? From their forms of deliberation and their decision-making criteria?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">What can you learn about the negotiation of multiple and differing values and principles? About mutually developing a new set of shared nomoi and discourses? What can you learn about how to adjust ethical inquiry and decision making across related contexts?</span></div>
+</section>
+<section id="scott-sec-action" class="sec-block">
+<h2 class="sec-heading">Ethical Deliberation in Action</h2>
+<p>In order to illustrate how you might apply some of these questions, let us now return to the opening scenario involving Angela and other technical communicators working for BioInfo. For both texts-the investor material for Vaccitech and the training/marketing material for MegaPharmand their related contexts and ethical challenges, Angela works alongside other technical communicators and programmers, under the direction of a project manager and, ultimately, the company&#x27;s management. Angela also works for the client, of course--in the first case a small company with which BioInfo has an established business relationship, and in the second with a larger, newer client whose relationship can help BioInfo make inroads into a profitable client base. Although we can think of Angela&#x27;s client as her most immediate audience, her communication is primarily aimed at the users or audiences that her client is trying to reach and influence. Finally, Angela&#x27;s communication will likely link her to others who are affected by how it is taken up and acted upon.</p>
+</section>
+<section id="scott-sec-vaccitech" class="sec-block">
+<h3 class="sec-heading">Ethical Inquiry About Vaccitech Project</h3>
+<p>One ethical challenge presented by the first module about FluEase and the science behind it is what to do with the general science material provided by the client. Angela will need to first determine whether the material-specifically its form of expression (whether verbal, visual, etc.)-is copyright protected or alreacly in the public domain. If the former, she will need to get permission to use the material and give credit to the copyright holcler; in addition to a legal obligation, honoring copyright is a professional obligation for technical communicators. In some situations, technical communicators can consider whether the legal doctrinc of fair use enables them to disseminate a limited portion of copyrighted material for educational purposes (as long as it doesn&#x27;t impede the profit-making</p>
+<div class="page-marker-row"><span class="page-chip" id="p-230" onclick="copyPageAnchor('p-230')" title="Original Book Page 230 • Click to copy link">Page 230</span></div>
+<p>goals of the copyright holder). In this case, fair use does not apply, given that the material would be developed, in part, for commercial gain and does not fall under any of the other exceptions. Although it might be tempting for Angela to limit her role to transmitter and accept the information given to her as is, such a stance could abdicate her responsibility as a cocreator of knowledge and meaning. The second set of ethical challenges from thie Vaccitech projectaround the client&#x27;s request that Bionfo omit information in order to suggest a wider market for FluEase and overstate the development of a newer version of the product-is slightly more complicated, as it involves additional stakeholders with competing interests and additional professional, organizational, and legal obligations tied to BioInfo&#x27;s relationships with these stakeholders. BioInfo&#x27;s primary audience, you will remember, consists of the investors who will use the information on Vaccitech&#x27;s website to assess and make decisions about investing in the company. To these users and other website readers who encounter her text, Angela has an obligation to present fully accurate information and to protect them from harm, in this case possible financial harm from a misguided investment (see questions under &quot;Obligations to and Consequences for Users or Audiences&quot;)j. If Angela adopts an ethic of care and assumes the role of user advocate, she also has the ethical obligation to make needed information accessible to users (i.e., investors) and empower them to take productive action. Given the power and knowledge difference between Angela and her primary audience (considering that investors aren&#x27;t able to shape the text and likely don&#x27;t have the scientific expertise of Vaccitech or BioInfo), her ethical obligation to accommodate their needs is even stronger. Other nomoi to consider revolve around Angela&#x27;s roles as service provider and employer, as she has the obligation to protect the interests of both client and employer. The STC code of conduct urges technical communicators to offer quality services that meet contractual obligations to the client, and she might go further in determining how to protect her client&#x27;s welfare; in this case, providing inaccurate or misleading information could cause investors to take legal action against Vaccitech and prompt FDA officials to further scrutinize Vaccitech&#x27;s FluEase application. Angela must also consider the responsibility to promote the welfare of her employer, as she doesn&#x27;t want her company&#x27;s rcputation to be damaged among its potential clients and investors because of a misleading and harrmnful text that she helped produce. The forms of engagement and deliberation that Angela enters will be, to some extent, out of her control because of her access to the audience and role in the company. Although it might not be possible to enact a user-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-231" onclick="copyPageAnchor('p-231')" title="Original Book Page 231 • Click to copy link">Page 231</span></div>
+<p>from members of the investment community at some point in the textdevelopment process, perhaps by asking them what they expect from this type of material and how they interpret the information she produced (see the prompts under &quot;Ethical Inquiry and Deliberation&quot;). To do this, she would likely need to secure the cooperation of Vaccitech, because she would be sharing their copyright-protected material before they publish it.</p>
+</section>
+<section id="scott-sec-megapharm" class="sec-block">
+<h3 class="sec-heading">Ethical Inquiry About MegaPharm Project</h3>
+<p>The MegaPharm project--which calls for expanded educational/marketing and training materials--presents an even more complex web of stakeholders, relationships, contexts, and ethical/legal issues. Angela will need to consider and negotiate a wider range of sometimes conflicting nomoi around scientific conventions, professional ideals, legal obligations, and business obligations and goals. She will need to think through a longer trajectory of life cycles of her texts and their transformations, functions, and effects, particularly since the modules she creates could be adapted for or used in marketing and instructional texts targeting consumers (see &quot;Positioning across Situations&quot;). Angela will need to consider the higher stakes of her decisions for BioInfo, the client, and the various audiences orsetsofusers. As in the Vaccitech project, one of the ethical challenges central to this one revolves around providing accurate and honest information, a principle that is a professional, cultural, and legal ideal and obligation. Again, Angela will need to deliberate about and determine (ideally with others) whether she has an obligation to users to verify the clients&#x27; claims about the product--in this case how its efficacy relates to that of the flu shot-and if the client refuses to provide verifying evidence, whether to resist including such claims (in this case, consider primarily the questions under “Obligations to and Consequences for Users or Audiences&quot;). This first issue is perhaps a more straightforward one of accuracy, but the other two directives of MegaPharm blur the line of ethical communication a bitmore, The next issue--using possibly misleading images of patients apparently outside the approved age range for the projectcould possibly be justified, given that the content would also verbally specify this approved subjective interpretations, to some extent. Yet the accuracy and honesty of visual communication is a requirement of the profession and, in some cases, the law (see “Professional and More General Obligations and Ideals&quot;). Like other pharmaceutical companies, Angela&#x27;s client could face Working inan Ethical and Legal Manner|231</p>
+<div class="page-marker-row"><span class="page-chip" id="p-232" onclick="copyPageAnchor('p-232')" title="Original Book Page 232 • Click to copy link">Page 232</span></div>
+<p>regulatory sanctions for using misleading images, especially if they appear in direct-to-consumer marketing. In addition, the courts have found makers of instructions liable for misleading or unclear graphics (Helyar 1992, 130-131). Technical communication researchers such as Nancy Allen (1996) have emphasized that the selection, emphasis, and design of visuals-from illustrations to graphs to tables--help shape readers&#x27; meaning making and therefore should be held to standards of accuracy and accessibility much like verbal communication. They have explained that questions of ethics apply not just to what information is included, but how it is included and presented. This is especially important given that not all users will focus on all or the same parts of a text to form their interpretations. Recognizing that she is first and foremost a user advocate should tion and to consider the various factors (including their knowledge and values) that shape users&#x27; interpretations of texts in specific contexts of use (Allen 1996, 99). Yet another related accuracy question foregrounded by the MegaPharm project is what to do about the client&#x27;s desire to emphasize some information about the project more than other, perhaps equally important, information in order to make FluEase more appealing to physicians and distributors, who will have to be concerned with the storage requirement of refrigeration. Although the module would include the storage requirement, this information would not be as accessible and memorable as the information about ease of use for patients. The challenges posed by the MegaPharm project require Angela to first think through the life cycle of her texts (&quot;Positioning across Situations&quot;) and then consider more specific obligations to and consequences for her primary audiences of physicians, distributors, and the client&#x27;s sales force, consequences that, in turn, prompt consideration of additional users, namely consumers. As part of her ethical deliberation, she might weigh the stakes for the different audiences and her ability to take various actions (as asked in the section &quot;Arriving at Flexible or Contingent Judgment and Commitment to Action&quot;). Beyond possible financial impacts on these audiences, Angela&#x27;s communication choices could have health and safety impacts: physicians and distributors could improperly store the medicine, physicians could recommend that patients receive an unnecessary combination of flu shots and FluEase, and physicians, later fueled by consumer demand, could administer FluEase to patients outside the approved age range. Thus Angela&#x27;s obligation to protect others from harm may be even greater than in the Vaccitech project. This obligation to some of these users, especially</p>
+<div class="page-marker-row"><span class="page-chip" id="p-233" onclick="copyPageAnchor('p-233')" title="Original Book Page 233 • Click to copy link">Page 233</span></div>
+<p>consumers, might also be greater because of their relative lack of knowledgc about and access to the full information about FluEase. Angela&#x27;s team and client have more knowledge and communicative power than users, and thus she has a greater responsibility to protect such users. As in the Vaccitech project, Angela may not be in a position to enact substantial user-design strategies and tactics; BioInfo&#x27;s pharmaceutical client may not allow her to directly engage prospective users while the content is being developed. Angela will therefore need to negotiate the competing principles of respecting her contractual responsibility to her client and its property and creating the most accurate, accessible, responsive, and empowering texts possible. Perhaps she could persuade MegaPharm that conducting focus groups or testing with users would benefit everyone by leading to a better product. She might at least make suggestions about including the perspectives and concerns of other stakeholders and raise questions about the ethical and legal obligations and effects of notdoing so. Finally, in this project as in the last one, Angela should also engage others in her company and consider her obligation as an employee to work for her company&#x27;s benefit. In this case, too, the MegaPharm project presents a higher-stake dilemma, given the future business opportunities to which it could lead. But the higher profile of this project and the texts Angela will create for it also likely poses a higher risk of damaging her company&#x27;s reputation if these texts lead to harmful consequences or depart from legal and other commonly accepted nomoi.</p>
+</section>
+<section id="scott-sec-toward-phronesis" class="sec-block">
+<h3 class="sec-heading">Toward Phronesis</h3>
+<p>Fully appreciating the ethical dimension of technical communication requires first adopting a robust view of the technical communicator as a cocreator of knowledge rather than just a straightforward transmitter or translator of it. What we present and how we present it shapes how others make meaning; this implicates us, therefore, in others&#x27; interpretation and use of our texts across the various contexts in which they are encountered and taken up. We, as technical communicators, would do well to familiarize ourselves with specific nomoi-socially constructed, dynamic, and provisionally binding codes of action--relevant to the ethies and legality of our work. Such nomoi are tied, in many cases, to our rclationships with and obligations to others, whether coworkers, employers, clients, various primary and secondary users or audiences, professional discourse communities, or other groups. As this chapter defines it, ethics is more than a set of nomoi; it is a process, more specifically the relational, context-dependent, power-laden ne-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-234" onclick="copyPageAnchor('p-234')" title="Original Book Page 234 • Click to copy link">Page 234</span></div>
+<p>gotiation of, judgment about, and commitment to enact the best course. More important than knowing specific nomoi ahead of time is learning how to identify and negotiate the sometimes competing nomoi inherent in our relationships with others, how to identify and negotiate the perspectives, values, knowledges, and forms of deliberation that other stakeholders bring to an ethical challenge. To some extent, we can discern such nomoi and ways of negotiating them from texts about laws and social codes (e.g., the STC code of ethics), but we can also attempt to mutually discover them through the direct engagement of others. This chapter proposes that the process of ethics involves recognizing our roles and power extent possible, given our positioning), and the mutual arrival at a contingent judgment and commitment to action. That is, what technical communicators most nced to know about the ethics and legality of our work is how to develop and arrive at phronesis, or practical wisdom.</p>
+</section>
+<section id="scott-sec-questions" class="sec-block">
+<h2 class="sec-heading">Discussion Questions</h2>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">1. Look at how technical communicators are defined in three different technical communication textbooks. How do these definitions relate to the notions of transmission, translation, and meaning-making authorship that Slack, Miller, and Doak (1993) discuss? What relationships and ethical obligations do these definitions emphasize?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">2. Would you negotiate the ethics of the MegaPharm scenario differently if you were an executive decision maker instead of a technical communicator? Why or why not? if you were applying an ethic of care, how might your negotiation of competing obligations differ?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">3. Can you recall a time when one or more of your personally held principles clashed with a value held by an organization or business in which you worked? What was at stake, and for whom? How did you negotiate this conflict and determine what to do?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">4. Find a set of poorly designed and/or poorly written instructions. Explain how they are flawed and any possible consequences of such flaws for users. To what extent could these flaws be viewed as ethical or legal problems, and what is the technical communicator&#x27;s role in attending to them?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">5. Do you recall the conflict around the Florida Palm Beach County butterfly ballot in the 20oo U.S. presidential election? Read Bruce Tognazzini&#x27;s (2001) analysis of the conflict and see an image of the ballot here: http://www.asktog.com/columns/o42ButterflyBallot.html. Considering the technical communicator&#x27;s role as user advocate, how might</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-235" onclick="copyPageAnchor('p-235')" title="Original Book Page 235 • Click to copy link">Page 235</span></div>
+<p>the ballot&#x27;s design be considered ethically problematic? What steps might the designers of the ballot have taken to avoid such problems?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">6. In his article &quot;Is This Ethical?, Sam Dragga (1996, 257) poses a scenario in which a technical communicator reporting a company&#x27;s sales figures to investors designs a line graph in reverse chronological order to make a trend of decreasing sales look like one of increasing sales. The designer does, however, correctly label the years. Using the heuristic, identify at least two types of ethical problems raised by this scenario.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">7. Identify ethical and legal principles or advice on the website of the professional association in your field (if necessary, ask one of your professors for help). How does this information compare to the STC code of ethics, and how could you account for any diferences? What types of obligations, ideals, and consequences are emphasized, and what seems to be missing?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">8. What types of ethical principles are embedded in the student code of conduct at your university? Should these be followed to the same degree in all student situations? Why or why not?</span></div>
+</section>
+<section id="scott-sec-notes" class="sec-block">
+<h2 class="sec-heading">Notes</h2>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">1. The scenario discussed in this chapter is fictional. Any resemblance to actual companies, products, or situations is unintended and coincidental.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">2. See Helyar 1992 and chapter g of Markel 2001 for more on the legal duty to instruct andwarn.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">3. See chapter 11 of Markel 2001 and chapter 5 of Allen and Voss 1997 for more about intellectual propertylaws andprinciples.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">4. See the full STC code on the web at http://www.stc.org/pFiles/pdf/EthicalPrinciples 3pd-</span></div>
+</section>
+<section id="scott-sec-citations" class="sec-block">
+<h2 class="sec-heading">Works Cited</h2>
+<p>Allen, Lori, and Dan Voss. 1997. Ethics in Technical Communication: Shades of Grey. New York: John Wiley and Sons. Allen, Nancy. 1996. &quot;Ethics and Visual Rhetoric: Seeing&#x27;s Not Believing Anymore.&quot; Technical Communication Quarterly 5 (j): 87-105. Anson, Chris M., and L. Lec Forsberg. 19go. &quot;Moving beyond the Academic Community: Bowdon, Melody Anne. 1999. &quot;An Ethic of Action: Specifie Feminism, Service Learning. and Technical Communication.&quot; PhD diss., University of Arizona. Dombrowski, Paul. 2000.Ethics in Technical Communication. Boston: Allyn and Bacon. Dragga, Sam. 1996. &quot;Is This Ethical?&#x27; A Survey of Opinion on Principles and Practices of Document Design.&quot; Technical Communication 43 (3): 255-265. Helyar, Pamela S. 1992. &quot;Products Liability: Mceting Legal Standards for Adequate Instructions.&quot; Journal of Technical Writing and Communication 22 (2): 125-147. Herrington, Tyanna K. 2o03.A Legal Primer for the Digital Age. New York: Pearson.</p>
+<div class="page-marker-row"><span class="page-chip" id="p-236" onclick="copyPageAnchor('p-236')" title="Original Book Page 236 • Click to copy link">Page 236</span></div>
+<p>Johnson, Robert R. 1998. User-Centered Technology: A Rhetorical Theory for Computers and OtherMundaneArtifacts.Albany:SUNYPress. Markel, Mike. 2ooi. Ethics in Technical Communication: A Critique and Synthesis. Westport, CT:Ablex. Ostwald, Martin. 1969. Nomos and the Beginnings of the Athenian Democracy. Oxford: Clarendon Press. Porter, James E. 1993. &quot;Developing a Postmodern Ethics of Rhetoric and Composition.&quot; In Defining the New Rhetorics, edited by Theresa Enos and Stuart C. Brown, 207-226. Newbury Park, CA: Sage.</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">1998. Rhetorical Ethics and Internetworked Writing. Greenwich, CT: Ablex. Ruggerio, Vincent Ryan. 1997. Thinking Critically about Ethical Issues. ath ed. Mountain View, CA: Mayfield. Methodology.&quot; Technical Communication Quarterly 10 (3): 273-290. Scott, J. Blake. 1995. &quot;Sophistic Ethics in the Technical Writing Classroom: Teaching Nomos, Deliberation, and Action.&quot; Technical Communication Quarterly 4 (2): 187-199. -.2oo4.&quot;Tracking Rapid HIV Testing through the Cultural Circuit: Implications for Technical Communication.&quot;Journal of Business and Technical Communication 18 (2): 198-219. Simmons, W. Michele. 2oo7. Participation and Power: Civic Discourse in Envirormental Policy Decisions.Albany:SUNYPress. Slack, Jennifer Darryl, David James Miller, and Jeffrey Doak. 1993. &quot;The Technical Communicator as Author: Meaning, Power, Authority&quot; Journal of Business and Technical Communication 7(i):12-36. Sullivan, Patricia, and James E. Porter. 1997. Opening Spaces: Writing Technotogies and Critical Research Practices. Greenwich, CT: Ablex. Tognazzini, Bruce. 2001. &quot;The Butterfly Ballot: Anatomy of a Disaster&quot; AskTog: Interaction Design Solutionsfor the RealWorld.http:/www.asktog.com/columns/ 042ButterflyBallot.html.Accessed July 2011.</span></div>
+</section>
+                    </div>
+                </article>
+
+                <!-- PORTER CHAPTER -->
+                <article class="chapter-view" id="chapter-porter">
+                    <div class="chapter-header">
+                        <div class="chapter-supertitle">
+                            <span class="chapter-number-badge">CHAPTER 5</span>
+                            <span class="page-range-badge">Pages 125–145</span>
+                        </div>
+                        <h1 class="chapter-title">How Can Rhetoric Theory Inform the Practice of Technical Communication?</h1>
+                        <div class="chapter-author-card">
+                            <div class="author-avatar">JP</div>
+                            <div class="author-info">
+                                <h4>James E. Porter</h4>
+                                <p>Miami University • Rhetoric &amp; Professional Communication</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chapter-body">
+                        <section id="porter-sec-intro" class="sec-block">
+<h2 class="sec-heading">Chapter Overview &amp; Summary</h2>
+<div class="page-marker-row"><span class="page-chip" id="p-125" onclick="copyPageAnchor('p-125')" title="Original Book Page 125 • Click to copy link">Page 125</span></div>
+<p>of Technical Communication? SuMMARY This chapter examines the role of rhetaric theory in technicai communi catiun. what does rhetoric theory dn? How does it hclp technical communicators do their work, what vulue does it add, what is its usefulness? While theory is often viewed as an academic pursuit without practical value in the real world of work, this chapter argues that theory is an indispensable tool for the technical communicator. However, the usefulness of rhetoric theory depends on how it is applied. This chapter defines theury: then considers the role of rhetoric theory in technical communication; and fnally presents one example of a rhetolic theory (highlighting different views of writing), showing how that. theory can be usefully applied to the work of technical communicators. InTRoDUCTIon Max is a technical communicator working on a development team for a software cumpany developing applications for web-based social media. His jnh is to write and test online user docurmnentation. So ne wears two functional hats: he serves as both documenrarion writer and usability specialist.1 Max is having trouble with a piece of docuncntation he has written and is currently testing, aimed at helping users register and then set their preferences for a new application. Using an iterative usability testing Inodel, he tests it, the new users continue to havc problerns. He durifully fixes the errors in the documentatior, takes the revised documentation to the next set of users, ant then encounters more problems (new ones). Through each round of testing and document revision, he adds mare language and diagrams and providcs more thorough explanations to help users understand the various functions and features. Nothing seems tn work. Max gets frustrated, and decides that users just don&#x27;t get it.&quot; We could characterize Max&#x27;s problent hcre as the problem of instru-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-126" onclick="copyPageAnchor('p-126')" title="Original Book Page 126 • Click to copy link">Page 126</span></div>
+<p>Inentalism; that is, he relies on a linear theory, a trarsmission model of communication, that views documents as message transmitters: docuity,&quot; an ideal narrative about how new uscrs should set up their accounts. The users must first comprehend that reality and then enact the steps to successfully complete a task. When the transmission fails to work, the answer, Max feels, lies in adding more language or more clarification of existing language-&quot;climinating noise&quot; from the viewpoint of the sha nnonWeaver model.2 So Max focuses on the documetit, on getting che language just right and making sure the language accurately and completely reflects the reality of the procedurc, That stil doesn&#x27;t work. This model or theory of communication is so deeply embedded in Max&#x27;s thinking that he cannot think himself out of this bax.? Would theory help solve Max&#x27;s problem? Well, he already has a theory. but the probiem is that he doesn&#x27;t see it; it is, fur Max, simply eality, &quot;the way things aic,&quot; rather than one framework of many for explaining communication. What Max needs is an explicit self-consriouslless of theory (his own), an ability to eritique theories (to understand their strengths and limitations), and somc understanding of alternative theories and of liow to apply them to solve problems. He needs tu do some thearizing, in other words, to examine alternative modelis of communication, multiple methods for usability, and, surely, to develop a more rohust notion of audience. For cxample, if he were to cxplore alternative methods of usability. he might become aware of the document-centeredness of his approach. He should think about the document less and the audience more. Methodologically, he might scrap the document altogether and try a different approach foceused more on understanding users (e.g-, contextual inquriry. starting out by learning more about the users themselves and what heip they need to do their work). Such an approach might help praduct dcof the procedures? Rather than focusing so intently on the document as the answer to this problem, Max needs to think more broadly about the entirc rhetorical context: about the relationship berween the technology, the interfacc, the user help, and rcal users&#x27; needs. In other words, Max needs a better theory. Now, the word theary carries immense negative baggage outside the academic world: it means abstruse jargon-ridden academic blather. It is abstract, idealistic, speculative -the antithesis of what the pragmatic, scientific, empirically minded, precise technical communicator-in-the-workplace wants to be doing. Thcorizing is not for real people working on practical issues in the dog-eat-dog world</p>
+<div class="page-marker-row"><span class="page-chip" id="p-127" onclick="copyPageAnchor('p-127')" title="Original Book Page 127 • Click to copy link">Page 127</span></div>
+<p>of business, engineering, and IT development. Imagine Rrdin&#x27;s statue The Thinker: theorists sit and pondcr. They waste time. They don&#x27;t perform useful or productive action in the world. In technical communication, theory is often portrayed as counter to engages in (see Sullivari and Porter 1993, 221). The debate pops up repeatedly in technical communication publications. (See discussion question 3 for some examples.) The theory versuts praetice yuestion has been an ongoing, perhaps even defining, tcnsion in the feld. What value does theory, particularly rhctoric: theory, add to technical rommunication? That has long heen a serious question for lechnical communication. in this chapter, I consider how one type of theory, rhetoric theory, significantly informs the practice of technical communication-so you can? see where l stand in this debate. My discussion examines how theory works to build knowledge and to solve problems in tcchnical communication. This chapter will not be summarizing or nvering all the rhetoric theories that you necd to know, but rather my purpose is to provide a briet literalure rtview explaining what thenry is and dischissing how rhetoric theory can be useful fur technical cotnrtnication; : to offer one sample heuristic that highlights different vicws of writing; and to provide an extended exalriple of how this heuristic might work in a particular lecl nicul communication context. What is theory? Theory is oftcn understood as abstract philosophical musing- Jacques Derrida, Michel Foucault, Judith Butler, Donna Haraway-thesc are all well-known academic theorists whose writing is ahstract and speculative, barely comprehensible to most, lnnecessarily verbose it seems, without much apparent reference to actions, tyents, or phenomena in the world. But what exactly is theory? Convcrsationally, a theory is simply a speculative idea lhat sontone has: &quot;I have a theory about why that garbage is on rhe kitchcn floor . . . aha, the dogt&quot; This sense of thenry aligns with the theory about this blog interface is that the instructions for creating new pages are unclear: users will have problemis creating new pages in their blog space.&quot; Theory can mean a yet-to-be-confirmed question, hypothesis. or possibility. This meaning is, irotically, the opposite of annther definition of the-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-128" onclick="copyPageAnchor('p-128')" title="Original Book Page 128 • Click to copy link">Page 128</span></div>
+<p>ory: the scientific natian of theory as a well-establishcd, even proven axdiscusses thesc two senses of the word: theorj, first, as a scientifically true proposition, true in the sense of verifiable through inductive ohservation (e-g., Einstein&#x27;s theory of gravitation), versus a less empirically verifiable notion of theay as an ovcrall system for understanding humaf behavior (e.g., Marxist theory or Freudian theory). In A Brief History of Time (1996, 1o), Stephen Hawking further describes the scientific notion of theory: &quot;A theory is a good theory if it satisfies two tequitements. It rnust accurately describe a large class of observations on the basis of a model that contains only a few arbitrary elenents, and it must make definite prcdictions about the results of future observations.&quot; Theony in this sense means a principle that has universal or nearly universal explanatory and predictive power; it operates as a truth. But therc is yet a third sense of theory--more a rhetorical and humanistic notion of thcory as a conceptual framework, a map, or a lens that provides us a way of looking at the world. we all have these conceptual maps in our heads, and they are usefui insofar as they help us navigatc our lives and solve problems. However, these conceptual maps can also become ruts-as the Max scenario illustrates. These conceptual maps can blind us if one way of seeing the worid becomes the aniy way of seeing the world. Hence the usefulness of theorizing as an activity: theorizing, or reflecting critically about the strengths and weaknesses af various theories, giving us new ways of seeing. This metaphor of theory as &quot;framework&quot; recalls Kenneth Burkc&#x27;s (1966) notion of a &quot;terministic screen, which he describes in photographic terns as a kind of &quot;color filter&quot; that influenues one&#x27;s perception (45-56). To excmplify, he cites three different descriptions of infant hehavior, one by a bchavioral psyrhologist, one by a social psychologist, and one by a medieval theologian (st. Augustine). All three analysts are observing and describing the same infant behaviors ot &quot;instinctual responscs&quot;* (erying, smiling, sucking, clinging, followingl, yer because each analyst has a different methodological frame, each derives different kinds of knowleige about infant behavior. The behaviorist focuses on causation: how certain stimuli produced predictable effects in infants. The social psychologist sees the baby&#x27;s behavior fundamentally from a social frame of reference. focusing on the behaviors as guided by the relationship between mother and child. St. Augustine sees the infant behavior as fundamentally expressive af a relationship between child and God (48-49). According to Burke, &quot;All three terminologies [rerministic screens] . . . direct the attention dif-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-129" onclick="copyPageAnchor('p-129')" title="Original Book Page 129 • Click to copy link">Page 129</span></div>
+<p>ferently, and thus lead to a correspondingly different quality of abservations&quot; (49]. You can scc how different theoretical frameworks alsp influence pera comnunication medium or a puhlishing space akin to a library. Othcrs scc thu Internet as a place, a community or home or culture, an environment in which people live and inove and interact. That metaphoric rdistinctian--a theory distinction --matters in terms of issues such as privacy, research ethics, and intellectual property. If we view the Internet as space for storing published work, like a library or a vast database, then publicly available far research purposes. If, however, we sce the Intcrnet as a place where people interact socially-more like a street cafe (which versation at a tablej-then we might be inclined toward a different ethit, viewing sone marerial an the Internct as &quot;private&quot; even if it is possible to access it and download it. Think ot theury, then, as a kind color flter that yo use, that you must usc, in order to carmprehend and analyze human behaviors, social events. or texts. The abiity to self-reflect and to articulate your particular rhenretical filter-to identify it, to critique it, to understand its strengths and Jinitations, and to imagine alternatives-is the aclivity of thneorizilng. Don&#x27;t underestimate the value af thcory and of theorizing to your work: theory itselr is essential to technical communicators, and theotetiral selfawarcncss, an ability to theorize, is a considerahle strength. As jonathan Culler (1997, 14) tdlescribes theory, it has several distinctive characteristics:</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">1. Theory is interdisciplinary --discourse with effects outside an original discipline.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">2. Theory is analytical and speculative-an attemipt to work out what is involved in what we call sex or languagc or writing or Ineaning ur the subject.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">3. Theory is a critique of comman sense, of cancepts taken as natural.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">4. Theory is reflexive, thinking about thinking, inquiry into the categaries wc usc in making sense of things, in literature and in atherdiscursive practices. In Culler&#x27;s third paint, theory as the critiquc of common sense, theWhen Burke (1966, 44-45) notices that there are two different views of lan-</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-130" onclick="copyPageAnchor('p-130')" title="Original Book Page 130 • Click to copy link">Page 130</span></div>
+<p>guage use-scientistic and dramatistic. - he is complicating our notions of language, litcracy, and reading. He is making two things out of what we thought was one thing. Is this a violation of Occam&#x27;s razor, a philosophical priniciple that insists that we shouid keep things as clear and as simplc as possible? Well, sometimcs simplicity causes problems rather than solves them. Cormpicate anly when doing so serves the purpose of providing a better tool for analysis and problcm solving. The test of any theory is its usefulness and productivity, whether the complexity helps us in sornt way: increases our understanding of a situation, helps us solve a problem, or allows us to generate new knowledge. What does theory do? It attenipts to arrive at knowledge or understanding by questioning, critiquing, and problematizing something that we normally think or do.-&quot;the critique of common sense,&quot; in Culler&#x27;s terminology. It uncovers something hidden or at least underappreciated, calls attention to it, and says, This is important to thinking about this topic ur question. It provides a distinctive point of vicw, a lens or fiter, that helps us understand people, actions, texts, events. Theory should havc heuristic and explanatory power: that is, it should help you to do things, it should help you to see things in a different way, it should enablc you to produce things . .. findings, conclusions, recommendations that have a real effect--an action--in the worid. You can&#x27;t do very much useful work-basically none-as a technical communicator without theory. If you are running a usability test, you need a theory of usability method to guide how you desigr your study, collaboratively on a team to design a content managemcnt system (CMs) for your company, you nced a theory of collaboration and teamwurk that guidles how you work with others, and you need a theory about the design of interfaces and systems that guides your development of the CMs product. It also helps to understand the power and usefulness of countertheories and muliple theories in solving problems. Theory in this sense is not abstract and useless, but rather it is the fundamental and necessary principles guiding your work as a technical communicator. HOW DOEs THEORY WORK In TECHNICaL ComMuNICaTIOn? Let us take a detailed look at one particular theoretical statement in the feld of technical communication, a well-known and highly regarded of Usability&quot; published in 1989 in the journal iFEE Transuctions on Professional Communication.4 In this article, Sullivan is not reporting on a usability study she herself</p>
+<div class="page-marker-row"><span class="page-chip" id="p-131" onclick="copyPageAnchor('p-131')" title="Original Book Page 131 • Click to copy link">Page 131</span></div>
+<p>conducted. Rather, she is speculating more broadly on the overall methodology uf usability. she is doing what is called meta-analysis  that is, analyzing others&#x27; usability studies according to a particular framework for organizing and evaluating those studies. It is also important to nute that underlying Sullivan&#x27;s theory of usability is a cunsidctablc atnount of practical experiential knowlcdgc about usability: Sullivan has consulted with corporatt usability departments, and she has conducted her own usability studies-although the primary purpasc: of hcr ig8g articlc is not to share or describe her own research, and that research experience is not explicitly evident in the article itself. She has also read a lot of usability research-and that extensive reading is cvident in the article. Sullivan notices thar different disciplinary groups usc diffcrcnt approaches, or filters, for conducting usability tesearch: &quot;Psychologists and engineers in human-computer interaction typically use experiments and case studies to study the usability of interfaces and systems; sociologists the computing of organizations; marketers typically use interviews and surveys to study consumer preferences; docu nent designcrs, cducational psychologists, and writers in technical conmunication use various exploratory and text-baser methods to study the usahiliry of educational matcrials&quot; (257-254). Sullivan starts by observing that ctifferernt disciplines favor different methods. she next proposes that rcscarchcis do not restrict themselves to methods from their own disciplines, hut rather lank outside their disciplines to methods that are surited to the research qucstions and contexts they are examining. Table 5.1 shows available usability methods taken from Sullivan&#x27;s 198g article. This table is a heuristic, that is, a generative framework listing rhe various methods uscd in usability research and evaluating those methods in tcrms of the quality of information they provide about yarious usability metrics, such as accuracy and satisfaetion. This table is a piece of theory-a tahuiar presentation of a verbal narrative that aligns usability methods (listed vertically in the lef-hand column) with usability metrics (listed horizontally across the top of the table). With this tahle, Sullivan is bringing rhetarir theory to usability studies by emphasizing the importance of context to usability rcsearch design. This table presents in digested format a good deal of information, but it also nakes an argument based an Sullivan&#x27;s practical experience. The table prcscnts theoretical and abstract information, but it also references particular usability studies that are discussed elscwhcre in the article (the numbers in brackets represent references in Sullivan&#x27;s articlej. The purpose of this theory is to encoulage usability tesearchers to think beyond</p>
+<div class="page-marker-row"><span class="page-chip" id="p-132" onclick="copyPageAnchor('p-132')" title="Original Book Page 132 • Click to copy link">Page 132</span></div>
+
+            <div class="table-container card-accent-teal">
+                <div class="table-caption">
+                    <span class="badge badge-teal">Table 5.1</span>
+                    <strong>Various evaluation methods' strengths for yielding information about documentation quality</strong>
+                </div>
+                <div class="table-responsive">
+                    <table class="academic-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Placement<br><small>(of text on page)</small></th>
+                                <th>Accuracy<br><small>(of information)</small></th>
+                                <th>Level of explanation<br><small>(whether explains what users need)</small></th>
+                                <th>Style<br><small>(appropriateness)</small></th>
+                                <th>Satisfaction<br><small>(user response)</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-group-header"><td colspan="6">Direct questioning</td></tr>
+                            <tr><td>Surveys</td><td>—</td><td>—</td><td><span class="rating rating-may">may</span></td><td>—</td><td><span class="rating rating-good">good</span></td></tr>
+                            <tr><td>Interviews</td><td>—</td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-may">may</span></td><td>—</td><td><span class="rating rating-good">good</span></td></tr>
+                            <tr><td>Comprehension tests [21]</td><td>—</td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-good">good</span></td><td>—</td><td>—</td></tr>
+                            
+                            <tr class="table-group-header"><td colspan="6">Observation</td></tr>
+                            <tr><td>Informal observation [22, 23]</td><td><span class="rating rating-good">good</span></td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-good">good</span></td><td>—</td><td><span class="rating rating-may">may</span></td></tr>
+                            <tr><td>Lab observation [24, 25]</td><td><span class="rating rating-good">good</span></td><td><span class="rating rating-good">good</span></td><td><span class="rating rating-may">may</span></td><td>—</td><td>—</td></tr>
+                            <tr><td>User protocols [26]</td><td><span class="rating rating-good">good</span></td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-good">good</span></td><td>—</td><td><span class="rating rating-may">may</span></td></tr>
+                            <tr><td>Reading protocols [26]</td><td>—</td><td>—</td><td><span class="rating rating-good">good</span></td><td><span class="rating rating-good">good</span></td><td><span class="rating rating-may">may</span></td></tr>
+                            <tr><td>Keystroke records</td><td>—</td><td><span class="rating rating-good">good</span></td><td>—</td><td>—</td><td>—</td></tr>
+                            
+                            <tr class="table-group-header"><td colspan="6">More traditional evaluation</td></tr>
+                            <tr><td>Computer text analysis</td><td>—</td><td>—</td><td>—</td><td><span class="rating rating-good">good</span></td><td>—</td></tr>
+                            <tr><td>Editorial review [28]</td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-may">may</span></td><td><span class="rating rating-good">good</span></td><td>—</td></tr>
+                            <tr><td>Technical review [29]</td><td>—</td><td><span class="rating rating-good">good</span></td><td>—</td><td>—</td><td>—</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <p><em>Source:</em> Sullivan 1989, 260.</p>
+                    <p><em>Note:</em> Numbers in brackets (Methods column) represent references in the original publication.</p>
+                </div>
+            </div>
+            
+<p>Levet of (whether explains (user (appropriwhat Accurat.y (of (s:f text on response! atenessj users need) informatian) [age] Method Direct questioning may goon Aeul may Irlerviews good may may may good may poo? good may may gocd may goad good good Moretraditionaievaluation Corrputer text analysis good may may poo Note: Numbers in brackets (Methods cciumn) reprcsent references in the original publicalion. their disciplinary preferences and empioy a broader repertoire of methods useful to solring various usability problems. Sullivan&#x27;s analysis is also a ctitique of how usability studics, in 1989, had drifted into a kind of monomcthodological mind-set, seeing the work of usability as consisting nf one primary type of method: testing finished documentation, in a lab setting, at the end of the docunentation design yclc. (This is of course Max&#x27;s approach to usability.) According to Johnson, Salvo, and Zoetewey (2007, 320), &quot;ullivan was among the first to acknowledge that usability testing is weakened when confined to validating all-but-finished documentation&quot; and that &quot;end-of-developmcnt usability Fails to capture important user input that can be of great value earlier in the design cycle.&quot; Sullivan is suggesting that usability has drifted into defining itseif too much in terms of methods and not enough in terms of inquiry purposes: that is, focusing too much on the what (the method), not</p>
+<div class="page-marker-row"><span class="page-chip" id="p-133" onclick="copyPageAnchor('p-133')" title="Original Book Page 133 • Click to copy link">Page 133</span></div>
+<p>enough on the why (why arc we conducting a usability study?). So she is critiquing the feld, but not in a harsh sense. Rather, she is circumspectly pointing out a limitation in the field&#x27;s approach and recommending a differcnt approach, visually represented in the heuristic table she provides. Would this lkind of usability thcory ever show up in a corporate usability rcport? It is unlikely that extensive theorizing would show upthat&#x27;s just not tolerated in corporate reports (too much abstraction and verbiage). But I can imagine a report including a citation to Sullivan&#x27;s work, perhaps even a brief summary or quotarion. [ can imagine usability specialists using Sullivan&#x27;s heuristic table to guide their decisions ahout rescarch design for a planned usability study, or to teach usability methods to new hires, or to argue to their clients for the validity of a certain methodological approach to a usability study. If your clients are progran developers who think that lab tests are the only valid method for usability research, thcil you will nced to make the argumcnt that lab tests are good for answering some research questions, but not so goud for others. In their 2o07 article. Johnson, Salvo, and Zaetewey provide a retrospettive on Sullivan&#x27;s 198g article. Fron a vantage point twenty years later, they sce the same problenis that Sullivan identified persisting in usability research. They provide yet unother theoretical lens, thcorizing the problem as bcing that usability occupies an uncasy space between two culturesusability as science versus usability as art (Johnson, Salvo, and Zoctewey 2007, 323]. The art part is messicr, as it involves the complex thetorical variable of users, audiences, pcople-and, as we all know, the variability of audiences poses quite a challengc fox rhetoric. To win recognition and respect in the workplacc, tisability nccds to be scientific, to an cxtent even positivisticthat. is the seientific paradigm that persuadcs cngineers and computer scientists. But. to be valid as a methodology, and to bc true to its primary mission, usability needs to funcetion also as an art. This binary tension -a theoretical framewark-helps explain many of the challengcs that usability specialists face. Usability ilself, as a field, has to address two those audiences (Johnson, Salvo, and Zoetewey 2o07, 328). Such thcoretical discussion --Sullivan&#x27;s (1989) original piccc and Johnson, Salvo, and Zoetewey&#x27;s (2o07) responsc to it-js abstract to be sure, but it has prartical implications for usability education and workplace practice. Taking &quot;a broad view&quot; toward usability means that you shouldn&#x27;t get comfortable with one method but that you need to develop a hroad repcrtuire of usability methods and understand how different methods apply to different research questions, different products, different audi-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-134" onclick="copyPageAnchor('p-134')" title="Original Book Page 134 • Click to copy link">Page 134</span></div>
+<p>ences, A &quot;one size fits all&quot; approach limits choices and problem-solving potential. Even though Sullivan&#x27;s article is now over thirty years old, it still does good theory work, is still relevant to usability studies. Sometimes researchers build a new thcory rather than work with existing theories, particularly when existing theories are not adequate to the task at hand, In a research articlc puhlished in Technical Communication Quarteriy in 2oo6, Huatong Sun does precisely this. On ane level, Sun&#x27;s article is a simplc research report. She conducted a comparative case study uf users using nobile messaging technology in two different locations: Albany, New York, in the United States, and the Hangzhou region of zhejiang province, China. The purpose of the study was to determine, first. if users in different cultures would employ text messaging in differcnt ways-and, if so, what would be the implications of this finding for design of fT products, particularly mobile technology interfaces. Before collecting her data, howevcr, Sun recognized that she had to develop a framework for understanding the scene for her users&#x27; actions; she needed a robust definition of culture that would take into account both the sense of &quot;dominant cultural values in a national culture&quot; and the sense of &quot;complexities of local contexts&quot; and &quot;subgroup culture (c.g., age group, gcnder, and organizational affliation)&quot; (4ho). In other words, Sun recognized the need to develop a complex notion of culturc that would avoid gross generalities and that would, rather, take into aecouni the many ways and levels on which culture operates. A significant portion of Sun&#x27;s article (459-466) is allocated to building a theory of cultural usability that would serve as the lens or perspective through which she observed her users behaviors. She built hcr theory by synthesizing and critiquing others&#x27; notions of culture. Her &quot;new framework integrates key concepts and methods from activity theory, genre theory, and British cultural studies&quot; (4bi). What resulted from this analysis was a tablc and an accompanying diagram (Sun 2006, 465) that cnnstitutes a model for cultural usability, a model.that Sun then used as the framework guiding data collection and analysis for her study. than would be possible without it. she sees, for instance, that her users live in a variety of cultures, not only in a broad national culture (China, the United Statesj but also in lacal cultures of work and recreation and social/ personal networks of friends and family. One key finding from the analyof concrete use activities in local contexts while considering cultural and structuring factors&quot; (477). In other words, a monalithic and macrounderstanding of culture is not suffcient to explain how useis engage and</p>
+<div class="page-marker-row"><span class="page-chip" id="p-135" onclick="copyPageAnchor('p-135')" title="Original Book Page 135 • Click to copy link">Page 135</span></div>
+<p>interact with technology, The older notion of culture as an isolated and distinctly different national identity (e.g., &quot;Chinese culture&quot;) is not a viable model for understanding the design and use of digital technologies. These two examples-Sullivan, Sun--also show us the importance of seeing theory as a conversation. Rather than seeing thcory as the isolated and autonomvus statement of a great thinker, see it as a conversatiun among reflcctive thin king professionals who are collaboratively and intertextually warking together, discussing irleas, sometimes across time and space to develop useful frameworks and systcms. That is why it is often difficult to read one piece of theory with full comprehension, because to understand a theory usually requires significant awarencss of prior context: it helps to be familiar with the previous conversation that has led up to that one piece of theary. These uscs of theory serve a heuristic purpose and are thus a form of rhetorical invention. In classical Roman rhetoric, inventio was one of the five key canons of the art of rhetoric (along with arrangement, style, memory, and delivery). To promote invention, classical rhetoricians deveioped heuristics-that is, procedures for prompting and devekoping idcas, arguments, and content for discourse (sec Lauer 2004, H- 9). Heuristics are open-ended questions, prompts, categories, memoty devices, and/or visual grids-such as Sullivan&#x27;s table on usabitity, Sun&#x27;s frainewurk for understanding culture, and Stuart Selber&#x27;s (2004, 25) &quot;conceptul landscape&quot; table that identifies multiple types of computer literacy. Such heuristics aid thinking, discovery, deliberation, research, and design.</p>
+</section>
+<section id="porter-sec-heuristic" class="sec-block">
+<h2 class="sec-heading">A Heuristic for Technical Communication (DEPAA)</h2>
+<p>Let us examine one very simple piece of rhetoric thenry-about views of writing--and its accompanying heuristic to see how viewing theory communicatars. Writing is a deceptively simple term. We all know what it means, we use Like the terms culture andl audience, the word has a wide varicty of meanings. It helps to view writing heuristically from four different perspectives:</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">Writing as product or document: This is the traditional formalist view thal sees writing as &quot;words on the page,&quot; that views the lext as a product, as a formal artifact that you produce following certain genre conventions (a memo, a report, a website, an online user hclp forum). Writing as seff This perspective sces a piece of writing as an expres-</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-136" onclick="copyPageAnchor('p-136')" title="Original Book Page 136 • Click to copy link">Page 136</span></div>
+<p>sion or extension of an author/writer -either the jindividual, the team, or the collective group, and often all of the above-what we sometimes call ethos.</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">Writing as process: This is a dynarmnic view of writing as the process of composing, as a process that can inelude inquiry and research as well as collaboration with others. It also includcs downstream receptiun and interaction, the ways in which readcrs and users interact with a document and, perhaps, provide feedback to devclopers. + Writing as action conducted for the bcnefit of some audtence: This is the performative perspective that focuses on what writing does. on the effects the writing has on its intended audlience. Technical communication has traditionally been defined primarily by the product or document perspertive, that is, with the emphasis being From that perspective, technical communicators have heen, primarily. producers of instructional manuals, then computer documentation, then online user hclp, and finally designers of websites, content management systens, and user help foruns. Thanks in part to the influence of the field of rhetoric/composition and to empirical rcsearch on workplace practiccs (aka &quot;workplace research&quot;), the Hield of technical communication has moved toward thinking more about process, action, and reception. Usability research is nf course predominantly focused on questions of reception and interaction: How effcctively will documents work with their intended audiences? Technical wummunication has never focused all that much on the expressive function. But the field has always acknowledged that all writing creates an ethos or identity. an image of the author. For most organizational writing, the author identity is usually not an individual writer but a collective identity. This itientity is often constructed through graphic means-for example, the logo, the website design, the prorluct hranding. Companies are flocking now toward an identity of being &quot;grcen,&quot; because? that helps develop an ethos of civic responsibility. Ethos in this sense is corporate image. But even internally, all writing has an ethus: for instance, a usability scientifie&quot; in order to convince programmers and designers to heed the results of usability testing--and usability researchers must fashion their usability reports in order to convey their allegiance to quantitative</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-137" onclick="copyPageAnchor('p-137')" title="Original Book Page 137 • Click to copy link">Page 137</span></div>
+<p>Ethos Process Action! Audience Document Figure 5.1. Four views af writing (t - time) measures of validity. If I am a new employee writing memos and reports to my supervisor, then I will take a great deal of care with my first writing on the job, because those writings will play a large part in constructing guage use? Am I attentive to detail? Are my conclusions and recommendaexaggeration and overstatement, carelessly imprecise phrasings)? Read. ers will make judgments about me, and about the quality of miy thinking and my character, based on the writing I produce. The ethos of a piece of wriling--the character that writing displays --says something ahout the To simplify this heuristic, let us abbreviate it as DEPAA. (Depn is a Sanskrit word rmeaning &quot;lamp,&#x27; indeed an appropriate acronym for a heuristic.] See figure 5.1 for a diagrum of the heuristic. How might this simple heuristic apply to the work of the technical curntexi, a docurment, or a product, that perspective can sometimes be powerful, but it can also lcad us to takc a limitcdl vicw of our rale in the communication process. Let&#x27;s say that we are given the assignment to construct a content management system as a way for an organizatian to producr and distribute infofrmnation internaily in tle organization. That&#x27;s an assignment that asks us to takc a product vicw: produce a document --jn this case an online system for document management. If we alrcady think that way, we can happily go of and create a product that we think will do the demic assignments are often pitched: Write an essay. Create a website. Produce a report. Conduct a usability test. These are all assignments that focus on ptoduct and genre anti hence take a dorument perspertive. If we apply a slightly different thcorctical Iens to the task, however, we posed to accomplish? what is the desired outcome for the content managemenl system? Or backing up a bit more: What is the problem we&#x27;re</p>
+
+                <div class="figure-container card-accent-mauve">
+                    <div class="figure-caption">
+                        <span class="badge badge-mauve">Figure 5.1</span>
+                        <strong>Four views of writing (t = time) — The DEPAA Heuristic</strong>
+                    </div>
+                    <div class="figure-svg-wrapper">
+                        <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" class="depaa-diagram">
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#b4befe" />
+                                </marker>
+                                <marker id="arrow-mauve" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#cba6f7" />
+                                </marker>
+                            </defs>
+                            <!-- Background card -->
+                            <rect x="10" y="10" width="680" height="220" rx="12" fill="#181825" stroke="#313244" stroke-width="1.5" />
+                            
+                            <!-- Process Arrow -->
+                            <path d="M 60 120 L 260 120" stroke="#b4befe" stroke-width="3" marker-end="url(#arrow)" />
+                            <text x="140" y="100" fill="#b4befe" font-family="system-ui, sans-serif" font-weight="700" font-size="16" text-anchor="middle">Process</text>
+                            <text x="70" y="145" fill="#a6adc8" font-family="system-ui, sans-serif" font-size="14" font-weight="600">t (time) ➔</text>
+                            
+                            <!-- Document Icon / Node -->
+                            <g transform="translate(270, 60)">
+                                <rect x="0" y="0" width="100" height="120" rx="6" fill="#313244" stroke="#89b4fa" stroke-width="2" />
+                                <line x1="20" y1="30" x2="80" y2="30" stroke="#89b4fa" stroke-width="2" stroke-linecap="round" />
+                                <line x1="20" y1="50" x2="80" y2="50" stroke="#89b4fa" stroke-width="2" stroke-linecap="round" />
+                                <line x1="20" y1="70" x2="80" y2="70" stroke="#89b4fa" stroke-width="2" stroke-linecap="round" />
+                                <line x1="20" y1="90" x2="60" y2="90" stroke="#89b4fa" stroke-width="2" stroke-linecap="round" />
+                                <text x="50" y="140" fill="#89b4fa" font-family="system-ui, sans-serif" font-weight="700" font-size="15" text-anchor="middle">Document</text>
+                            </g>
+                            
+                            <!-- Ethos Arrow (Up-Right) -->
+                            <path d="M 380 90 L 490 50" stroke="#cba6f7" stroke-width="3" marker-end="url(#arrow-mauve)" />
+                            <text x="545" y="45" fill="#cba6f7" font-family="system-ui, sans-serif" font-weight="700" font-size="16" text-anchor="middle">Ethos (Self)</text>
+                            
+                            <!-- Action / Audience Arrow (Straight Right) -->
+                            <path d="M 380 130 L 490 130" stroke="#a6e3a1" stroke-width="3" marker-end="url(#arrow)" />
+                            <text x="575" y="125" fill="#a6e3a1" font-family="system-ui, sans-serif" font-weight="700" font-size="16" text-anchor="middle">Action / Audience</text>
+                            <text x="575" y="145" fill="#9399b2" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle">(Outcomes & Context)</text>
+                        </svg>
+                    </div>
+                </div>
+                
+<div class="page-marker-row"><span class="page-chip" id="p-138" onclick="copyPageAnchor('p-138')" title="Original Book Page 138 • Click to copy link">Page 138</span></div>
+<p>t.rying to solve with this content managemenl. system? These are action or results-oriented questions, What is this system supposed to accomplish? Why-- and, very importantiy, for whom? The why and for whom questions are of course the most basic questions of rhetoric theory: Why are we writing (or communicating)? For what audience? And what effect or outcome are we aiming for? Why--or So what? if we want to put a sardonic spin on it--is a key question that shauld guide all rhetorical events, all writing projects, all document developmcnt. The process of thinking here parallels the kind of thinking applied by Hart-Davidson et al. (zoo8) in their article &quot;Coming to Content Management.&quot; They describe and reflect on two projects involving lwo clients-tht pseudonymous Npo (national professional organization) and Michigan State University Libraries. In their approach to these projects, the team used rhetorical theory heuristically, first to understand the assigned task from a different framework and then to design an approach to the task that would allow them to solve the problem for the client. &quot;Solying the problem for the client&quot; in this circumstance meant, in a sense. questioning or critiquing the assignment as given, challenging the frame in which it was viewed by the client-in a nice way, to be surc-and then cunstructing a different frame that would be more productive, more helpful to the client in the long run. uct oriuntatinn that requires some critical cxploration. You need to hack the client up a hit, and ask: Why do you want a website? What purpose are you trying to accomplish, and for whom? Hart-Davidson ct al. (zoo8) apply this shift in perspective to a very practical problem for their client: How do we design our website to provide useful infornation to our elients and customers? They shift from a typical static, product-oriented notion of content to a dynamic notion of content development: as they phrase it, *Your wehsite is not somcthing you havc, but something you do for, ol even with, your clients/members/customers&quot; [12]. This shift in perspeclive allows Hart-Davidson et ai. to redefine the location of their client&#x27;s problem: the locus of the problem is not the wtiting as document (the website), but rather the writing as process . . . the who and how part (who produces the writing and howj. This shift in the theoretical framework has practical implications for the methodology of solving the problem. Instead of focusing on the content and design af the client&#x27;s current website, Hart-Davidson et al. ended up studying &quot;the roles and workflows of content developers&quot; (zs). In shott, they studied the process, not the product, with the aim of developing a content manage ment system that would maximize the effciency</p>
+<div class="page-marker-row"><span class="page-chip" id="p-139" onclick="copyPageAnchor('p-139')" title="Original Book Page 139 • Click to copy link">Page 139</span></div>
+<p>of content devclopment as well as the usefulness of the conteni for end users. Yes, some of the recommendations for their clients arc product based, but many pertain to work flow and communicatian practices (see pp. 27-29, for example). In short, the solution to the client&#x27;s problem lies in the relationship between proccss and product, not simply in a product or document. Here is an example of where a theory ahout writing-specifically, about writing as composing proccss--helps solve a real-world client problem. An ongoing problem in technical communication is the dunger of drifttoo much attention on the design of products, documcnts, and systems and forgets the human interaction in systems-that is, the prescnee and contrihution of the audience or user. In his work promnting &quot;uscr-ccntered technology,&quot; Robert Johnson (1gg8) most famously reminded us of this problcm in regards to the design of computer documentation. George Pullman and Baotong Gu (20o8) also caution us about the dangers of systemsbased thinking (a kind of product thinking) in regards to the design of content nanagement systems: &quot;Another factor contributing to the diffi. culty of CMs implementation is that most content management systcins take a systems-based approach toward managing conternt/information! knowledge at the cast of considetations for content and user neerls. . . . The very expression content management excludes any idea of writing or communicating and focuses on information independentily of the: people who producc or consume it&quot; (2). The heuristic perspectives af process and action can help us think beyond the more static product orientation.</p>
+</section>
+<section id="porter-sec-extended" class="sec-block">
+<h2 class="sec-heading">Extended Example: Content Management Systems</h2>
+<p>So how might this heuristic help Max, our technical communicator with the usabijlity problem? If Max uses the heuristic critically and imaginatively, it should help him get out of the thinking box that is hlorking his ability to solve the problem. When Sullivan and Porter (1gg7) observed Max&#x27;s behaviors during his usability test scssions, they noticed that he would collect data about his ustrs, but then always turn his attention to the document--adding more clarifying language, fiddting with organization, changing terminology, adding or deleting images, and so forth. In other words, he was focused intently, almost exclusively, on fixing the document, seeing the document as both the source of the usability problem and the means to its solution. His focus was on how accurately and completely the document represented the system that users were try. ing to learn. So we might also say that he was system-centered as well as dorument-centered.</p>
+<div class="page-marker-row"><span class="page-chip" id="p-140" onclick="copyPageAnchor('p-140')" title="Original Book Page 140 • Click to copy link">Page 140</span></div>
+<p>Rhetoric thcory offers several pathis toward solving this problem. First and foremost, a rhetoric-thcory peispective insists, Look at your audience! But Max was looking at his audience, in a way, and that alone wasn&#x27;t helping attention? what if he turned his perspective away from the document and paid more attention to process and to action, as well as to audience, Ieframing the writing task in a completely different way? what if he saw helping the user understand and lcarn to usc a new system? A dramatic shift in perspective might help Max see that the usability prohiem inaybc isn&#x27;t in&quot; the document at all, that maybe the answer lies in a hyhrid soluition-for example, multiple pieces of documentation; user help forum; instructional video; direct classroom training. This is the kind of perspectival shift that Hart-Davidson et al. (20o8) and Pullman and Gu (2oo8) are talking about in their research articles: instead of focusing on the document and the system, focus more on the process, on the work flow that users are engaged in. what can follow fron that shift in perspective is a shift in defining the locus of the problem or need. In Max&#x27;s casc, the need lies in the users--and what is necessary to meeting users&#x27; needs is a deeper understanding af thosc needs in their context of work and use. That perspectival shift should result in Max shifting his focus and his methodology, his entire approach to the task. Instead of fiddling so much with the dacument, he shouid fiddle more with the users: he might. interview them about their work practices (e.g., contextual inquiry interviews), he might ohserve their work practices, he night try to differcntiate among different types of users. Once he understands his users better, and their work practiccs and work flows, then he can hegin to design a soltution to addtess the problem hc is tackling. That solution might or might not involve a document, but it is likely to involve multiple approachcs to solving the problem. ConClusion To bc effective, usable, and useful, rhetoric thcory must prompt and push dceper thinking; it must be powerful in the respect that it enahles you to in a way that decpens your understanding and leads to more productive action. Rhetoric heuristics also need to be simple, memorahle, und portable-transferable across a wide variety of situations and contexts. In this chapter, I have offered one simple heuristic based on rhetoric theory that I think can be useful across a wide range of technical communication contexts, ranging from designing wehsites, to developing con-</p>
+<div class="page-marker-row"><span class="page-chip" id="p-141" onclick="copyPageAnchor('p-141')" title="Original Book Page 141 • Click to copy link">Page 141</span></div>
+<p>tent management systems, to sctting up virtual worlds for corporate training, to producing environmental impact statements, to creating user hclp systems, to designing interfaces, to writing business reports. This heuristic can be used as a tool for production of a new producet or for critique and evaluation of an cxisting product or to design a research study, It can he uscd to diagnose problems or, more strategically and proartively, as a way of thinking about communication products and processes to avoid problems in the first place. Certainly Max needed a heuristic and some theorizing in order to restee his writing situation. Ultimately, Lhe index of a successful theory or hcuristic is that it does useful, valuable work in the world. &quot;There is nothing more practical than a good thcory&quot; [Lewin 1952]. What I have argued in this chapter is that rhetoric theory is indispcnsahte to technical communication, as it pruvides the conceptual framcwork necessary for all work in the field. It guides how technical communicators think about documenls and design; it guidcs thcir view of the writ. ing process; it influences thcir approach to research and methodology: it shapes their interactions with athers, the audiences they arc writing for, the cowriters they are writing with, the clients whom they are representing. Technical communicators who don&#x27;t acknowledge the significance of rhetoric thcory to their practice--or who undercstimate its power or who fail to use it productivcly to deploy its power-are likely caught in a theo. retical framework that they can&#x27;t sce and that is thereforc likely to limit their ability to adapt to changing circunstances in their work. Discussion QuEs&#x27;rIonS</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">1. What diffcrent views of writing have you encountered in your academic spectives--or have they conveyed one consistent view? Ask the same question about yaur own experiences working as a technical comrnunicator or doing client-based projeeis. Be sure to descrihe particular monents, events, or cases that provide evidence of differing vicws of writingandcommunication.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">2. Research the Sharinun-Weaver transmission model of cummunication. What is the model and where daes it come from? How has it been critiqued? Have you ever encountered someone who held to this view of writing and communication? In what ways was that model useful or helpful to this person? (It is, after all, a very powerful model, usefui in many ways.) In what ways was it not useful? Do you find the model helpful?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">3. Examine and report on one of the many instances of a theoty-practice debate in the field af technical communication. (See the list bclow for</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-142" onclick="copyPageAnchor('p-142')" title="Original Book Page 142 • Click to copy link">Page 142</span></div>
+<p>sume possibilities- -or locate another instance af a theory-practice argumncnt.J Be sure to understand the context for the debate. What was the starting point for the debate (if one is identifahie)? What are the issues involved and the main points of contention? Who takes what. positions in the debate and why? Evaluate the arguments that are bcing advanced. What are the claims of various sides? What evidence do advocates provide for theit positions?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">The &quot;Cruel Pies&quot; dcbate in Technical Communication over the ethics of visual representation (Dragga and Voss 20oaa, 200ib, 2003; Hayhoe 2002; Mo0rc 2008; also sce the letters to the editor regarding &quot;Cruel Pies&quot; in Technical Communication, ol. 48, no. 4, 2001, and vol. 49, no. 1, 2002).</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">The debate in the jourmai of Technical Writing and Gommunication nver the mcaning and relevance of Aristotclian ethics to technical communication (Katz 1992, 1993, 2006; Mo0re 2004).</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">4. Using the context providcd in qutslion 3, write a short position statement indicating where you stand on this particular argument-and why. Develop your own respunse contributing to the conversation, imagining that your response will be published as the ncxt installment in tht debate. See Warnick 20o6 for a model demonstrating how such an analysis might work.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">5. Use the DEPAA heuristic as a tool for analyzing a technical communication project that you have workcd on. Think about nat just the dacument itsclf, hut the entire project that led to the creation of the document [or dacuments). Begin by describing a conplex technieal cominunication project you have worked on-- one that involves working for a client, producing multiple documents ovcr a relatively long First, identify the stages of the project, and its distinct deliverables. Analyze your experience uising the DEPAA model as heuristic. How daes applying the heuristic generate different views of the projtcl-- from its starting point to its final nutcome? How does the DEPAA heuristic provide helpful prompts for thinking ahaut the project and understanding its distinct phases, documents, and, possibly, problems? Are thcre important aspects of the prpject that the DEPAA heuristic doesn&#x27;t bring up or emphasize?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">6. Interview a working technical communicator, asking about a problem, issue, or challenge hc or she has encountered while producing a report, developing a website, testing the usability of documentation, designing a new intcrface, and so forth. Listen carefully to the story. Take</span></div>
+<div class="page-marker-row"><span class="page-chip" id="p-143" onclick="copyPageAnchor('p-143')" title="Original Book Page 143 • Click to copy link">Page 143</span></div>
+<p>detailed notes -- perhaps cven audiorecord the interview. Make sure to ask questions abuut the purpuse uf the document and the process by which it was created. Ask the technical communicator to describe the problem (or problems) involved in the task, and how those probicms werc addiresscd or solvcd. How do diffcring views of writing create issues or miscommunication? Do the differing views enable technical communicators to resolve problems?</p>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">7. Read pages 14-29 of Stuart Selher&#x27;s book Multiliteracies fur &amp; Digital Age (2o04). Ir1 particular, stuly the chart he provides on page 25, a heuristic chart highlighting dliffering views toward technology. what character. izes each of these different theories of technology? In what particular ways do these differing vicws result. in different approaches to, for examplc, tcaching technical skills to novicc users?</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">8. Using the context for question 7, indicate where you have seen exAmples af people holding these differing iews of technology --instiuctors you have had in various couises, seminars, or workshpps; team menbers you have collaborated with; or department members, colleagues, and supervisors you have worked with. Are Selber&#x27;s teims uscful for describing dlifferent views of technology... or would yotl make adjustments in thase terms, maybe provide norc or differcnt tetms? Do Selber&#x27;s terms account for, match up with, the views of technology you hold or have yourself encountered in academic or professional experiences?</span></div>
+</section>
+<section id="porter-sec-notes" class="sec-block">
+<h2 class="sec-heading">Notes</h2>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">1. This scenario of Max is based on an aerual case study reported in Sullivan antl Pnrter 1997.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">2. The Shamnun Weaver rdel, a romnon rrudel in technical communication, has been criticized fur being oversiniplistic, rnerbantistic, anel urnjdirelitional in its conception of the communication situation. to thinking about technology and its relationship to users.</span></div>
+<div class="heuristic-question"><span class="q-bullet">◆</span><span class="q-text">4. The journal issue in which this article appeared won the 199o NCTE award Best Cnllectinn in Technical Htl Scietifir: tornrrunitatitrt. 5- &#x27;This zuo6 article is bancd on Sun&#x27;s 20u4 dortoral disscrtatiun at Kensselaer Polylerh. nic Irstitute, which wan the CCcc Award for Outstanding Dissertation in Technical Commuaication for that year.</span></div>
+</section>
+<section id="porter-sec-citations" class="sec-block">
+<h2 class="sec-heading">Works Cited</h2>
+<p>Burke, Kennuth. ig66. Languuge ts symbolir artion: Essays un life, literatre and method. Perkeley: (iniversity nf Galifornia Press. Guler, Jonathan. 1997. What is theory? In iiterzry theory A very short introduction. chapter I. New York: Uxtord University Press.</p>
+<div class="page-marker-row"><span class="page-chip" id="p-144" onclick="copyPageAnchor('p-144')" title="Original Book Page 144 • Click to copy link">Page 144</span></div>
+<p>Dragga, Sam, and Jran Voss. 2001a. The authors respond. Techmnicat Communication 48:380-381. aoib. Cruel pies: The inhurranity of technical illustrations. Technicu? Communication48:265-274. Comunication 50:61-82. Hart-Davidson, William, Grace Bernhard, Michael MeLeod, Martine Rife, and Jeffery T. Grahill. 2ju8. Coming to content management: Invcnting infrastrueture for rganizational knowledge work. Technicul Grmmunication Quarterly 17:10-34. Hawking, Stephen, 1996. A brief histon&#x27; of time. Updated and expanded cdition. New York: Bantam Books. Hayhoe, George F. z2002. Back in the classroom. Technical Communication 49:273-274. Johnson, Robert R. 1gg8. User-centered technology: A rhetoricat theory for computers and other mundane artifacts, Albany: SuNy Press. Johnson, Robert R., Michaei J. Salvo, and Meredith w. Zoetewey. 2007. &#x27;ser-centered technology in participatury culture: Two decades &quot;Beyond a Narrow t&#x27;onception of U&#x27;sability Testing.&quot; IFFR Transactions on Professional Communication 50:320-332. Kata, Steven B. 1ggz. The ethic of expediency: Classical rhetoric, technology, and the Holocaust. College English 54:255-275. ---. 1993- Aristotle&#x27;s rhetoric, Hitler&#x27;s program, and the ideological problem of praxis, puwer, and professiotal discoursc as a social construction of knowledge. Journut of Business and Technical Comnuritation 737-62. . 2oo6. A response to Fatrick Monre&#x27;s &quot;Questioning the Motives of Teuhnial Commnication and Rhetorie: Steven Katz&#x27;s &#x27;Ethic of Expedicncy.&quot; Journai of Technicz! Writing and Cammunication 36:1-8. Lauer, Janice M. 2(04. Imvention in rihetoric and compositinn. West Lafayette, IN: Parlor Press. Lewin, Kurt. 1952. Fieid theory in social stienare: Selected theoretica papers. Lonclun! Tavistock. Moore, Patrick. 2004 Questioning the motives of technical communication and rhetoric: Steven Katz&#x27;s &quot;Ethic of Expedieney&#x27;&quot; Jornal of Technicul Writing and Communication 34:5-29. . 2fxo8. Cruel theory? The struggle for prcstige and its consequences in academic Eechnical communication.fournnl uf Technical Writing and Communicttion 3h:207-240. Popper, Karl. 1g63. Scienue as falsifieation, In Gonjectures and refututions, 3x-9. London: .htmi. Pullman, (ienrge, and Baotong Gu. 2oo8 Rationalizing and rhetoricizing content management. Techntcat Communication Quarterly 17:1-g. Selber, Stuart A. 2004. Multiliteracies for a digital age. Carbondale: Southern Illinois University Press. Sullivan, Patricia A. igBg. Beyond a narrow conception of usubility. IEEE Transactions on Professiunal Communication 32:255 264. Sullivan, Patricia A., and James E. Porier. ay93. On theory, practice, and method: Tioward a heuristic research methodology for professional writing. In Writing in the workpiace: New research perspectives, ed. Rachel Spilka, 220-237.Carbondale: Snuthern Iilinois University Press.</p>
+<div class="page-marker-row"><span class="page-chip" id="p-145" onclick="copyPageAnchor('p-145')" title="Original Book Page 145 • Click to copy link">Page 145</span></div>
+<p>.. 1997. Opening spzces: Writing technulogies and crilica research practices. Greenwieh, CT: Ahlex. Sun, Huatong. 2004. Expanding the seope of localizaliun: A cultural usability perspective nn mobile texr messaging use in Ainerican and chinese contexts. PhD dissertation, Rensselaer Polytechnie Institute. -, 2006. The triumph of users: Achieving cultural usability goais with ser localizalinn.Technical Communication Quarterly 15:457-4R1. Warniek, Quinn, 2006. Toward a more productive discussion about instrumental discourse.Orange 6.http://orange.eserver.org/issues/6-1/wanick.html.</p>
+</section>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // State
+        let currentChapter = 'scott';
+        let currentWidthIndex = 0;
+        const widths = ['', 'container-wide', 'container-full'];
+        const widthLabels = ['Width: Standard', 'Width: Wide', 'Width: Full'];
+        let isSans = false;
+        let showMarkers = true;
+        let currentFontSize = 18;
+
+        // Scott & Porter TOC metadata
+        const scottToc = [{"id": "scott-sec-intro", "title": "Chapter Overview & Summary", "level": 2, "page": 213}, {"id": "scott-sec-summary", "title": "Summary", "level": 2, "page": 213}, {"id": "scott-sec-bioinfo", "title": "Two Technical Communication Projects at BioInfo", "level": 2, "page": 213}, {"id": "scott-sec-deliberation", "title": "The Process of Ethical Inquiry and Deliberation", "level": 2, "page": 216}, {"id": "scott-sec-heuristic", "title": "A Heuristic of Guiding Questions", "level": 2, "page": 225}, {"id": "scott-sec-positioning", "title": "Positioning Across Situations", "level": 3, "page": 225}, {"id": "scott-sec-inquiry", "title": "Ethical Inquiry and Deliberation", "level": 3, "page": 226}, {"id": "scott-sec-users", "title": "Obligations to and Consequences for Users or Audiences", "level": 4, "page": 226}, {"id": "scott-sec-client", "title": "Obligations to Client", "level": 4, "page": 227}, {"id": "scott-sec-employer", "title": "Obligations to Employer", "level": 4, "page": 227}, {"id": "scott-sec-professional", "title": "Professional and More General Obligations and Ideals", "level": 4, "page": 228}, {"id": "scott-sec-judgment", "title": "Arriving at Flexible or Contingent Judgment and Commitment to Action", "level": 3, "page": 228}, {"id": "scott-sec-phronesis", "title": "Developing Phronesis", "level": 3, "page": 229}, {"id": "scott-sec-action", "title": "Ethical Deliberation in Action", "level": 2, "page": 229}, {"id": "scott-sec-vaccitech", "title": "Ethical Inquiry About Vaccitech Project", "level": 3, "page": 229}, {"id": "scott-sec-megapharm", "title": "Ethical Inquiry About MegaPharm Project", "level": 3, "page": 231}, {"id": "scott-sec-toward-phronesis", "title": "Toward Phronesis", "level": 3, "page": 233}, {"id": "scott-sec-questions", "title": "Discussion Questions", "level": 2, "page": 234}, {"id": "scott-sec-notes", "title": "Notes", "level": 2, "page": 235}, {"id": "scott-sec-citations", "title": "Works Cited", "level": 2, "page": 235}];
+        const porterToc = [{"id": "porter-sec-intro", "title": "Chapter Overview & Summary", "level": 2, "page": 125}, {"id": "porter-sec-heuristic", "title": "A Heuristic for Technical Communication (DEPAA)", "level": 2, "page": 135}, {"id": "porter-sec-extended", "title": "Extended Example: Content Management Systems", "level": 2, "page": 139}, {"id": "porter-sec-notes", "title": "Notes", "level": 2, "page": 143}, {"id": "porter-sec-citations", "title": "Works Cited", "level": 2, "page": 143}];
+
+        function switchChapter(chap) {
+            currentChapter = chap;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.chapter-view').forEach(c => c.classList.remove('active'));
+
+            if (chap === 'scott') {
+                document.getElementById('tab-scott').classList.add('active');
+                document.getElementById('chapter-scott').classList.add('active');
+                updateTOC(scottToc);
+                updatePageJump(213, 236);
+            } else if (chap === 'porter') {
+                document.getElementById('tab-porter').classList.add('active');
+                document.getElementById('chapter-porter').classList.add('active');
+                updateTOC(porterToc);
+                updatePageJump(125, 145);
+            } else if (chap === 'both') {
+                document.getElementById('tab-both').classList.add('active');
+                document.getElementById('chapter-scott').classList.add('active');
+                document.getElementById('chapter-porter').classList.add('active');
+                updateTOC([...scottToc, ...porterToc]);
+                updatePageJump(125, 236);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateTOC(tocList) {
+            const container = document.getElementById('toc-container');
+            container.innerHTML = '';
+            tocList.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.className = `toc-link level-${item.level}`;
+                a.href = `#${item.id}`;
+                a.textContent = item.title;
+                li.appendChild(a);
+                container.appendChild(li);
+            });
+        }
+
+        function updatePageJump(start, end) {
+            const grid = document.getElementById('page-jump-container');
+            grid.innerHTML = '';
+            for (let p = start; p <= end; p++) {
+                // Skip gap if in 'both' mode
+                if (start === 125 && end === 236 && p > 145 && p < 213) continue;
+                const a = document.createElement('a');
+                a.className = 'page-jump-pill';
+                a.href = `#p-${p}`;
+                a.textContent = `p.${p}`;
+                grid.appendChild(a);
+            }
+        }
+
+        // Typography adjustments
+        function adjustFontSize(delta) {
+            currentFontSize = Math.min(26, Math.max(14, currentFontSize + delta));
+            document.body.style.fontSize = currentFontSize + 'px';
+            showToast(`Font Size: ${currentFontSize}px`);
+        }
+
+        function toggleFontFamily() {
+            isSans = !isSans;
+            document.body.classList.toggle('font-sans', isSans);
+            document.getElementById('font-family-btn').textContent = isSans ? 'Font: Sans' : 'Font: Serif';
+            showToast(isSans ? 'Font set to Modern Sans' : 'Font set to Classical Serif');
+        }
+
+        function toggleWidth() {
+            const container = document.getElementById('content-container');
+            widths.forEach(w => { if (w) container.classList.remove(w); });
+            currentWidthIndex = (currentWidthIndex + 1) % widths.length;
+            if (widths[currentWidthIndex]) {
+                container.classList.add(widths[currentWidthIndex]);
+            }
+            document.getElementById('width-btn').textContent = widthLabels[currentWidthIndex];
+            showToast(widthLabels[currentWidthIndex]);
+        }
+
+        function togglePageMarkers() {
+            showMarkers = !showMarkers;
+            document.body.classList.toggle('hide-page-markers', !showMarkers);
+            document.getElementById('page-toggle-btn').textContent = showMarkers ? 'Pages: On' : 'Pages: Off';
+            showToast(showMarkers ? 'Page chips enabled' : 'Page chips hidden');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('site-sidebar').classList.toggle('mobile-open');
+        }
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('reading-progress').style.width = scrolled + '%';
+        });
+
+        // Citation helper
+        function copyCitation(format) {
+            let cit = '';
+            if (currentChapter === 'scott') {
+                if (format === 'APA') cit = 'Scott, J. B. (2012). How can technical communicators work in an ethical and legal manner? In J. Johnson-Eilola & S. A. Selber (Eds.), Solving Problems in Technical Communication (pp. 213–236). University of Chicago Press.';
+                else if (format === 'MLA') cit = 'Scott, J. Blake. "How Can Technical Communicators Work in an Ethical and Legal Manner?" Solving Problems in Technical Communication, edited by Johndan Johnson-Eilola and Stuart A. Selber, University of Chicago Press, 2012, pp. 213–236.';
+                else cit = 'Scott, J. Blake. 2012. "How Can Technical Communicators Work in an Ethical and Legal Manner?" In Solving Problems in Technical Communication, edited by Johndan Johnson-Eilola and Stuart A. Selber, 213–236. Chicago: University of Chicago Press.';
+            } else {
+                if (format === 'APA') cit = 'Porter, J. E. (2012). How can rhetoric theory inform the practice of technical communication? In J. Johnson-Eilola & S. A. Selber (Eds.), Solving Problems in Technical Communication (pp. 125–145). University of Chicago Press.';
+                else if (format === 'MLA') cit = 'Porter, James E. "How Can Rhetoric Theory Inform the Practice of Technical Communication?" Solving Problems in Technical Communication, edited by Johndan Johnson-Eilola and Stuart A. Selber, University of Chicago Press, 2012, pp. 125–145.';
+                else cit = 'Porter, James E. 2012. "How Can Rhetoric Theory Inform the Practice of Technical Communication?" In Solving Problems in Technical Communication, edited by Johndan Johnson-Eilola and Stuart A. Selber, 125–145. Chicago: University of Chicago Press.';
+            }
+            navigator.clipboard.writeText(cit);
+            showToast(`${format} citation copied to clipboard!`);
+        }
+
+        function copyPageAnchor(id) {
+            const url = window.location.href.split('#')[0] + '#' + id;
+            navigator.clipboard.writeText(url);
+            showToast(`Direct page link copied: #${id}`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2400);
+        }
+
+        // Live In-Page Search
+        let searchMatches = [];
+        let currentMatchIdx = -1;
+
+        function handleSearch(e) {
+            if (e.key === 'Enter') {
+                navigateMatch(e.shiftKey ? -1 : 1);
+                return;
+            }
+            const q = e.target.value.trim();
+            clearHighlights();
+            if (!q || q.length < 2) {
+                document.getElementById('search-count').textContent = '';
+                return;
+            }
+
+            const activeContainer = currentChapter === 'both' ? 
+                document.getElementById('content-container') : 
+                (currentChapter === 'scott' ? document.getElementById('chapter-scott') : document.getElementById('chapter-porter'));
+
+            const treeWalker = document.createTreeWalker(activeContainer, NodeFilter.SHOW_TEXT, null, false);
+            let textNodes = [];
+            while (treeWalker.nextNode()) {
+                if (treeWalker.currentNode.parentNode.nodeName !== 'SCRIPT' && 
+                    treeWalker.currentNode.parentNode.nodeName !== 'STYLE' && 
+                    !treeWalker.currentNode.parentNode.classList.contains('page-chip')) {
+                    textNodes.push(treeWalker.currentNode);
+                }
+            }
+
+            const regex = new RegExp(`(${escapeRegex(q)})`, 'gi');
+            searchMatches = [];
+
+            textNodes.forEach(node => {
+                if (regex.test(node.nodeValue)) {
+                    const span = document.createElement('span');
+                    span.innerHTML = node.nodeValue.replace(regex, '<mark class="search-highlight">$1</mark>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            });
+
+            searchMatches = Array.from(document.querySelectorAll('mark.search-highlight'));
+            currentMatchIdx = searchMatches.length > 0 ? 0 : -1;
+            updateSearchStatus();
+            if (currentMatchIdx >= 0) focusMatch(currentMatchIdx);
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('mark.search-highlight').forEach(m => {
+                const parent = m.parentNode;
+                parent.replaceChild(document.createTextNode(m.textContent), m);
+                parent.normalize();
+            });
+            searchMatches = [];
+            currentMatchIdx = -1;
+        }
+
+        function navigateMatch(dir) {
+            if (searchMatches.length === 0) return;
+            searchMatches[currentMatchIdx].classList.remove('current-match');
+            currentMatchIdx = (currentMatchIdx + dir + searchMatches.length) % searchMatches.length;
+            focusMatch(currentMatchIdx);
+            updateSearchStatus();
+        }
+
+        function focusMatch(idx) {
+            const el = searchMatches[idx];
+            el.classList.add('current-match');
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function updateSearchStatus() {
+            const counter = document.getElementById('search-count');
+            if (searchMatches.length === 0) {
+                counter.textContent = '0 found';
+            } else {
+                counter.textContent = `${currentMatchIdx + 1}/${searchMatches.length}`;
+            }
+        }
+
+        function escapeRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Initialize default view
+        switchChapter('scott');
+    </script>
+</body>
+</html>
