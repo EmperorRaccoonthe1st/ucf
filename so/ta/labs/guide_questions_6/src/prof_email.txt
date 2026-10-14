@@ -1,0 +1,13 @@
+Hi everyone,
+ 
+The instructions for Lab 6 are already available on the shared Google Drive. Please refer to it and prepare for your lab. It is all about the selection sorting algorithm. I strongly suggest following the order of the functions when you implement them, based on how the function prototypes were outlined.
+ 
+Feel free to use a slide deck during the session, but please be mindful that you must cover the implementation of the codes during the class. The students should be able to see the complete code before that lab ends.
+ 
+One thing to note about terminology is that I make a distinction between logical size and capacity. Logical size basically just means how many elements are currently stored in the array, while capacity is the physical size of the array when we declared it. Please be consistent in using the terminology. Also, when I discuss functions, especially those that deal with arrays, I have the tendency to use the const keyword in the formal parameters. The reason behind this one is that I do not want the function to modify the array. That is one design choice that you might notice throughout the course.
+ 
+Answers to the guide questions will be provided by Monday.
+ 
+Let me know if you have any questions.
+ 
+Thank you.
