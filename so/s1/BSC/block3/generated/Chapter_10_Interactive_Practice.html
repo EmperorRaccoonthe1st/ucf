@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 10 Interactive Practice Engine &bull; BSC2010C</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --brand: #0f766e;
+      --brand-dark: #115e59;
+      --brand-light: #ccfbf1;
+      --correct: #16a34a;
+      --correct-bg: #dcfce7;
+      --correct-border: #86efac;
+      --incorrect: #dc2626;
+      --incorrect-bg: #fee2e2;
+      --incorrect-border: #fca5a5;
+      --badge-light: #0f766e;
+      --badge-calvin: #0369a1;
+      --badge-bio: #7c3aed;
+      --badge-chem: #b45309;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 24px 20px;
+      border-bottom: 3px solid var(--brand);
+    }
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header-tag {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      background: #1e293b;
+      color: #2dd4bf;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13.5px;
+      color: #94a3b8;
+    }
+
+    .sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-dark);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      padding: 12px 20px;
+    }
+    .sticky-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tab-group {
+      display: flex;
+      gap: 4px;
+      background: var(--surface-subtle);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+    }
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--brand);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .score-badge {
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .score-badge span {
+      color: var(--brand);
+    }
+    .hud-btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-dark);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .hud-btn:hover {
+      background: var(--surface-subtle);
+      border-color: #94a3b8;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .q-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
+    }
+    .q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .q-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #ffffff;
+    }
+    .q-badge.light { background: var(--badge-light); }
+    .q-badge.calvin { background: var(--badge-calvin); }
+    .q-badge.bio { background: var(--badge-bio); }
+    .q-badge.chem { background: var(--badge-chem); }
+
+    .q-status {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .q-status.correct { color: var(--correct); }
+    .q-status.incorrect { color: var(--incorrect); }
+
+    .q-stem {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .choice-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface);
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+    .choice-item:hover:not(.locked) {
+      background: var(--surface-subtle);
+      border-color: #94a3b8;
+    }
+    .choice-item.selected-correct {
+      background: var(--correct-bg);
+      border-color: var(--correct-border);
+      color: #14532d;
+      font-weight: 600;
+    }
+    .choice-item.selected-incorrect {
+      background: var(--incorrect-bg);
+      border-color: var(--incorrect-border);
+      color: #7f1d1d;
+    }
+    .choice-item.reveal-correct-answer {
+      border: 2px dashed var(--correct);
+      background: #f0fdf4;
+      font-weight: 600;
+    }
+
+    details.solution-accordion {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    details.solution-accordion summary {
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand);
+      cursor: pointer;
+      user-select: none;
+      background: #f8fafc;
+      border-bottom: 1px solid transparent;
+      outline: none;
+      transition: background 0.15s ease;
+    }
+    details.solution-accordion summary:hover {
+      background: #f1f5f9;
+    }
+    details.solution-accordion[open] summary {
+      border-bottom-color: var(--border);
+      background: #f1f5f9;
+    }
+    .solution-body {
+      padding: 14px;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.5;
+    }
+    .solution-body .ans-highlight {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .solution-body .concept-pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-top: 8px;
+    }
+
+    @media print {
+      .sticky-bar { display: none; }
+      .choice-item { border: 1px solid #ccc !important; }
+      details.solution-accordion { display: block !important; }
+      details.solution-accordion[open] .solution-body,
+      details.solution-accordion .solution-body { display: block !important; }
+      details.solution-accordion summary { display: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-tag">BSC2010C &bull; Chapter 10 Interactive Study Companion</div>
+      <h1>Chapter 10: Photosynthesis &bull; Interactive Practice Engine</h1>
+      <div class="subtitle">Self-Scoring Multiple Choice &bull; Instant Feedback &bull; Detailed Biochemical Rationales &bull; Tier 2 Lightweight Application</div>
+    </div>
+  </header>
+
+  <div class="sticky-bar">
+    <div class="sticky-inner">
+      <div class="tab-group" id="filterTabs">
+        <button class="tab-btn active" data-filter="all">All Questions (27)</button>
+        <button class="tab-btn" data-filter="Light Reactions">Light Reactions</button>
+        <button class="tab-btn" data-filter="Calvin Cycle">Calvin Cycle</button>
+        <button class="tab-btn" data-filter="Photophosphorylation">Photophosphorylation</button>
+      </div>
+
+      <div class="hud-right">
+        <div class="score-badge" id="scoreHud">Attempted: 0/27 &bull; Score: <span>0%</span></div>
+        <button class="hud-btn" id="expandAllBtn">Expand All Solutions</button>
+        <button class="hud-btn" id="collapseAllBtn">Collapse All</button>
+        <button class="hud-btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="questionsContainer">
+    <!-- Injected dynamically -->
+  </main>
+
+  <script>
+    const questionsData = [
+  {
+    "id": "q1",
+    "category": "Photosynthesis Fundamentals",
+    "num": 1,
+    "stem": "Photosynthesis is a(n) __________ pathway & is therefore a __________ process.",
+    "choices": [
+      "A) Anabolic, exergonic",
+      "B) Catabolic, exergonic",
+      "C) Anabolic, endergonic",
+      "D) Catabolic, endergonic"
+    ],
+    "correct": 2,
+    "answer_label": "C) Anabolic, endergonic",
+    "rationale": "Photosynthesis is biosynthetic (anabolic), constructing complex 3-carbon sugars from simpler gaseous carbon dioxide molecules. It consumes radiant solar energy to drive non-spontaneous reactions, making it an endergonic process (+delta G).",
+    "key_concept": "Thermodynamics &bull; Anabolism vs. Catabolism"
+  },
+  {
+    "id": "q2",
+    "category": "Light Reactions",
+    "num": 2,
+    "stem": "The light reaction takes place in the ____________:",
+    "choices": [
+      "A) Thylakoid membrane",
+      "B) Granum matrix",
+      "C) Soluble stroma",
+      "D) Chloroplast envelope"
+    ],
+    "correct": 0,
+    "answer_label": "A) Thylakoid membrane",
+    "rationale": "The light-dependent reactions require membrane-bound macromolecular complexes (Photosystems II and I, Cytochrome b6f, and ATP Synthase) which reside within the lipid bilayer of the thylakoid membranes.",
+    "key_concept": "Chloroplast Ultrastructure &bull; Thylakoid Membrane"
+  },
+  {
+    "id": "q3",
+    "category": "Spectroscopy & Pigments",
+    "num": 3,
+    "stem": "T or F. Plants absorb green light waves used for photosynthesis:",
+    "choices": [
+      "A) True",
+      "B) False"
+    ],
+    "correct": 1,
+    "answer_label": "B) False",
+    "rationale": "Chlorophyll pigments absorb high-energy blue-violet (400-450 nm) and red (650-680 nm) wavelengths, while reflecting and transmitting green light (500-550 nm). Reflected green wavelengths reach human retinas, causing leaves to appear green.",
+    "key_concept": "Spectroscopy &bull; Reflection vs. Absorption"
+  },
+  {
+    "id": "q4",
+    "category": "Calvin Cycle",
+    "num": 4,
+    "stem": "Which of the following occurs in the stroma of the chloroplast?",
+    "choices": [
+      "A) Light reaction",
+      "B) Electron transport chain",
+      "C) Calvin cycle",
+      "D) Glycolysis"
+    ],
+    "correct": 2,
+    "answer_label": "C) Calvin cycle",
+    "rationale": "The Calvin cycle (light-independent carbon assimilation) is catalyzed by soluble metabolic enzymes, primarily RuBisCO, residing in the fluid stroma that surrounds the thylakoid stacks.",
+    "key_concept": "Calvin Cycle Localization &bull; Stroma"
+  },
+  {
+    "id": "q5",
+    "category": "Light Reactions",
+    "num": 5,
+    "stem": "During what stage of photosynthesis is O2 produced?",
+    "choices": [
+      "A) Cyclic photophosphorylation",
+      "B) The light dependent reactions involving Photosystem II & I",
+      "C) Carbon fixation in the Calvin cycle",
+      "D) The Krebs cycle"
+    ],
+    "correct": 1,
+    "answer_label": "B) The light dependent reactions involving Photosystem II & I",
+    "rationale": "Molecular oxygen (O2) is generated exclusively during the light-dependent reactions when the manganese-calcium oxygen-evolving complex of Photosystem II splits water molecules (2 H2O -> 4 H+ + 4 e- + O2) to replenish oxidized P680+.",
+    "key_concept": "Photolysis &bull; Photosystem II Water Splitting"
+  },
+  {
+    "id": "q6",
+    "category": "Photosynthetic Bioenergetics",
+    "num": 6,
+    "stem": "Which of the following is NOT a product of the Light Reaction?",
+    "choices": [
+      "A) Oxygen (O2)",
+      "B) ATP",
+      "C) NADPH",
+      "D) G3P (Glyceraldehyde 3-phosphate)"
+    ],
+    "correct": 3,
+    "answer_label": "D) G3P (Glyceraldehyde 3-phosphate)",
+    "rationale": "G3P is a 3-carbon sugar synthesized during Phase 2 (Reduction) of the Calvin cycle in the stroma. The light reactions produce only ATP, NADPH, and byproduct O2.",
+    "key_concept": "Pathway Products &bull; Light Reaction vs. Calvin Cycle"
+  },
+  {
+    "id": "q7",
+    "category": "Calvin Cycle",
+    "num": 7,
+    "stem": "The Calvin Cycle requires the input of each of the following except\u2026",
+    "choices": [
+      "A) ATP",
+      "B) NADPH",
+      "C) O2",
+      "D) CO2"
+    ],
+    "correct": 2,
+    "answer_label": "C) O2",
+    "rationale": "The Calvin cycle requires carbon dioxide (carbon source), ATP (energy investment), and NADPH (reducing electron donor). Molecular oxygen is neither required nor consumed; in fact, O2 acts as a competitive substrate for RuBisCO during wasteful photorespiration.",
+    "key_concept": "Calvin Cycle Inputs &bull; Carbon Assimilation"
+  },
+  {
+    "id": "q8",
+    "category": "Light Reactions",
+    "num": 8,
+    "stem": "In the Light Reaction, when light strikes the chlorophyll pigments (P700 or P680), what is the immediate result?",
+    "choices": [
+      "A) Excited electrons are passed to electron acceptors",
+      "B) Electrons are fused to form ATP",
+      "C) Glucose is produced",
+      "D) Carbon fixation occurs"
+    ],
+    "correct": 0,
+    "answer_label": "A) Excited electrons are passed to electron acceptors",
+    "rationale": "Photon absorption boosts an electron in the reaction-center chlorophyll pair (P680 in PS II, P700 in PS I) to a higher energetic orbital, which is immediately captured by a primary electron acceptor via a redox transfer.",
+    "key_concept": "Photoexcitation &bull; Primary Electron Acceptor"
+  },
+  {
+    "id": "q9",
+    "category": "Spectroscopy & Pigments",
+    "num": 9,
+    "stem": "Which color below is reflected off the thylakoid?",
+    "choices": [
+      "A) Red",
+      "B) Blue",
+      "C) Yellow",
+      "D) Green"
+    ],
+    "correct": 3,
+    "answer_label": "D) Green",
+    "rationale": "Green wavelengths (500-550 nm) are not absorbed by chlorophyll a or chlorophyll b and are reflected off the thylakoid membrane.",
+    "key_concept": "Pigment Optics &bull; Wavelength Reflection"
+  },
+  {
+    "id": "q10",
+    "category": "Calvin Cycle",
+    "num": 10,
+    "stem": "T or F. The Calvin Cycle is the light dependent reaction involved in photosynthesis:",
+    "choices": [
+      "A) True",
+      "B) False"
+    ],
+    "correct": 1,
+    "answer_label": "B) False",
+    "rationale": "The Calvin cycle is light-independent (or dark reaction) because it does not directly capture photons; it depends on the chemical products (ATP and NADPH) supplied by the light-dependent reactions.",
+    "key_concept": "Calvin Cycle &bull; Light Independence"
+  },
+  {
+    "id": "q11",
+    "category": "Light Reactions",
+    "num": 11,
+    "stem": "Select the correct sequence for the movement of electrons during the light dependent reaction of plants: (I. Photosystem I, II. Photosystem II, III. Water, IV. NADP+)",
+    "choices": [
+      "A) I, II, III, IV",
+      "B) I, IV, III, II",
+      "C) III, II, I, IV (Water -> PS II -> PS I -> NADP+)",
+      "D) I, III, II, IV"
+    ],
+    "correct": 2,
+    "answer_label": "C) III, II, I, IV (Water -> PS II -> PS I -> NADP+)",
+    "rationale": "Linear electron flow originates with water photolysis (III), replenishing PS II (II), traversing the intermediate ETC (Pq -> Cyt b6f -> Pc) to PS I (I), and terminating upon reduction of NADP+ (IV) to form NADPH.",
+    "key_concept": "Linear Electron Flow &bull; Z-Scheme Sequence"
+  },
+  {
+    "id": "q12",
+    "category": "Photosynthetic Bioenergetics",
+    "num": 12,
+    "stem": "During which stage of photosynthesis are ATP & NADPH converted to ADP + Pi & NADP+?",
+    "choices": [
+      "A) Light dependent reactions",
+      "B) Calvin Cycle",
+      "C) Both of the above",
+      "D) None of the above"
+    ],
+    "correct": 1,
+    "answer_label": "B) Calvin Cycle",
+    "rationale": "The Calvin cycle consumes high-energy ATP (for phosphorylation during Phase 2 and Phase 3) and NADPH (for reducing 1,3-BPG to G3P), releasing ADP, Pi, and NADP+ back to the stroma to be recharged by the light reactions.",
+    "key_concept": "Energy Recycling &bull; Substrate Coupling"
+  },
+  {
+    "id": "q13",
+    "category": "Photophosphorylation",
+    "num": 13,
+    "stem": "T or F. Light-driven electron transport in the thylakoid pumps H+ into the intermembrane space between the outer & inner membranes:",
+    "choices": [
+      "A) True",
+      "B) False"
+    ],
+    "correct": 1,
+    "answer_label": "B) False",
+    "rationale": "Protons are pumped across the thylakoid membrane from the stroma into the thylakoid lumen/space. In mitochondria, protons are pumped into the intermembrane space; in chloroplasts, the thylakoid lumen serves as the high-proton reservoir.",
+    "key_concept": "Chemiosmotic Topology &bull; Thylakoid Lumen vs. Intermembrane Space"
+  },
+  {
+    "id": "q14",
+    "category": "Photosynthesis Fundamentals",
+    "num": 14,
+    "stem": "The main purpose of photosynthesis is to:",
+    "choices": [
+      "A) Consume atmospheric CO2",
+      "B) Produce ATP for cellular work",
+      "C) Produce G3P (sugar) for long-term energy and carbon skeletons",
+      "D) Convert light energy directly into kinetic energy"
+    ],
+    "correct": 2,
+    "answer_label": "C) Produce G3P (sugar) for long-term energy and carbon skeletons",
+    "rationale": "The primary evolutionary purpose of photosynthesis is autotrophic sugar synthesis (G3P), which the plant uses for building cellulose, starch storage, and respiratory fuel in its own mitochondria.",
+    "key_concept": "Biological Objective &bull; Autotrophic Sugar Production"
+  },
+  {
+    "id": "q15",
+    "category": "Photophosphorylation",
+    "num": 15,
+    "stem": "Where in the chloroplast is the H+ ion concentration gradient built up?",
+    "choices": [
+      "A) In the stroma",
+      "B) In the thylakoid space (lumen)",
+      "C) In the intermembrane space",
+      "D) In the cytosol"
+    ],
+    "correct": 1,
+    "answer_label": "B) In the thylakoid space (lumen)",
+    "rationale": "Proton accumulation in the narrow thylakoid lumen creates an acidic reservoir (pH ~5) relative to the basic stroma (pH ~8), driving ATP synthesis as protons flow out through ATP synthase.",
+    "key_concept": "Chemiosmosis &bull; Proton Reservoir"
+  },
+  {
+    "id": "q16",
+    "category": "Light Reactions",
+    "num": 16,
+    "stem": "How is Photosystem II recharged?",
+    "choices": [
+      "A) Splitting water provides electrons to Photosystem II",
+      "B) Oxygen provides electrons to Photosystem II",
+      "C) Photosystem I provides electrons to Photosystem II",
+      "D) NADP+ provides electrons to Photosystem II"
+    ],
+    "correct": 0,
+    "answer_label": "A) Splitting water provides electrons to Photosystem II",
+    "rationale": "Water photolysis (catalyzed by the Mn4CaO5 cluster at PS II) extracts electrons from H2O molecules, replacing the electrons lost when P680 is photoexcited.",
+    "key_concept": "Photosystem II Regeneration &bull; Water Splitting"
+  },
+  {
+    "id": "q17",
+    "category": "Light Reactions",
+    "num": 17,
+    "stem": "How is Photosystem I recharged?",
+    "choices": [
+      "A) Splitting water provides electrons directly to PS I",
+      "B) Oxygen provides electrons to PS I",
+      "C) Photosystem II provides electrons to Photosystem I via the ETC",
+      "D) NADP+ provides electrons to PS I"
+    ],
+    "correct": 2,
+    "answer_label": "C) Photosystem II provides electrons to Photosystem I via the ETC",
+    "rationale": "Excited P700+ in PS I receives replacement electrons from the copper-containing protein plastocyanin (Pc), which in turn received them from the intermediate ETC driven by PS II.",
+    "key_concept": "Photosystem I Regeneration &bull; Plastocyanin Electron Shuttle"
+  },
+  {
+    "id": "q18",
+    "category": "Photophosphorylation",
+    "num": 18,
+    "stem": "As the Light Reaction progresses, the pH in the thylakoid space:",
+    "choices": [
+      "A) Increases (becomes more basic)",
+      "B) Decreases (becomes more acidic)",
+      "C) Stays the same"
+    ],
+    "correct": 1,
+    "answer_label": "B) Decreases (becomes more acidic)",
+    "rationale": "Active proton pumping by Cytochrome b6f combined with proton deposition from water splitting increases [H+] in the lumen. Because pH = -log[H+], higher proton concentration causes pH to decrease (reaching ~5.0).",
+    "key_concept": "pH Dynamics &bull; Proton Accumulation"
+  },
+  {
+    "id": "q19",
+    "category": "Light Reactions",
+    "num": 19,
+    "stem": "What is the final electron acceptor of the electrons from Photosystems II and I?",
+    "choices": [
+      "A) ATP",
+      "B) CO2",
+      "C) O2",
+      "D) NADP+"
+    ],
+    "correct": 3,
+    "answer_label": "D) NADP+",
+    "rationale": "In linear electron flow, electrons ultimately reach ferredoxin (Fd) and are transferred by the enzyme NADP+ reductase to NADP+, reducing it to NADPH in the stroma.",
+    "key_concept": "Terminal Electron Acceptor &bull; NADP+ Reductase"
+  },
+  {
+    "id": "q20",
+    "category": "Light Reactions",
+    "num": 20,
+    "stem": "What happens to photosynthesis in the absence of sunlight?",
+    "choices": [
+      "A) The Light Reaction cannot take place",
+      "B) The Calvin Cycle cannot take place immediately",
+      "C) NADPH and ATP continue to be produced",
+      "D) The plant switches to the Dark Reaction"
+    ],
+    "correct": 0,
+    "answer_label": "A) The Light Reaction cannot take place",
+    "rationale": "The light reactions depend strictly on absorbed photons to excite P680 and P700. In darkness, electron flow halts immediately, stopping ATP and NADPH synthesis.",
+    "key_concept": "Photoperiod Dependence &bull; Dark Cessation"
+  },
+  {
+    "id": "q21",
+    "category": "Photosynthetic Bioenergetics",
+    "num": 21,
+    "stem": "The Light Reaction needs NADP+ and ADP, where does it get these molecules?",
+    "choices": [
+      "A) Produced de novo in chloroplast cytosol",
+      "B) Plant mitochondria export them",
+      "C) They are byproducts of the Calvin Cycle",
+      "D) Produced from splitting H2O"
+    ],
+    "correct": 2,
+    "answer_label": "C) They are byproducts of the Calvin Cycle",
+    "rationale": "Photosynthesis features tight substrate coupling: the Calvin cycle dephosphorylates ATP to ADP + Pi and oxidizes NADPH to NADP+, which diffuse through the stroma back to the thylakoid membranes.",
+    "key_concept": "Metabolic Coupling &bull; Substrate Regeneration"
+  },
+  {
+    "id": "q22",
+    "category": "Calvin Cycle",
+    "num": 22,
+    "stem": "____________ must be regenerated at the end of the Calvin Cycle:",
+    "choices": [
+      "A) G3P",
+      "B) RuBP (Ribulose 1,5-bisphosphate)",
+      "C) ATP",
+      "D) CO2"
+    ],
+    "correct": 1,
+    "answer_label": "B) RuBP (Ribulose 1,5-bisphosphate)",
+    "rationale": "To maintain a continuous cyclic pathway, five molecules of G3P are rearranged using 3 ATP into three molecules of the 5-carbon CO2 acceptor, RuBP.",
+    "key_concept": "Phase 3 Regeneration &bull; RuBP Carbon Balance"
+  },
+  {
+    "id": "q23",
+    "category": "Photosynthesis Fundamentals",
+    "num": 23,
+    "stem": "Which of the following statements is correct?",
+    "choices": [
+      "A) Plants use mitochondria for photosynthesis and animals use mitochondria for respiration",
+      "B) Plants produce waste oxygen that animals use in their mitochondria for cellular respiration",
+      "C) Animals produce waste oxygen that plants use to make energy",
+      "D) Animals and plants both produce waste oxygen"
+    ],
+    "correct": 1,
+    "answer_label": "B) Plants produce waste oxygen that animals use in their mitochondria for cellular respiration",
+    "rationale": "Plants produce O2 as an oxidation byproduct of water splitting during photosynthesis, which aerobic organisms (including plant cells themselves) use as the terminal electron acceptor in mitochondrial respiration.",
+    "key_concept": "Ecological Coupling &bull; Oxygen-Carbon Cycle"
+  },
+  {
+    "id": "q24",
+    "category": "Light Reactions",
+    "num": 24,
+    "stem": "Photosystem II\u2026",
+    "choices": [
+      "A) Uses light energy to transfer electrons directly to water",
+      "B) Takes electrons from water and passes them to ATP Synthase",
+      "C) Takes electrons from water, energizes them, and passes them to an electron transport chain",
+      "D) Absorbs light energy to energize electrons and make NADPH"
+    ],
+    "correct": 2,
+    "answer_label": "C) Takes electrons from water, energizes them, and passes them to an electron transport chain",
+    "rationale": "Photosystem II extracts low-energy electrons from water, photoexcites them using 680 nm light, and transfers them into the intermediate electron transport chain (Pq -> Cytochrome b6f -> Pc).",
+    "key_concept": "Photosystem II Mechanism &bull; Water to ETC Transfer"
+  },
+  {
+    "id": "q25",
+    "category": "Photophosphorylation",
+    "num": 25,
+    "stem": "Evaluate the accuracy of the statement: \u201cATP Synthase takes electrons from the electron transport chain and makes ATP.\u201d",
+    "choices": [
+      "A) Actually, ATP Synthase uses the H+ gradient produced by the electron transport chain to make ATP, it does not use electrons themselves.",
+      "B) Actually, ATP Synthase takes electrons from the electron transport chain to break down ATP.",
+      "C) Actually, ATP Synthase does not depend on the electron transport chain.",
+      "D) The statement is accurate."
+    ],
+    "correct": 0,
+    "answer_label": "A) Actually, ATP Synthase uses the H+ gradient produced by the ETC to make ATP, not electrons directly.",
+    "rationale": "ATP Synthase is a rotary chemiosmotic enzyme driven exclusively by the physical flow of protons (H+) down their electrochemical gradient. Electrons never touch or pass through ATP Synthase.",
+    "key_concept": "Chemiosmotic Coupling &bull; Proton-Motive Force"
+  },
+  {
+    "id": "q26",
+    "category": "Light Reactions",
+    "num": 26,
+    "stem": "Photosystem I\u2026",
+    "choices": [
+      "A) Sends electrons to Photosystem II through the electron transport chain",
+      "B) Makes NADPH that is directly used by ATP Synthase",
+      "C) Uses the H+ gradient to energize electrons to make ATP",
+      "D) Absorbs light to energize electrons so they can be transferred to NADP+ to make NADPH"
+    ],
+    "correct": 3,
+    "answer_label": "D) Absorbs light to energize electrons so they can be transferred to NADP+ to make NADPH",
+    "rationale": "Photosystem I absorbs 700 nm photons to boost electrons to a redox potential sufficient for reducing ferredoxin, enabling NADP+ reductase to generate NADPH in the stroma.",
+    "key_concept": "Photosystem I Mechanism &bull; NADPH Generation"
+  },
+  {
+    "id": "q27",
+    "category": "Photosynthetic Bioenergetics",
+    "num": 27,
+    "stem": "Both ATP and NADPH are made in the stroma of the chloroplast. What would happen if they were trapped within the thylakoid space?",
+    "choices": [
+      "A) The Calvin Cycle would shut down",
+      "B) The Light Reaction would accelerate",
+      "C) Mitochondria would convert them into glucose",
+      "D) Water splitting would halt immediately"
+    ],
+    "correct": 0,
+    "answer_label": "A) The Calvin Cycle would shut down",
+    "rationale": "Calvin cycle enzymes (RuBisCO, kinase, dehydrogenases) are located strictly in the stroma. If ATP and NADPH were trapped inside the impermeable thylakoid lumen, the stroma enzymes would be starved of energy and reducing equivalents, shutting down carbon fixation.",
+    "key_concept": "Compartmentalization &bull; Stroma Localization"
+  }
+];
+
+    let state = {
+      userAnswers: {},
+      currentFilter: 'all'
+    };
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      let filtered = questionsData;
+      if (state.currentFilter !== 'all') {
+        filtered = questionsData.filter(q => q.category === state.currentFilter);
+      }
+
+      filtered.forEach(q => {
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = 'card-' + q.id;
+
+        const isAnswered = state.userAnswers.hasOwnProperty(q.id);
+        const userChoice = state.userAnswers[q.id];
+        const isCorrect = isAnswered && userChoice === q.correct;
+
+        let badgeClass = 'light';
+        if (q.category === 'Calvin Cycle') badgeClass = 'calvin';
+        if (q.category === 'Photosynthetic Bioenergetics' || q.category === 'Photosynthesis Fundamentals') badgeClass = 'bio';
+        if (q.category === 'Photophosphorylation') badgeClass = 'chem';
+
+        let statusText = '[UNATTEMPTED]';
+        let statusClass = '';
+        if (isAnswered) {
+          if (isCorrect) {
+            statusText = '[CORRECT]';
+            statusClass = 'correct';
+          } else {
+            statusText = '[INCORRECT]';
+            statusClass = 'incorrect';
+          }
+        }
+
+        let choicesHtml = '';
+        q.choices.forEach((choice, idx) => {
+          let choiceClass = 'choice-item';
+          if (isAnswered) {
+            if (idx === userChoice) {
+              choiceClass += isCorrect ? ' selected-correct' : ' selected-incorrect';
+            }
+            if (!isCorrect && idx === q.correct) {
+              choiceClass += ' reveal-correct-answer';
+            }
+          }
+
+          choicesHtml += `
+            <div class="${choiceClass}" onclick="handleSelectChoice('${q.id}', ${idx})">
+              <span>${choice}</span>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="q-header">
+            <span class="q-badge ${badgeClass}">${q.category} &bull; Q${q.num}</span>
+            <span class="q-status ${statusClass}">${statusText}</span>
+          </div>
+          <div class="q-stem">${q.stem}</div>
+          <div class="choices-list">
+            ${choicesHtml}
+          </div>
+          <details class="solution-accordion" id="sol-${q.id}">
+            <summary>[Reveal Solution &amp; Rationale &rarr;]</summary>
+            <div class="solution-body">
+              <div class="ans-highlight">Correct: ${q.answer_label}</div>
+              <div><strong>Biochemical Rationale:</strong> ${q.rationale}</div>
+              <div class="concept-pill">Concept: ${q.key_concept}</div>
+            </div>
+          </details>
+        `;
+
+        container.appendChild(card);
+      });
+
+      updateScoreHud();
+    }
+
+    function handleSelectChoice(qId, choiceIdx) {
+      state.userAnswers[qId] = choiceIdx;
+      renderQuestions();
+    }
+
+    function updateScoreHud() {
+      const total = questionsData.length;
+      const attemptedKeys = Object.keys(state.userAnswers);
+      const attemptedCount = attemptedKeys.length;
+
+      let correctCount = 0;
+      attemptedKeys.forEach(id => {
+        const q = questionsData.find(item => item.id === id);
+        if (q && state.userAnswers[id] === q.correct) {
+          correctCount++;
+        }
+      });
+
+      const pct = attemptedCount === 0 ? 0 : Math.round((correctCount / attemptedCount) * 100);
+      const hud = document.getElementById('scoreHud');
+      hud.innerHTML = `Attempted: ${attemptedCount}/${total} &bull; Correct: ${correctCount} &bull; Score: <span>${pct}%</span>`;
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        state.currentFilter = e.target.getAttribute('data-filter');
+        renderQuestions();
+      });
+    });
+
+    document.getElementById('expandAllBtn').addEventListener('click', () => {
+      document.querySelectorAll('.solution-accordion').forEach(el => el.open = true);
+    });
+
+    document.getElementById('collapseAllBtn').addEventListener('click', () => {
+      document.querySelectorAll('.solution-accordion').forEach(el => el.open = false);
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (confirm('Reset all answers and restart quiz?')) {
+        state.userAnswers = {};
+        renderQuestions();
+      }
+    });
+
+    renderQuestions();
+  </script>
+</body>
+</html>

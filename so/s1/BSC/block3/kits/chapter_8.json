@@ -1,0 +1,163 @@
+{
+  "id": "kit-9",
+  "title": "Chapter_8",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "1st Law of Thermodynamics",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "destroy",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "2nd Law of Thermodynamics",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "Entropy",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Glucose",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "C6H12O6",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Comsuming Glucose Equation",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "glu 6O2 -\u003e 6CO2 6water",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Glucose Synthesis Equation",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "6CO2 6water energy -\u003e glu 6O2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Exergonic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "Neg Exit",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Endergonic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "Pos enter",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Allosteric Site",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "inhibit binds non-active site",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "ATP makes energy",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "hydrolysis Phosphate",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "Catabolic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "breaks complex releases",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Anabolic",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "Builds complex consumes",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "ATP Hydrolysis Releases",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "ADP",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    }
+  ]
+}

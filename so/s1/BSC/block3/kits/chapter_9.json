@@ -1,0 +1,566 @@
+{
+  "id": "kit-9",
+  "title": "Chapter_9",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Creation of ATP through adding Phosphate to ADP",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "phosphorylation",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Redox Phrase",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "LEO eats GER",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Oxidation",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "Lose Electron",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Reduction",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "Gain Electron",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Base of ATP",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "AMP",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "ATP series",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "AMP ADP ATP",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Release of phosphate group from ATP",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "dephosphorylation",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "substrate-level phosphorylation",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "substrate w/p ADP -\u003e ATP",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "oxidative phosphorylation",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "Occurs in mitocondria",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "1st Step in breakdown of glucose",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "Glycolysis",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "Glycolysis I/O",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "glu -\u003e 2pyruvate 4ATP 2NADH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "Pyruvate",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "3C sugar",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "Glycolysis Stages",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "use energy split 2 extract energy 4",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "text": "Compound taht delivers pyruvate to CAC",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q14-a1",
+          "text": "acetyl CoA",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "text": "Pyruvate Breakdown Steps",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q15-a1",
+          "text": "carboxyl remove 2C oxidized CoA added",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "text": "Pyruvate Breakdown happens?",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q16-a1",
+          "text": "twice",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "text": "Pyruvate Breakdown Releases",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q17-a1",
+          "text": "CO2 NADH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "text": "Pyruvate Breakdown Step 1 Produces",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q18-a1",
+          "text": "Hydroxyethyl",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "text": "CAC Output",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q19-a1",
+          "text": "3CO2 2ATP 6NADH 2FADH2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "text": "In ETC, final electron acceptor",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q20-a1",
+          "text": "O2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "text": "In ETC C1 \u0026 C2 goto:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q21-a1",
+          "text": "Q",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "text": "In ETC Q sends to",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q22-a1",
+          "text": "C3",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "text": "In ETC: C3 sends to:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q23-a1",
+          "text": "Cyt c",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "text": "In ETC: Cyt c sends to",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q24-a1",
+          "text": "C4",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "text": "In ETC: C1 takes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q25-a1",
+          "text": "NADH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "text": "In ETC: C2 takes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q26-a1",
+          "text": "FADH2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "text": "In ETC: C4 sends where",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q27-a1",
+          "text": "finally reduces O2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "text": "ATP synthase converting ADP to ATP",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q28-a1",
+          "text": "chemiosmosis",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "text": "CR Phase 1",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q29-a1",
+          "text": "Glycolysis",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "text": "CR Phase 2",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q30-a1",
+          "text": "Pyruvate Oxidation",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "text": "CR Phase 3",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q31-a1",
+          "text": "CAC",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "text": "CR Phase 4",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q32-a1",
+          "text": "Oxidative Phosphorylation",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "text": "CR Phase 1 Output",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q33-a1",
+          "text": "2ATP 2NADH",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "text": "CR Phase 2 Output",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q34-a1",
+          "text": "Acetyl-CoA",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "text": "Pyruvate bonds w/ to form Acetyl-CoA",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q35-a1",
+          "text": "Coenzyme A",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "text": "CR Phase 3 Output",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q36-a1",
+          "text": "CO2 2ATP 6NADH 2FADH2",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q37",
+      "text": "CR Phase 4 Output",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q37-a1",
+          "text": "ATP H2O",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q38",
+      "text": "CR Phase 2 Input",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q38-a1",
+          "text": "2pyru 2coenzymeA 2NAD",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q39",
+      "text": "CR Phase 3 Input",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q39-a1",
+          "text": "1 Acetyl-CoA 3NAD 1FAD",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q40",
+      "text": "CR Phase 1 Location",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q40-a1",
+          "text": "Cytosol",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q41",
+      "text": "CR Phase 2 Location",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q41-a1",
+          "text": "Into mitochondrial matrix",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q42",
+      "text": "CR Phase 3 Location",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q42-a1",
+          "text": "Mitochondrial Matrix",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    },
+    {
+      "id": "q43",
+      "text": "CR Phase 4 Location",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q43-a1",
+          "text": "Inner Mitochondrial Membrane",
+          "correct": true,
+          "textType": "exact"
+        }
+      ]
+    }
+  ]
+}

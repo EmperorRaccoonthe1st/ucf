@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 8 Interactive Practice Engine &bull; BSC2010C</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --brand: #0284c7;
+      --brand-dark: #0369a1;
+      --brand-light: #e0f2fe;
+      --correct: #16a34a;
+      --correct-bg: #dcfce7;
+      --correct-border: #86efac;
+      --incorrect: #dc2626;
+      --incorrect-bg: #fee2e2;
+      --incorrect-border: #fca5a5;
+      --badge-practice: #0369a1;
+      --badge-coupling: #b45309;
+      --badge-exam: #7c3aed;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    /* TOP HEADER */
+    header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 24px 20px;
+      border-bottom: 3px solid var(--brand);
+    }
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header-tag {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 13.5px;
+      color: #94a3b8;
+    }
+
+    /* STICKY CONTROL HUD */
+    .sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-dark);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      padding: 12px 20px;
+    }
+    .sticky-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* TABS */
+    .tab-group {
+      display: flex;
+      gap: 4px;
+      background: var(--surface-subtle);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+    }
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--brand-dark);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* SCORE BADGE & ACTION BUTTONS */
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .score-badge {
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .score-badge span {
+      color: var(--brand-dark);
+    }
+    .hud-btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-dark);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .hud-btn:hover {
+      background: var(--surface-subtle);
+      border-color: #94a3b8;
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+
+    /* QUESTION CARD */
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .q-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
+    }
+    .q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .q-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #ffffff;
+    }
+    .q-badge.official { background: var(--badge-practice); }
+    .q-badge.coupling { background: var(--badge-coupling); }
+    .q-badge.exam { background: var(--badge-exam); }
+
+    .q-status {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .q-status.correct { color: var(--correct); }
+    .q-status.incorrect { color: var(--incorrect); }
+
+    .q-stem {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    /* CHOICES LIST */
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .choice-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface);
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+    .choice-item:hover:not(.locked) {
+      background: var(--surface-subtle);
+      border-color: #94a3b8;
+    }
+    .choice-item.selected-correct {
+      background: var(--correct-bg);
+      border-color: var(--correct-border);
+      color: #14532d;
+      font-weight: 600;
+    }
+    .choice-item.selected-incorrect {
+      background: var(--incorrect-bg);
+      border-color: var(--incorrect-border);
+      color: #7f1d1d;
+    }
+    .choice-item.reveal-correct-answer {
+      border: 2px dashed var(--correct);
+      background: #f0fdf4;
+      font-weight: 600;
+    }
+
+    /* COLLAPSIBLE SOLUTION ACCORDION */
+    details.solution-accordion {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    details.solution-accordion summary {
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      cursor: pointer;
+      user-select: none;
+      background: #f8fafc;
+      border-bottom: 1px solid transparent;
+      outline: none;
+      transition: background 0.15s ease;
+    }
+    details.solution-accordion summary:hover {
+      background: #f1f5f9;
+    }
+    details.solution-accordion[open] summary {
+      border-bottom-color: var(--border);
+      background: #f1f5f9;
+    }
+    .solution-body {
+      padding: 14px;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.5;
+    }
+    .solution-body .ans-highlight {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .solution-body .concept-pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-top: 8px;
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      .sticky-bar { display: none; }
+      .choice-item { border: 1px solid #ccc !important; }
+      details.solution-accordion { display: block !important; }
+      details.solution-accordion[open] .solution-body,
+      details.solution-accordion .solution-body { display: block !important; }
+      details.solution-accordion summary { display: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-tag">BSC2010C &bull; Chapter 8 Interactive Study Companion</div>
+      <h1>Chapter 8: Metabolism &bull; Interactive Practice Engine</h1>
+      <div class="subtitle">Self-Scoring Multiple Choice &bull; Instant Feedback &bull; Detailed Biochemical Rationales &bull; Tier 2 Lightweight Application</div>
+    </div>
+  </header>
+
+  <div class="sticky-bar">
+    <div class="sticky-inner">
+      <div class="tab-group" id="filterTabs">
+        <button class="tab-btn active" data-filter="all">All (43)</button>
+        <button class="tab-btn" data-filter="Official Practice">Official Practice (24)</button>
+        <button class="tab-btn" data-filter="Energy Coupling">Reaction Coupling (4)</button>
+        <button class="tab-btn" data-filter="Foundational Exam">Exam Simulation (15)</button>
+      </div>
+
+      <div class="hud-right">
+        <div class="score-badge" id="scoreHud">Attempted: 0/43 &bull; Score: <span>0%</span></div>
+        <button class="hud-btn" id="expandAllBtn">Expand All Solutions</button>
+        <button class="hud-btn" id="collapseAllBtn">Collapse All</button>
+        <button class="hud-btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="questionsContainer">
+    <!-- Question Cards injected by JavaScript -->
+  </main>
+
+  <script>
+    const questionsData = [
+  {
+    "id": "q1",
+    "category": "Official Practice",
+    "num": 1,
+    "stem": "Only about 40% of the chemical energy stored in a glucose molecule can be accounted for in ATP molecules that are generated during cell respiration. The rest turns to heat energy. What is this an example of?",
+    "choices": [
+      "A) First Law of Thermodynamics",
+      "B) Second Law of Thermodynamics",
+      "C) Third Law of Thermodynamics",
+      "D) None of the above"
+    ],
+    "correct": 1,
+    "answer_label": "B) Second Law of Thermodynamics",
+    "rationale": "The Second Law of Thermodynamics states that every energy transfer or transformation increases the entropy (disorder) of the universe. In cellular respiration, about 60% of glucose's free energy is dissipated as thermal kinetic energy (heat), increasing cosmic entropy.",
+    "key_concept": "Thermodynamics &bull; Entropy & Heat Dissipation"
+  },
+  {
+    "id": "q2",
+    "category": "Official Practice",
+    "num": 2,
+    "stem": "Which of the following describes an anabolic pathway?",
+    "choices": [
+      "A) All chemical reactions required to sustain cellular life",
+      "B) Pathways that release ATP and degrade cellular polymers",
+      "C) Reactions that require energy input (ATP) to build polymers from monomers",
+      "D) None of the above"
+    ],
+    "correct": 2,
+    "answer_label": "C) Reactions that require energy input (ATP) to build polymers from monomers",
+    "rationale": "Anabolic pathways are biosynthetic processes that consume energy (endergonic, delta G > 0) to build complex macromolecules (e.g., protein synthesis from amino acids, glycogen from glucose).",
+    "key_concept": "Metabolic Pathways &bull; Anabolism vs. Catabolism"
+  },
+  {
+    "id": "q3",
+    "category": "Official Practice",
+    "num": 3,
+    "stem": "Which of the following describes a catabolic pathway?",
+    "choices": [
+      "A) All chemical reactions required to sustain cellular life",
+      "B) Reactions that release ATP and break down polymers into monomers",
+      "C) Pathways that consume ATP to construct polymers",
+      "D) None of the above"
+    ],
+    "correct": 1,
+    "answer_label": "B) Reactions that release ATP and break down polymers into monomers",
+    "rationale": "Catabolic pathways are degradative processes that break down complex molecules into simpler units (exergonic, delta G < 0), releasing stored chemical potential energy to synthesize ATP.",
+    "key_concept": "Metabolic Pathways &bull; Catabolism & Energy Harvest"
+  },
+  {
+    "id": "q4",
+    "category": "Official Practice",
+    "num": 4,
+    "stem": "If a reaction is spontaneous (exergonic), is the value of delta G positive or negative?",
+    "choices": [
+      "A) Positive (delta G > 0)",
+      "B) Negative (delta G < 0)"
+    ],
+    "correct": 1,
+    "answer_label": "B) Negative (delta G < 0)",
+    "rationale": "Spontaneous processes decrease the system's free energy (delta G = G_final - G_initial < 0). A negative delta G signifies that the reaction releases free energy and can perform cellular work.",
+    "key_concept": "Thermodynamics &bull; Gibbs Free Energy Criterion"
+  },
+  {
+    "id": "q5",
+    "category": "Official Practice",
+    "num": 5,
+    "stem": "An endergonic reaction has which of the following properties?",
+    "choices": [
+      "A) +delta G and spontaneous",
+      "B) +delta G and the reaction is not spontaneous",
+      "C) -delta G and spontaneous",
+      "D) -delta G and not spontaneous"
+    ],
+    "correct": 1,
+    "answer_label": "B) +delta G and the reaction is not spontaneous",
+    "rationale": "Endergonic reactions absorb free energy from their surroundings, resulting in a positive change in free energy (+delta G). They are non-spontaneous and require energetic coupling with an exergonic driver to proceed.",
+    "key_concept": "Bioenergetics &bull; Endergonic Reactions"
+  },
+  {
+    "id": "q6",
+    "category": "Official Practice",
+    "num": 6,
+    "stem": "Which of the following is one way that ADP is converted to ATP?",
+    "choices": [
+      "A) A free inorganic phosphate group (Pi) is added to ADP",
+      "B) Hydrolysis of high-energy bonds",
+      "C) It is impossible for ADP to regenerate ATP",
+      "D) Both A and B"
+    ],
+    "correct": 0,
+    "answer_label": "A) A free inorganic phosphate group (Pi) is added to ADP",
+    "rationale": "ATP is regenerated by phosphorylation: endergonically attaching an inorganic phosphate group (Pi) to ADP (ADP + Pi + energy -> ATP + H2O), driven by catabolic exergonic pathways.",
+    "key_concept": "ATP Cycle &bull; Phosphorylation of ADP"
+  },
+  {
+    "id": "q7",
+    "category": "Official Practice",
+    "num": 7,
+    "stem": "A covalent bond between two atoms represents what kind of energy?",
+    "choices": [
+      "A) Kinetic energy",
+      "B) Potential (Chemical) energy",
+      "C) Mechanical energy",
+      "D) Solar energy"
+    ],
+    "correct": 1,
+    "answer_label": "B) Potential (Chemical) energy",
+    "rationale": "Chemical energy is a form of potential energy stored in the spatial arrangement of shared electrons within covalent bonds between atoms.",
+    "key_concept": "Forms of Energy &bull; Chemical Potential Energy"
+  },
+  {
+    "id": "q8",
+    "category": "Official Practice",
+    "num": 8,
+    "stem": "What role do enzymes play in a chemical reaction?",
+    "choices": [
+      "A) Slow down reactions to preserve reactants",
+      "B) Create reactions that are thermodynamically impossible",
+      "C) Destroy reaction products to drive reactions forward",
+      "D) Speed up a chemical reaction without being consumed"
+    ],
+    "correct": 3,
+    "answer_label": "D) Speed up a chemical reaction without being consumed",
+    "rationale": "Enzymes are catalytic proteins that accelerate reaction rates by stabilizing the transition state, emerging from the reaction chemically unchanged and ready to process additional substrate molecules.",
+    "key_concept": "Enzyme Kinetics &bull; Catalytic Function"
+  },
+  {
+    "id": "q9",
+    "category": "Official Practice",
+    "num": 9,
+    "stem": "What is a substrate?",
+    "choices": [
+      "A) What enzymes react on; the reactant molecule in enzymatic reactions",
+      "B) The final output molecule released from the active site",
+      "C) The protein structure that forms the catalytic pocket",
+      "D) An inhibitor that halts enzymatic activity"
+    ],
+    "correct": 0,
+    "answer_label": "A) What enzymes react on; the reactant molecule in enzymatic reactions",
+    "rationale": "The substrate is the specific reactant molecule that binds into the enzyme's active site to undergo catalytic bond rearrangement.",
+    "key_concept": "Enzyme Structure &bull; Substrate Specificity"
+  },
+  {
+    "id": "q10",
+    "category": "Official Practice",
+    "num": 10,
+    "stem": "How do enzymes speed up chemical reactions?",
+    "choices": [
+      "A) By increasing the required activation energy",
+      "B) By lowering the activation energy barrier (EA)",
+      "C) By changing an endergonic reaction into an exergonic one",
+      "D) By decreasing the total free energy change (delta G)"
+    ],
+    "correct": 1,
+    "answer_label": "B) By lowering the activation energy barrier (EA)",
+    "rationale": "Enzymes accelerate chemical reactions by lowering the activation energy barrier (EA) needed to contort reactant bonds into the high-energy transition state. They do not alter delta G or the final equilibrium.",
+    "key_concept": "Enzymatic Catalysis &bull; Activation Energy Reduction"
+  },
+  {
+    "id": "q11",
+    "category": "Official Practice",
+    "num": 11,
+    "stem": "Which of the following could be a cause of a denatured enzyme?",
+    "choices": [
+      "A) Presence of a competitive inhibitor",
+      "B) Presence of a non-competitive inhibitor",
+      "C) A drastic spike in pH away from the optimum",
+      "D) Inability of the substrate to fit into the active site"
+    ],
+    "correct": 2,
+    "answer_label": "C) A drastic spike in pH away from the optimum",
+    "rationale": "Extreme shifts in pH alter the ionization states of acidic and basic amino acid R-groups, breaking ionic bonds and hydrogen bonds that stabilize the enzyme's tertiary active site conformation.",
+    "key_concept": "Protein Denaturation &bull; Environmental Factors"
+  },
+  {
+    "id": "q12",
+    "category": "Official Practice",
+    "num": 12,
+    "stem": "Which is the most likely result of a non-competitive inhibitor?",
+    "choices": [
+      "A) The rate of reaction slows down regardless of substrate concentration",
+      "B) The reaction rate speeds up due to induced fit",
+      "C) The active site is blocked directly by competitive binding",
+      "D) The enzyme primary structure is hydrolyzed"
+    ],
+    "correct": 0,
+    "answer_label": "A) The rate of reaction slows down regardless of substrate concentration",
+    "rationale": "Noncompetitive inhibitors bind to an allosteric site away from the active site, inducing a conformational change that lowers catalytic efficiency (decreases Vmax). Increasing substrate concentration cannot overcome this inhibition.",
+    "key_concept": "Enzyme Inhibition &bull; Noncompetitive / Allosteric Mechanics"
+  },
+  {
+    "id": "q13",
+    "category": "Official Practice",
+    "num": 13,
+    "stem": "What is a competitive inhibitor?",
+    "choices": [
+      "A) An inhibitor that mimics the substrate and binds directly into the active site",
+      "B) An inhibitor that binds exclusively to a non-active allosteric site",
+      "C) A compound that hydrolyzes the enzyme into individual amino acids",
+      "D) A molecule that permanently destroys the substrate"
+    ],
+    "correct": 0,
+    "answer_label": "A) An inhibitor that mimics the substrate and binds directly into the active site",
+    "rationale": "Competitive inhibitors resemble the substrate's molecular geometry and compete directly for active site occupancy. Their inhibitory effect can be overcome by flooding the system with excess substrate.",
+    "key_concept": "Enzyme Inhibition &bull; Competitive Active Site Binding"
+  },
+  {
+    "id": "q14",
+    "category": "Official Practice",
+    "num": 14,
+    "stem": "Which of the following is NOT true concerning ATP?",
+    "choices": [
+      "A) Formed by attaching an inorganic phosphate with a high-energy phosphoanhydride bond",
+      "B) Only the terminal phosphate bond is typically hydrolyzed during cellular work",
+      "C) It is a good long-term energy storage molecule in cells",
+      "D) It becomes ADP and inorganic phosphate when dephosphorylated"
+    ],
+    "correct": 2,
+    "answer_label": "C) It is a good long-term energy storage molecule in cells (FALSE)",
+    "rationale": "ATP is chemically unstable due to negative charge repulsion on its phosphate tail, making it ideal as an immediate, transient energy currency. Long-term energy storage is mediated by fats (triacylglycerols) and carbohydrates (glycogen/starch).",
+    "key_concept": "ATP Properties &bull; Energy Currency vs. Storage"
+  },
+  {
+    "id": "q15",
+    "category": "Official Practice",
+    "num": 15,
+    "stem": "Which of the following is NOT true of enzymes?",
+    "choices": [
+      "A) They use the 3D shape of an active site to bind substrates",
+      "B) They lower the activation energy of the reaction",
+      "C) Enzymes make delta G more negative to drive reactions forward",
+      "D) They function with optimal activity at specific temperature and pH ranges"
+    ],
+    "correct": 2,
+    "answer_label": "C) Enzymes make delta G more negative to drive reactions forward (FALSE)",
+    "rationale": "Enzymes have ZERO effect on delta G. They cannot alter the initial free energy of reactants or the final free energy of products; they only lower the activation energy barrier between them.",
+    "key_concept": "Thermodynamics &bull; Invariance of Free Energy Change"
+  },
+  {
+    "id": "q16",
+    "category": "Official Practice",
+    "num": 16,
+    "stem": "A roller coaster is sitting at the top of a hill, about to drop off. Which of the following best describes the energy present?",
+    "choices": [
+      "A) Potential energy",
+      "B) Chemical energy",
+      "C) Kinetic energy",
+      "D) Dissipated heat energy"
+    ],
+    "correct": 0,
+    "answer_label": "A) Potential energy",
+    "rationale": "At the summit of the track, the roller coaster possesses maximal gravitational potential energy due to its position in the Earth's gravitational field, which converts to kinetic energy as it accelerates downward.",
+    "key_concept": "Forms of Energy &bull; Gravitational Potential Energy"
+  },
+  {
+    "id": "q17",
+    "category": "Official Practice",
+    "num": 17,
+    "stem": "In an endergonic reaction, do the products or reactants have more energy?",
+    "choices": [
+      "A) Reactants have more free energy",
+      "B) Products have more free energy"
+    ],
+    "correct": 1,
+    "answer_label": "B) Products have more free energy",
+    "rationale": "Endergonic reactions absorb energy from their surroundings (+delta G). Because delta G = G_products - G_reactants > 0, the products store more chemical potential energy than the initial reactants.",
+    "key_concept": "Bioenergetics &bull; Free Energy Levels"
+  },
+  {
+    "id": "q18",
+    "category": "Official Practice",
+    "num": 18,
+    "stem": "Feedback inhibition is an efficient way to control a metabolic pathway because:",
+    "choices": [
+      "A) The first enzyme is inhibited by its immediate product",
+      "B) The final enzyme is inhibited by its immediate product",
+      "C) The first enzyme in the pathway is inhibited by the end-product of the pathway",
+      "D) Downstream enzymes are hydrolyzed when concentration rises"
+    ],
+    "correct": 2,
+    "answer_label": "C) The first enzyme in the pathway is inhibited by the end-product of the pathway",
+    "rationale": "By targeting the first committed enzyme in a multi-step pathway, the accumulated end-product prevents the cell from wasting chemical precursors and ATP synthesizing unneeded intermediates.",
+    "key_concept": "Metabolic Regulation &bull; Feedback Inhibition"
+  },
+  {
+    "id": "q19",
+    "category": "Official Practice",
+    "num": 19,
+    "stem": "Where is the energy stored in a molecule of ATP?",
+    "choices": [
+      "A) Between nitrogen and carbon atoms of the adenine base",
+      "B) In ribose carbon-carbon single bonds",
+      "C) In phosphorus-oxygen double bonds",
+      "D) In the phosphoanhydride bonds connecting the negatively charged phosphate groups"
+    ],
+    "correct": 3,
+    "answer_label": "D) In the phosphoanhydride bonds connecting the negatively charged phosphate groups",
+    "rationale": "The three phosphate groups carry four clustered negative charges at physiological pH. Electrostatic repulsion between these oxygen atoms creates high chemical potential energy in the phosphoanhydride linkages.",
+    "key_concept": "ATP Structure &bull; Phosphoanhydride High-Energy Bonds"
+  },
+  {
+    "id": "q20",
+    "category": "Official Practice",
+    "num": 20,
+    "stem": "Coenzymes and cofactors assist protein function by:",
+    "choices": [
+      "A) Stabilizing 3D shape only",
+      "B) Assisting with binding and chemical reactivity between the substrate and active site",
+      "C) Blocking the active site to prevent substrate entry",
+      "D) Denaturing inhibitory regulatory domains"
+    ],
+    "correct": 1,
+    "answer_label": "B) Assisting with binding and chemical reactivity between the substrate and active site",
+    "rationale": "Cofactors (inorganic metal ions like Zn2+, Mg2+, Fe2+) and coenzymes (organic vitamin derivatives like NAD+, CoA) participate directly in catalysis by stabilizing charges, shuttling electrons, or anchoring substrates.",
+    "key_concept": "Enzyme Helpers &bull; Cofactors & Coenzymes"
+  },
+  {
+    "id": "q21",
+    "category": "Official Practice",
+    "num": 21,
+    "stem": "Explain why salivary amylase functions in the mouth but becomes inactive in the stomach:",
+    "choices": [
+      "A) Amylase is consumed and destroyed by starch molecules in the mouth",
+      "B) The mouth is sterile whereas the stomach contains acidic bacteria",
+      "C) Amylase functions at neutral pH (~7.0); the stomach's gastric juice (pH ~2.0) disrupts ionic bonds and denatures the enzyme",
+      "D) Stomach temperatures are too low for enzyme activity"
+    ],
+    "correct": 2,
+    "answer_label": "C) Amylase functions at neutral pH (~7.0); the stomach's gastric juice (pH ~2.0) disrupts ionic bonds and denatures the enzyme",
+    "rationale": "Salivary amylase evolved for the neutral pH of saliva (~6.7-7.0). Upon swallowing into the stomach (pH ~2.0), high proton concentration protonates carboxylate side chains, disrupting salt bridges and irreversibly unfolding the active site.",
+    "key_concept": "Environmental Factors &bull; pH Denaturation"
+  },
+  {
+    "id": "q22",
+    "category": "Official Practice",
+    "num": 22,
+    "stem": "For reaction A -> B (delta G = -200 kcal/mol), which endergonic reaction could be energetically coupled to it?",
+    "choices": [
+      "A) C -> D (delta G = +220 kcal/mol)",
+      "B) E -> F (delta G = -125 kcal/mol)",
+      "C) G -> H (delta G = +180 kcal/mol)",
+      "D) K -> L (delta G = -250 kcal/mol)"
+    ],
+    "correct": 2,
+    "answer_label": "C) G -> H (delta G = +180 kcal/mol)",
+    "rationale": "Energetic coupling requires coupling an exergonic driver with an endergonic process (+delta G) such that the net free energy change is negative. Net = -200 + (+180) = -20 kcal/mol (< 0, spontaneous).",
+    "key_concept": "Energetic Coupling &bull; Net Free Energy Calculation"
+  },
+  {
+    "id": "q23",
+    "category": "Official Practice",
+    "num": 23,
+    "stem": "For reaction Y -> Z (delta G = +225 kcal/mol), which exergonic reaction could be coupled to drive it spontaneously?",
+    "choices": [
+      "A) C -> D (delta G = +220 kcal/mol)",
+      "B) E -> F (delta G = -125 kcal/mol)",
+      "C) G -> H (delta G = +180 kcal/mol)",
+      "D) K -> L (delta G = -250 kcal/mol)"
+    ],
+    "correct": 3,
+    "answer_label": "D) K -> L (delta G = -250 kcal/mol)",
+    "rationale": "To drive an endergonic reaction (+225 kcal/mol), the exergonic driving reaction must release more free energy than is consumed. Net = +225 + (-250) = -25 kcal/mol (< 0, spontaneous).",
+    "key_concept": "Energetic Coupling &bull; Exergonic Driver Requirement"
+  },
+  {
+    "id": "q24",
+    "category": "Official Practice",
+    "num": 24,
+    "stem": "A closed system chemical reaction reaches equilibrium when:",
+    "choices": [
+      "A) All reactants have been converted completely into products",
+      "B) The forward and reverse reaction rates are equal and delta G = 0",
+      "C) The enzyme runs out of activation energy",
+      "D) System entropy drops to zero"
+    ],
+    "correct": 1,
+    "answer_label": "B) The forward and reverse reaction rates are equal and delta G = 0",
+    "rationale": "At chemical equilibrium, the rates of the forward and reverse reactions are balanced, reactant and product concentrations remain steady, and the system possesses minimum free energy (delta G = 0). A system at equilibrium can perform no work.",
+    "key_concept": "Thermodynamics &bull; Chemical Equilibrium & Work Capacity"
+  },
+  {
+    "id": "c1",
+    "category": "Energy Coupling",
+    "num": 1,
+    "stem": "Scenario 1: Reaction B -> C has delta G = -100 kcal/mol. Classify this reaction thermodynamically and determine which coupled reaction will produce a spontaneous pathway:",
+    "choices": [
+      "A) Endergonic / Anabolic &bull; Coupled with delta G = +120 kcal/mol",
+      "B) Exergonic / Catabolic &bull; Coupled with delta G = +90 kcal/mol",
+      "C) Endergonic / Catabolic &bull; Coupled with delta G = -50 kcal/mol",
+      "D) Exergonic / Anabolic &bull; Coupled with delta G = +110 kcal/mol"
+    ],
+    "correct": 1,
+    "answer_label": "B) Exergonic / Catabolic &bull; Coupled with delta G = +90 kcal/mol",
+    "rationale": "Because delta G < 0 (-100 kcal/mol), the reaction is exergonic and catabolic. It can drive an endergonic reaction requiring up to +99.9 kcal/mol. Coupling with +90 kcal/mol yields Net delta G = -100 + 90 = -10 kcal/mol (< 0, spontaneous).",
+    "key_concept": "Energy Coupling &bull; Scenario 1 (Exergonic Driver)"
+  },
+  {
+    "id": "c2",
+    "category": "Energy Coupling",
+    "num": 2,
+    "stem": "Scenario 2: Reaction G -> H has delta G = +50 kcal/mol. Classify this reaction thermodynamically and identify an appropriate coupled driver:",
+    "choices": [
+      "A) Exergonic / Catabolic &bull; Coupled with delta G = +40 kcal/mol",
+      "B) Endergonic / Anabolic &bull; Coupled with delta G = -30 kcal/mol",
+      "C) Endergonic / Anabolic &bull; Coupled with delta G = -100 kcal/mol",
+      "D) Exergonic / Anabolic &bull; Coupled with delta G = 0 kcal/mol"
+    ],
+    "correct": 2,
+    "answer_label": "C) Endergonic / Anabolic &bull; Coupled with delta G = -100 kcal/mol",
+    "rationale": "Because delta G > 0 (+50 kcal/mol), the reaction is endergonic and biosynthetic (anabolic). It requires an exergonic driver releasing at least 50 kcal/mol. Coupling with -100 kcal/mol yields Net delta G = +50 + (-100) = -50 kcal/mol (< 0, spontaneous).",
+    "key_concept": "Energy Coupling &bull; Scenario 2 (Endergonic Requirement)"
+  },
+  {
+    "id": "c3",
+    "category": "Energy Coupling",
+    "num": 3,
+    "stem": "Scenario 3: Reaction L -> M has delta G = +500 kcal/mol. What exergonic driver is required to drive this massive biosynthetic reaction?",
+    "choices": [
+      "A) A reaction with delta G = -450 kcal/mol",
+      "B) A reaction with delta G = -510 kcal/mol",
+      "C) A reaction with delta G = +510 kcal/mol",
+      "D) A reaction with delta G = -250 kcal/mol"
+    ],
+    "correct": 1,
+    "answer_label": "B) A reaction with delta G = -510 kcal/mol",
+    "rationale": "To power a reaction consuming +500 kcal/mol, the driving reaction must release more than 500 kcal/mol. Coupling with -510 kcal/mol yields Net delta G = +500 + (-510) = -10 kcal/mol (< 0, spontaneous).",
+    "key_concept": "Energy Coupling &bull; Scenario 3 (High-Energy Synthesis)"
+  },
+  {
+    "id": "c4",
+    "category": "Energy Coupling",
+    "num": 4,
+    "stem": "Scenario 4: Reaction Y -> Z has delta G = -35 kcal/mol. Which endergonic reaction can be driven by coupling with this reaction?",
+    "choices": [
+      "A) An endergonic reaction with delta G = +45 kcal/mol",
+      "B) An endergonic reaction with delta G = +25 kcal/mol",
+      "C) An endergonic reaction with delta G = +35 kcal/mol",
+      "D) An exergonic reaction with delta G = -10 kcal/mol"
+    ],
+    "correct": 1,
+    "answer_label": "B) An endergonic reaction with delta G = +25 kcal/mol",
+    "rationale": "Reaction Y -> Z releases 35 kcal/mol. It can successfully drive an endergonic process requiring up to +34.9 kcal/mol. Coupling with +25 kcal/mol yields Net delta G = -35 + 25 = -10 kcal/mol (< 0, spontaneous).",
+    "key_concept": "Energy Coupling &bull; Scenario 4 (Net Thermodynamic Threshold)"
+  },
+  {
+    "id": "e1",
+    "category": "Foundational Exam",
+    "num": 1,
+    "stem": "Which of the following statements is TRUE regarding the laws of thermodynamics in biological systems?",
+    "choices": [
+      "A) Cellular metabolism creates new energy through catabolic pathways.",
+      "B) Cells maintain internal order while increasing the total entropy of the universe by releasing heat.",
+      "C) Chemical reactions in closed systems remain spontaneous indefinitely without reaching equilibrium.",
+      "D) Living organisms violate the Second Law of Thermodynamics during anabolic synthesis."
+    ],
+    "correct": 1,
+    "answer_label": "B) Cells maintain internal order while increasing total entropy by releasing heat.",
+    "rationale": "Living organisms are open systems. They decrease local internal entropy (maintaining complex biological order) only by taking in organized energy and releasing disordered thermal energy (heat) into the surroundings, ensuring that the total entropy of the universe increases.",
+    "key_concept": "Module 10 &bull; Thermodynamics of Living Systems"
+  },
+  {
+    "id": "e2",
+    "category": "Foundational Exam",
+    "num": 2,
+    "stem": "Anabolic pathways are best described as:",
+    "choices": [
+      "A) Degradative and exergonic (delta G < 0), releasing free energy to synthesize ATP.",
+      "B) Biosynthetic and endergonic (delta G > 0), requiring energy input to build macromolecules.",
+      "C) Spontaneous processes that increase entropy within the system.",
+      "D) Pathways that occur without enzymatic catalysis."
+    ],
+    "correct": 1,
+    "answer_label": "B) Biosynthetic and endergonic (delta G > 0), requiring energy input to build macromolecules.",
+    "rationale": "Anabolic pathways are non-spontaneous synthetic processes that construct complex polymers from simpler building blocks, consuming free energy (usually ATP) in endergonic reactions.",
+    "key_concept": "Module 10 &bull; Anabolic Pathway Characteristics"
+  },
+  {
+    "id": "e3",
+    "category": "Foundational Exam",
+    "num": 3,
+    "stem": "Why is ATP hydrolysis so strongly exergonic (delta G\u00b0' = -7.3 kcal/mol)?",
+    "choices": [
+      "A) The ribose sugar is oxidized to CO2.",
+      "B) Four closely spaced negative charges on the triphosphate tail strongly repel one another.",
+      "C) Nitrogenous adenine breaks apart into amino acids.",
+      "D) The newly formed inorganic phosphate undergoes endergonic precipitation."
+    ],
+    "correct": 1,
+    "answer_label": "B) Four closely spaced negative charges on the triphosphate tail strongly repel one another.",
+    "rationale": "At physiological pH, the three adjacent phosphate groups of ATP carry four formal negative charges. Electrostatic repulsion between these oxygen atoms creates immense mechanical tension (similar to a compressed spring), released upon hydrolysis.",
+    "key_concept": "Module 10 &bull; Electrostatic Strain in ATP"
+  },
+  {
+    "id": "e4",
+    "category": "Foundational Exam",
+    "num": 4,
+    "stem": "Reaction 1 has a delta G of +12 kcal/mol. Which of the following reactions could be coupled with Reaction 1 to make the overall pathway spontaneous?",
+    "choices": [
+      "A) Reaction A with delta G = +15 kcal/mol.",
+      "B) Reaction B with delta G = -8 kcal/mol.",
+      "C) Reaction C with delta G = -18 kcal/mol.",
+      "D) Reaction D with delta G = 0 kcal/mol."
+    ],
+    "correct": 2,
+    "answer_label": "C) Reaction C with delta G = -18 kcal/mol.",
+    "rationale": "Energetic coupling requires Net delta G < 0. Coupling Reaction 1 (+12 kcal/mol) with Reaction C (-18 kcal/mol) yields Net delta G = +12 + (-18) = -6 kcal/mol (< 0, spontaneous). Reaction B (-8 kcal/mol) leaves a positive net delta G (+4 kcal/mol).",
+    "key_concept": "Module 10 &bull; Energetic Reaction Coupling"
+  },
+  {
+    "id": "e5",
+    "category": "Foundational Exam",
+    "num": 5,
+    "stem": "How does an enzyme accelerate a chemical reaction?",
+    "choices": [
+      "A) By making the reaction's delta G more negative.",
+      "B) By lowering the activation energy barrier (EA) needed to reach the transition state.",
+      "C) By changing the equilibrium constant toward higher product formation.",
+      "D) By providing thermal heat directly to the substrate."
+    ],
+    "correct": 1,
+    "answer_label": "B) By lowering the activation energy barrier (EA) needed to reach the transition state.",
+    "rationale": "Enzymes stabilize the high-energy transition state through specific active-site microenvironments, reducing EA. They do not change delta G, delta H, or the final equilibrium ratio.",
+    "key_concept": "Module 10 &bull; Mechanism of Enzyme Catalysis"
+  },
+  {
+    "id": "e6",
+    "category": "Foundational Exam",
+    "num": 6,
+    "stem": "In the induced-fit model of enzyme action:",
+    "choices": [
+      "A) The active site is a rigid template that fits the substrate like a lock and key.",
+      "B) Binding of the substrate induces conformational changes that contort bonds and stabilize the transition state.",
+      "C) The substrate irreversibly alters the amino acid sequence of the enzyme.",
+      "D) The enzyme changes into a coenzyme upon product release."
+    ],
+    "correct": 1,
+    "answer_label": "B) Binding of the substrate induces conformational changes that contort bonds and stabilize the transition state.",
+    "rationale": "Induced fit describes how weak interactions between the substrate and active site induce the enzyme protein to clasp snugly around the substrate, straining chemical bonds and orienting catalytic residues.",
+    "key_concept": "Module 10 &bull; Induced-Fit Conformational Dynamics"
+  },
+  {
+    "id": "e7",
+    "category": "Foundational Exam",
+    "num": 7,
+    "stem": "When an enzyme is subjected to temperatures far above its optimal temperature, what is the primary cause of lost catalytic activity?",
+    "choices": [
+      "A) Covalent peptide bonds in the primary structure are hydrolyzed.",
+      "B) Thermal agitation disrupts hydrogen bonds and hydrophobic interactions, denaturing the tertiary conformation.",
+      "C) The substrate evaporates from the reaction mixture.",
+      "D) Activation energy drops to zero, preventing the transition state."
+    ],
+    "correct": 1,
+    "answer_label": "B) Thermal agitation disrupts hydrogen bonds and hydrophobic interactions, denaturing tertiary conformation.",
+    "rationale": "Excessive kinetic thermal vibration overwhelms the delicate non-covalent interactions (hydrogen bonds, ionic attractions, van der Waals forces) maintaining the enzyme's specific 3D active site geometry.",
+    "key_concept": "Module 10 &bull; Thermal Denaturation of Enzymes"
+  },
+  {
+    "id": "e8",
+    "category": "Foundational Exam",
+    "num": 8,
+    "stem": "How can a researcher experimentally distinguish between competitive and noncompetitive inhibition of an enzyme?",
+    "choices": [
+      "A) Measure reaction rates at varying temperatures.",
+      "B) Increase substrate concentration; competitive inhibition will be overcome, while noncompetitive inhibition will not.",
+      "C) Test whether the enzyme is made of RNA or protein.",
+      "D) Measure the change in enthalpy (delta H) of the reaction."
+    ],
+    "correct": 1,
+    "answer_label": "B) Increase substrate concentration; competitive inhibition will be overcome, while noncompetitive inhibition will not.",
+    "rationale": "Because competitive inhibitors compete directly for the active site, high [Substrate] outcompetes the inhibitor, restoring maximal velocity (Vmax). Noncompetitive inhibitors bind elsewhere (allosteric site), reducing Vmax regardless of substrate concentration.",
+    "key_concept": "Module 10 &bull; Competitive vs. Noncompetitive Kinetics"
+  },
+  {
+    "id": "e9",
+    "category": "Foundational Exam",
+    "num": 9,
+    "stem": "In allosteric regulation, where does an effector molecule bind?",
+    "choices": [
+      "A) Directly inside the catalytic active site.",
+      "B) To a distinct regulatory site, inducing a conformational change in active site shape.",
+      "C) Exclusively to the substrate molecule.",
+      "D) To the cell membrane bilayer."
+    ],
+    "correct": 1,
+    "answer_label": "B) To a distinct regulatory site, inducing a conformational change in active site shape.",
+    "rationale": "Allosteric regulation involves non-covalent binding at a regulatory site spatially separated from the active site. Binding of an activator stabilizes the active conformation; binding of an inhibitor stabilizes the inactive state.",
+    "key_concept": "Module 10 &bull; Allosteric Site Regulation"
+  },
+  {
+    "id": "e10",
+    "category": "Foundational Exam",
+    "num": 10,
+    "stem": "What is the biological function of feedback inhibition in metabolic pathways?",
+    "choices": [
+      "A) To continuously accelerate product synthesis until substrates are exhausted.",
+      "B) To allow the pathway's final end product to allosterically inhibit an early rate-limiting enzyme, preventing overproduction.",
+      "C) To convert catabolic pathways into anabolic pathways permanently.",
+      "D) To denature all downstream enzymes once ATP levels drop."
+    ],
+    "correct": 1,
+    "answer_label": "B) To allow the pathway's final end product to allosterically inhibit an early rate-limiting enzyme, preventing overproduction.",
+    "rationale": "Feedback inhibition is an efficient homeostatic mechanism. When end-product accumulates, it allosterically shuts off the first committed enzymatic step (e.g., isoleucine inhibiting threonine deaminase), conserving cellular resources.",
+    "key_concept": "Module 10 &bull; Feedback Inhibition Regulation"
+  },
+  {
+    "id": "e11",
+    "category": "Foundational Exam",
+    "num": 11,
+    "stem": "A cell at chemical and metabolic equilibrium (delta G = 0) is:",
+    "choices": [
+      "A) Maximally efficient at synthesizing ATP.",
+      "B) Dead, because it can perform no work.",
+      "C) Operating at its optimal Vmax.",
+      "D) Undergoing rapid anabolic synthesis."
+    ],
+    "correct": 1,
+    "answer_label": "B) Dead, because it can perform no work.",
+    "rationale": "Because living cells must continuously perform mechanical, transport, and chemical work, and a system at equilibrium has delta G = 0 (zero capacity to do work), a cell at metabolic equilibrium is dead. Constant throughput of matter keeps metabolism in disequilibrium.",
+    "key_concept": "Module 10 &bull; Chemical Equilibrium & Life"
+  },
+  {
+    "id": "e12",
+    "category": "Foundational Exam",
+    "num": 12,
+    "stem": "The nerve agent Sarin acts as a noncompetitive inhibitor of acetylcholinesterase. What effect will increasing acetylcholine concentration have on enzyme activity in the presence of Sarin?",
+    "choices": [
+      "A) It will completely reverse the inhibition and restore normal maximal velocity.",
+      "B) It will have virtually no effect on overcoming the inhibition because the active site shape is altered.",
+      "C) It will convert Sarin into a competitive inhibitor.",
+      "D) It will cause immediate denaturation of the substrate."
+    ],
+    "correct": 1,
+    "answer_label": "B) It will have virtually no effect on overcoming the inhibition because the active site shape is altered.",
+    "rationale": "Because Sarin binds to an allosteric regulatory notch rather than the substrate-binding active site, increasing substrate concentration cannot displace the inhibitor or restore catalytic pocket geometry.",
+    "key_concept": "Module 10 &bull; Sarin Noncompetitive Mechanism"
+  },
+  {
+    "id": "e13",
+    "category": "Foundational Exam",
+    "num": 13,
+    "stem": "Which of the following is an example of an inorganic cofactor?",
+    "choices": [
+      "A) Coenzyme A derived from pantothenic acid.",
+      "B) Zinc ion (Zn2+) bound to an active site.",
+      "C) Nicotinamide adenine dinucleotide (NAD+).",
+      "D) Ribulose 1,5-bisphosphate (RuBP)."
+    ],
+    "correct": 1,
+    "answer_label": "B) Zinc ion (Zn2+) bound to an active site.",
+    "rationale": "Inorganic enzyme helpers are metal ions like Zn2+, Fe2+, and Mg2+ (termed cofactors). Organic non-protein helper molecules derived from vitamins are specifically termed coenzymes.",
+    "key_concept": "Module 10 &bull; Inorganic Cofactor Definition"
+  },
+  {
+    "id": "e14",
+    "category": "Foundational Exam",
+    "num": 14,
+    "stem": "What happens to the free energy change (delta G) of a reaction when a specific enzyme catalyst is added?",
+    "choices": [
+      "A) delta G becomes significantly more negative.",
+      "B) delta G remains completely unchanged.",
+      "C) delta G shifts from positive to negative.",
+      "D) delta G drops to zero."
+    ],
+    "correct": 1,
+    "answer_label": "B) delta G remains completely unchanged.",
+    "rationale": "Enzymes affect only the activation energy barrier (kinetic pathway), accelerating the rate at which equilibrium is reached. They have no impact on the thermodynamic state variables (initial and final free energy), leaving delta G unchanged.",
+    "key_concept": "Module 10 &bull; Invariance of Free Energy (delta G)"
+  },
+  {
+    "id": "e15",
+    "category": "Foundational Exam",
+    "num": 15,
+    "stem": "Why is the catabolism of glucose into CO2 and H2O spontaneous, even though a bottle of glucose powder can sit on a shelf for years without decomposing?",
+    "choices": [
+      "A) The reaction is actually endergonic at room temperature.",
+      "B) The reaction is thermodynamically favorable (delta G < 0) but kinetically hindered by a high activation energy barrier.",
+      "C) Glucose powder has zero potential energy.",
+      "D) The reaction violates the First Law of Thermodynamics without sunlight."
+    ],
+    "correct": 1,
+    "answer_label": "B) The reaction is thermodynamically favorable (delta G < 0) but kinetically hindered by a high activation energy barrier.",
+    "rationale": "A reaction can be strongly exergonic (thermodynamically spontaneous) yet occur at an imperceptibly slow rate if the activation energy barrier (EA) is too high for molecules at ambient temperature to surpass. In living cells, enzymes lower EA to allow immediate breakdown.",
+    "key_concept": "Module 10 &bull; Kinetic Stability vs. Thermodynamics"
+  }
+];
+
+    let state = {
+      userAnswers: {}, // id -> choiceIndex
+      currentFilter: 'all'
+    };
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      let filtered = questionsData;
+      if (state.currentFilter !== 'all') {
+        filtered = questionsData.filter(q => q.category === state.currentFilter);
+      }
+
+      filtered.forEach(q => {
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = 'card-' + q.id;
+
+        const isAnswered = state.userAnswers.hasOwnProperty(q.id);
+        const userChoice = state.userAnswers[q.id];
+        const isCorrect = isAnswered && userChoice === q.correct;
+
+        // Badge class
+        let badgeClass = 'official';
+        if (q.category === 'Energy Coupling') badgeClass = 'coupling';
+        if (q.category === 'Foundational Exam') badgeClass = 'exam';
+
+        // Status indicator
+        let statusText = '[UNATTEMPTED]';
+        let statusClass = '';
+        if (isAnswered) {
+          if (isCorrect) {
+            statusText = '[CORRECT]';
+            statusClass = 'correct';
+          } else {
+            statusText = '[INCORRECT]';
+            statusClass = 'incorrect';
+          }
+        }
+
+        let choicesHtml = '';
+        q.choices.forEach((choice, idx) => {
+          let choiceClass = 'choice-item';
+          if (isAnswered) {
+            if (idx === userChoice) {
+              choiceClass += isCorrect ? ' selected-correct' : ' selected-incorrect';
+            }
+            if (!isCorrect && idx === q.correct) {
+              choiceClass += ' reveal-correct-answer';
+            }
+          }
+
+          choicesHtml += `
+            <div class="${choiceClass}" onclick="handleSelectChoice('${q.id}', ${idx})">
+              <span>${choice}</span>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="q-header">
+            <span class="q-badge ${badgeClass}">${q.category} &bull; Q${q.num}</span>
+            <span class="q-status ${statusClass}">${statusText}</span>
+          </div>
+          <div class="q-stem">${q.stem}</div>
+          <div class="choices-list">
+            ${choicesHtml}
+          </div>
+          <details class="solution-accordion" id="sol-${q.id}">
+            <summary>[Reveal Solution &amp; Rationale &rarr;]</summary>
+            <div class="solution-body">
+              <div class="ans-highlight">Correct: ${q.answer_label}</div>
+              <div><strong>Biochemical Rationale:</strong> ${q.rationale}</div>
+              <div class="concept-pill">Concept: ${q.key_concept}</div>
+            </div>
+          </details>
+        `;
+
+        container.appendChild(card);
+      });
+
+      updateScoreHud();
+    }
+
+    function handleSelectChoice(qId, choiceIdx) {
+      state.userAnswers[qId] = choiceIdx;
+      renderQuestions();
+    }
+
+    function updateScoreHud() {
+      const total = questionsData.length;
+      const attemptedKeys = Object.keys(state.userAnswers);
+      const attemptedCount = attemptedKeys.length;
+
+      let correctCount = 0;
+      attemptedKeys.forEach(id => {
+        const q = questionsData.find(item => item.id === id);
+        if (q && state.userAnswers[id] === q.correct) {
+          correctCount++;
+        }
+      });
+
+      const pct = attemptedCount === 0 ? 0 : Math.round((correctCount / attemptedCount) * 100);
+      const hud = document.getElementById('scoreHud');
+      hud.innerHTML = `Attempted: ${attemptedCount}/${total} &bull; Correct: ${correctCount} &bull; Score: <span>${pct}%</span>`;
+    }
+
+    // FILTER TABS
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        state.currentFilter = e.target.getAttribute('data-filter');
+        renderQuestions();
+      });
+    });
+
+    // EXPAND / COLLAPSE
+    document.getElementById('expandAllBtn').addEventListener('click', () => {
+      document.querySelectorAll('.solution-accordion').forEach(el => el.open = true);
+    });
+
+    document.getElementById('collapseAllBtn').addEventListener('click', () => {
+      document.querySelectorAll('.solution-accordion').forEach(el => el.open = false);
+    });
+
+    // RESET
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (confirm('Reset all answers and restart quiz?')) {
+        state.userAnswers = {};
+        renderQuestions();
+      }
+    });
+
+    // INIT
+    renderQuestions();
+  </script>
+</body>
+</html>
