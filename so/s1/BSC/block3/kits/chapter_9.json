@@ -148,11 +148,11 @@
     },
     {
       "id": "q12",
-      "text": "Pyruvate",
+      "text": "Pyruvate Chem Eq",
       "type": "text",
       "answers": [
         {
-          "id": "q12-a1",
+          "id": "q26-a1",
           "text": "3C sugar",
           "correct": true,
           "textType": "exact"
@@ -174,11 +174,11 @@
     },
     {
       "id": "q14",
-      "text": "Compound taht delivers pyruvate to CAC",
+      "text": "Compound that delivers pyruvate to CAC",
       "type": "text",
       "answers": [
         {
-          "id": "q14-a1",
+          "id": "q17-a1",
           "text": "acetyl CoA",
           "correct": true,
           "textType": "exact"
