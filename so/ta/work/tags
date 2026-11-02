@@ -36,3 +36,8 @@
 !_TAG_ROLE_DESCRIPTION!C!header	system	/system header/
 !_TAG_ROLE_DESCRIPTION!C!macro	undef	/undefined/
 !_TAG_ROLE_DESCRIPTION!C!struct	foreigndecl	/declared in foreign languages/
+MAX_CAPACITY	exam_2_practice_questions.c	/^#define MAX_CAPACITY /;"	d	file:
+main	exam_2_practice_questions.c	/^int main(void) {$/;"	f	typeref:typename:int
+select_even	exam_2_practice_questions.c	/^int[] select_even(int arr[], int capacity) {$/;"	f	typeref:typename:int[]
+select_odd	exam_2_practice_questions.c	/^int[] select_odd(int arr[], int capacity) {$/;"	f	typeref:typename:Answer int[]
+select_odd	exam_2_practice_questions.c	/^int[] select_odd(int arr[], int capacity) {$/;"	f	typeref:typename:int[]

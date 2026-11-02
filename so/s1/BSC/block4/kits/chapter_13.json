@@ -1,0 +1,176 @@
+{
+  "id": "kit-10",
+  "title": "Chapter_13",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "In Meiosis, the physical pairing of homologous chromosomes:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "Synapsis",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "In meiosis, the chromosomes are moved by",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "spindle fibers to kinetochore",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "In meiosis the chromosomes in the middle are called",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "tetrad",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Condition with non-standard amount of chromosomes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "aneuploidy",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Condition of only having one out of a pair of chromosomes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "monoploidy",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Condition of have 3/2 pair chromosomes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "polyploidy",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Trisomy 13",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "Patau",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Trisomy 18",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "Edwards",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "Trisomy 21",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "Downs!",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "text": "xxx disorder",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q10-a1",
+          "text": "trip x",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "text": "xxy Disorder",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q11-a1",
+          "text": "Kline",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "text": "xyy Disorder",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q12-a1",
+          "text": "Jacobs",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "text": "X0 Monosomy",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q13-a1",
+          "text": "Turner",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    }
+  ]
+}
