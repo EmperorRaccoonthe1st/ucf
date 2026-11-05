@@ -1,0 +1,124 @@
+{
+  "id": "kit-10",
+  "title": "Chapter_16",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "DNA Bonds",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "GC AT",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Unwinds DNA by breaking h-bonds",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "helicase",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "Binds to newly separated DNA to prevent h-bonds",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "binding proteins",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "text": "Relieves overwinding caused by helicase",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q4-a1",
+          "text": "Topoisomerase",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "text": "Attaches primer for DNA replication at location",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q5-a1",
+          "text": "Primase",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "text": "Adds nucleotides to create dnew DNA strands using separated strand as template",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q6-a1",
+          "text": "DNA P III",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "text": "Replaces RNA primers w/ DNA nucleotides",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q7-a1",
+          "text": "DNA P I",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q8",
+      "text": "Funcitons in the lagging strand to join Okazaki frag's into DNA",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q8-a1",
+          "text": "DNA Ligase",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q9",
+      "text": "DNA can only be extended in:",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q9-a1",
+          "text": "5 to 3",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    }
+  ]
+}
