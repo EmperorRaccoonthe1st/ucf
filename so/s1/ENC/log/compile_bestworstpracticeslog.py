@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Compiles log/bestworstpracticeslog.md into an MLA 9th Edition formatted PDF.
-Maintains newest entry at the top, standard MLA running heads, exact double spacing,
-1.0-inch margins, and 12pt Times-Roman typography.
+Maintains newest entry at the top, horizontal dividers between entries (Google Docs style),
+standard MLA running heads, exact double spacing, 1.0-inch margins, and 12pt Times-Roman typography.
 Follows the specifications in summaries/GEMINI.md.
 """
 
@@ -12,7 +12,8 @@ from datetime import datetime
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
-from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, Spacer, HRFlowable
+from reportlab.lib import colors
 from reportlab.pdfgen import canvas
 
 class MLACanvas(canvas.Canvas):
@@ -147,7 +148,7 @@ def build_pdf():
 
     story = []
 
-    # Parse entries separated by `# <date>`
+    # Clean and split into raw entry blocks separated by `# `
     raw_entries = re.split(r'\n(?=#\s+)', md_content.strip())
 
     # Get the latest date for the student header block
@@ -168,12 +169,30 @@ def build_pdf():
     story.append(Paragraph("Best and Worst Practices Log", mla_title))
 
     # Process each log entry
+    entry_count = 0
     for entry in raw_entries:
         lines = [line.strip() for line in entry.strip().split('\n') if line.strip()]
         if not lines:
             continue
 
-        for line in lines:
+        # Filter out standalone horizontal rule markers inside entry
+        filtered_lines = [l for l in lines if l not in ['---', '***', '___']]
+        if not filtered_lines:
+            continue
+
+        if entry_count > 0:
+            # Horizontal line between entries (like Google Docs)
+            story.append(HRFlowable(
+                width="100%",
+                thickness=1,
+                color=colors.HexColor('#a0a0a0'),
+                spaceBefore=12,
+                spaceAfter=14
+            ))
+
+        entry_count += 1
+
+        for line in filtered_lines:
             if line.startswith('# '):
                 raw_date = line[2:].strip()
                 formatted_date = format_date_str(raw_date)
