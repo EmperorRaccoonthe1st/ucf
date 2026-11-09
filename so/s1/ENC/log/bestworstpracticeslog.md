@@ -5,3 +5,9 @@
 
 ## Worst Practices
 - *Run-On Sentences*: Run-On sentences are when an author places too many clauses into a single sentence, through commas or repetitive uses of conjunctions, instead of utilizing multiple related sentences. I often find myself writing Run-On sentences when I want to express a complex though. I have to slow down, evaluate my last sentence, and split it into multiple complete sentences.
+
+# 11/08/26
+
+## Worst Practices
+- *Unclear Formatting*:
+- *
