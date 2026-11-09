@@ -17,6 +17,8 @@ test_raw*.png
 test_rectified*.png
 fixed_Slide*.png
 raw_slide*.png
+_temp_combined*.7z
+*combined_archive*.7z
 
 # Gradle build directories & caches
 .gradle/
