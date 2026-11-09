@@ -3,3 +3,21 @@ jdk*/
 
 # Ignore one specific document
 *henze*
+
+# Large generated PDF compendium (>100MB, exceeds GitHub limit)
+so/s1/COP/slides/COP3330_OOP_Complete_Course_Reference.pdf
+
+# Master build cache and temporary scratch render files
+.master_build_cache/
+*.ppm
+__pycache__/
+*.pyc
+*.bak
+test_raw*.png
+test_rectified*.png
+fixed_Slide*.png
+raw_slide*.png
+
+# Gradle build directories & caches
+.gradle/
+build/
