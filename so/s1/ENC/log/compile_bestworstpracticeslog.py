@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-Compiles bestworstpracticeslog.md into an MLA 9th Edition formatted PDF.
+Compiles log/bestworstpracticeslog.md into an MLA 9th Edition formatted PDF.
+Maintains newest entry at the top, standard MLA running heads, exact double spacing,
+1.0-inch margins, and 12pt Times-Roman typography.
 Follows the specifications in summaries/GEMINI.md.
 """
 
 import os
 import re
+from datetime import datetime
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
-from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak, Spacer
 from reportlab.pdfgen import canvas
 
 class MLACanvas(canvas.Canvas):
@@ -37,9 +40,37 @@ class MLACanvas(canvas.Canvas):
         self.drawRightString(612 - 72, 792 - 36, text)
         self.restoreState()
 
+def md_to_reportlab(text):
+    """Convert inline markdown formatting (_italic_, *italic*, **bold**) and entities to ReportLab tags."""
+    text = re.sub(r'&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)', '&amp;', text)
+    text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
+    text = re.sub(r'__(.+?)__', r'<b>\1</b>', text)
+    text = re.sub(r'\*(.+?)\*', r'<i>\1</i>', text)
+    text = re.sub(r'_(.+?)_', r'<i>\1</i>', text)
+    return text
+
+def format_date_str(raw_date):
+    """Format date string like 11/08/26 to 8 November 2026."""
+    raw_date = raw_date.strip()
+    match = re.match(r'(\d{1,2})/(\d{1,2})/(\d{2,4})', raw_date)
+    if match:
+        m, d, y = match.groups()
+        if len(y) == 2:
+            y = "20" + y
+        dt = datetime(int(y), int(m), int(d))
+        return dt.strftime("%-d %B %Y")
+    return raw_date
+
 def build_pdf():
     base_dir = os.path.dirname(os.path.abspath(__file__))
+    md_path = os.path.join(base_dir, "bestworstpracticeslog.md")
     output_pdf_path = os.path.join(base_dir, "bestworstpracticeslog.pdf")
+
+    if not os.path.exists(md_path):
+        raise FileNotFoundError(f"Markdown file not found: {md_path}")
+
+    with open(md_path, 'r', encoding='utf-8') as f:
+        md_content = f.read()
 
     doc = SimpleDocTemplate(
         output_pdf_path,
@@ -76,6 +107,19 @@ def build_pdf():
         firstLineIndent=0
     )
 
+    mla_entry_date = ParagraphStyle(
+        'MLAEntryDate',
+        parent=styles['Normal'],
+        fontName='Times-Bold',
+        fontSize=12,
+        leading=24,
+        alignment=TA_LEFT,
+        spaceBefore=0,
+        spaceAfter=0,
+        firstLineIndent=0,
+        keepWithNext=True
+    )
+
     mla_section = ParagraphStyle(
         'MLASection',
         parent=styles['Normal'],
@@ -85,7 +129,8 @@ def build_pdf():
         alignment=TA_LEFT,
         spaceBefore=0,
         spaceAfter=0,
-        firstLineIndent=0
+        firstLineIndent=0,
+        keepWithNext=True
     )
 
     mla_body = ParagraphStyle(
@@ -102,12 +147,19 @@ def build_pdf():
 
     story = []
 
+    # Parse entries separated by `# <date>`
+    raw_entries = re.split(r'\n(?=#\s+)', md_content.strip())
+
+    # Get the latest date for the student header block
+    first_entry_match = re.search(r'#\s*([0-9/]+)', raw_entries[0] if raw_entries else "")
+    latest_date_str = format_date_str(first_entry_match.group(1)) if first_entry_match else "8 November 2026"
+
     # Student Identification Block
     heading_lines = [
         "Owen Lopez",
         "Professor Faulconer",
         "ENC 3250",
-        "29 August 2026"
+        latest_date_str
     ]
     for line in heading_lines:
         story.append(Paragraph(line, mla_heading))
@@ -115,28 +167,28 @@ def build_pdf():
     # Document Title
     story.append(Paragraph("Best and Worst Practices Log", mla_title))
 
-    # Best Practices Section
-    story.append(Paragraph("Best Practices", mla_section))
-    story.append(Paragraph(
-        "<i>Vocabulary</i>: In almost every serious sentence I put down I will review for grammar, "
-        "punctuation, &amp; specifically for vocabulary. I ensure that every verb, noun, or adverb is "
-        "specifically chosen to reflect the context of my current piece and always aims for a high level "
-        "of complexity/detail. It is very rare for me to utilize a \"simple\" word or phrase when I am "
-        "writing, as I really do spend a considerable amount of time choosing the proper, advanced, "
-        "term for the situation.",
-        mla_body
-    ))
+    # Process each log entry
+    for entry in raw_entries:
+        lines = [line.strip() for line in entry.strip().split('\n') if line.strip()]
+        if not lines:
+            continue
 
-    # Worst Practices Section
-    story.append(Paragraph("Worst Practices", mla_section))
-    story.append(Paragraph(
-        "<i>Run-On Sentences</i>: Run-On sentences are when an author places too many clauses into "
-        "a single sentence, through commas or repetitive uses of conjunctions, instead of utilizing "
-        "multiple related sentences. I often find myself writing Run-On sentences when I want to express "
-        "a complex though. I have to slow down, evaluate my last sentence, and split it into multiple "
-        "complete sentences.",
-        mla_body
-    ))
+        for line in lines:
+            if line.startswith('# '):
+                raw_date = line[2:].strip()
+                formatted_date = format_date_str(raw_date)
+                entry_header_text = f"Log Entry &mdash; {formatted_date}"
+                story.append(Paragraph(entry_header_text, mla_entry_date))
+            elif line.startswith('## '):
+                sec_title = line[3:].strip()
+                story.append(Paragraph(sec_title, mla_section))
+            elif line.startswith('- '):
+                item_text = line[2:].strip()
+                converted_text = md_to_reportlab(item_text)
+                story.append(Paragraph(converted_text, mla_body))
+            else:
+                converted_text = md_to_reportlab(line)
+                story.append(Paragraph(converted_text, mla_body))
 
     doc.build(story, canvasmaker=MLACanvas)
     print(f"Successfully compiled: {output_pdf_path}")
