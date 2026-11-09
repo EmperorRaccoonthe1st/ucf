@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why does nextLine() get skipped? — Scanner buffer trace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0e111a;
+    --panel: #171b26;
+    --panel-2: #1d2230;
+    --border: #2a3040;
+    --text: #e7e9f0;
+    --text-dim: #8890a4;
+    --text-faint: #565d70;
+    --amber: #f0a83c;
+    --amber-dim: #7a5b26;
+    --teal: #52c7a6;
+    --coral: #f0716f;
+    --blue: #6ea8fe;
+    --kw: #c9a3e8;
+    --type: #7fb4ff;
+    --str: #b8dd8f;
+    --cm: #5c6379;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    --disp: 'Space Grotesk', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #1b2133 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, #1a2436 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--disp);
+    min-height:100vh;
+    padding:32px 20px 64px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--amber);
+    text-transform:uppercase;
+    margin:0 0 10px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:2px;background:var(--amber);
+    display:inline-block;
+  }
+  h1{
+    font-size:clamp(24px,3.6vw,38px);
+    line-height:1.15;
+    margin:0 0 8px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .sub{
+    color:var(--text-dim);
+    font-size:15px;
+    max-width:64ch;
+    margin:0 0 28px;
+    line-height:1.55;
+  }
+  .sub code{font-family:var(--mono);color:var(--text);background:#1e2433;padding:1px 6px;border-radius:4px;font-size:13px;}
+
+  .hint{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:13px;color:var(--amber);
+    background:#2a2311;border:1px solid var(--amber-dim);border-radius:9px;
+    padding:8px 14px;margin:0 0 20px;
+  }
+  .hint kbd{
+    font-family:var(--mono);font-size:11.5px;font-weight:700;color:#1a1305;
+    background:var(--amber);border-radius:4px;padding:2px 6px;
+  }
+
+  /* ---- controls ---- */
+  .controls{
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:22px;
+  }
+  .mode-toggle{
+    display:flex;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:3px;font-family:var(--mono);font-size:12.5px;
+  }
+  .mode-toggle button{
+    border:none;background:transparent;color:var(--text-dim);padding:7px 13px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:600;letter-spacing:.02em;transition:all .18s ease;
+  }
+  .mode-toggle button.active{background:var(--amber);color:#1a1305;}
+  .mode-toggle button:not(.active):hover{color:var(--text);}
+
+  .step-nav{display:flex;align-items:center;gap:10px;}
+  .step-count{font-family:var(--mono);font-size:12.5px;color:var(--text-dim);min-width:74px;text-align:center;}
+  .nav-btn{
+    display:flex;align-items:center;gap:6px;
+    background:var(--amber);border:1px solid var(--amber);color:#1a1305;
+    font-family:var(--mono);font-size:13px;font-weight:700;
+    padding:9px 16px;border-radius:9px;cursor:pointer;transition:all .15s ease;
+    box-shadow:0 0 0 0 rgba(240,168,60,0);
+  }
+  .nav-btn:hover:not(:disabled){background:#ffbc5c;border-color:#ffbc5c;box-shadow:0 0 14px 1px rgba(240,168,60,.45);}
+  .nav-btn:active:not(:disabled){transform:translateY(1px);}
+  .nav-btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;}
+  .nav-btn.reset{background:var(--panel-2);border:1px solid var(--border);color:var(--text-dim);}
+  .nav-btn.reset:hover:not(:disabled){background:#232a3c;border-color:var(--amber-dim);box-shadow:none;color:var(--text);}
+
+  .dots{display:flex;gap:6px;flex-wrap:wrap;max-width:340px;}
+  .dot{
+    width:9px;height:9px;border-radius:50%;background:var(--border);cursor:pointer;border:none;padding:0;transition:all .15s ease;
+  }
+  .dot:hover{background:var(--text-faint);}
+  .dot.done{background:var(--amber-dim);}
+  .dot.active{background:var(--amber);transform:scale(1.3);}
+
+  /* ---- layout grid ---- */
+  .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:18px;}
+  @media (max-width:900px){.grid{grid-template-columns:1fr;}}
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .panel-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:11px 15px;
+    border-bottom:1px solid var(--border);
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);
+    background:#151925;
+  }
+  .panel-head .tag{color:var(--text-faint);font-size:10.5px;text-transform:none;letter-spacing:0;}
+
+  /* code panel */
+  .code-body{font-family:var(--mono);font-size:12.6px;line-height:1.8;padding:10px 0;overflow-x:auto;}
+  .code-line{
+    display:flex;padding:0 16px;white-space:pre;position:relative;transition:background-color .25s ease;
+    border-left:3px solid transparent;
+  }
+  .code-line .ln{width:26px;flex:0 0 26px;color:var(--text-faint);user-select:none;}
+  .code-line.active{background:#2a2311; border-left-color:var(--amber);}
+  .code-line.active .ln{color:var(--amber);}
+  .kw{color:var(--kw);} .ty{color:var(--type);} .st{color:var(--str);} .cm{color:var(--cm);} .mt{color:#ffcb6b;}
+
+  /* buffer tape */
+  .tape-outer{padding:18px 16px 14px;}
+  .tape-row{
+    display:flex;align-items:center;gap:2px;flex-wrap:wrap;min-height:46px;
+    font-family:var(--mono);
+  }
+  .char-box{
+    width:26px;height:34px;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:6px;font-size:14px;font-weight:600;
+    border:1px solid var(--border);
+    background:var(--panel-2);color:var(--text-faint);
+    transition:background-color .3s ease, color .3s ease, border-color .3s ease, transform .2s ease;
+  }
+  .char-box.pending{background:#26304a;color:var(--blue);border-color:#31456e;}
+  .char-box.consumed{background:#1a1e2a;color:var(--text-faint);border-color:var(--border);transform:scale(.92);}
+  .char-box.nl.pending{color:var(--coral);border-color:#5c2e2e;background:#2a1c1e;}
+  .char-box.nl.consumed{color:#6b4747;}
+  .char-box.char-in{animation:pop-in .28s ease;}
+  .char-box.flash{animation:flash-consume .5s ease;}
+  @keyframes pop-in{from{opacity:0;transform:translateY(6px) scale(.85);}to{opacity:1;transform:translateY(0) scale(1);}}
+  @keyframes flash-consume{0%{background:var(--amber);color:#1a1305;border-color:var(--amber);}100%{}}
+
+  .caret{
+    width:3px;height:34px;border-radius:2px;background:var(--amber);flex:0 0 auto;
+    animation:blink 1s step-start infinite;box-shadow:0 0 8px 1px rgba(240,168,60,.55);
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .tape-legend{
+    display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);
+    font-size:11.5px;color:var(--text-dim);font-family:var(--mono);
+  }
+  .tape-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .sw-pending{background:#26304a;border:1px solid #31456e;}
+  .sw-consumed{background:#1a1e2a;border:1px solid var(--border);}
+  .sw-caret{background:var(--amber);width:4px;border-radius:2px;}
+  .sw-nl{background:#2a1c1e;border:1px solid #5c2e2e;color:var(--coral);}
+
+  /* console */
+  .console-body{font-family:var(--mono);font-size:12.4px;padding:14px 16px;min-height:64px;display:flex;flex-direction:column;gap:4px;}
+  .console-line{color:#9fe6c6;opacity:0;animation:line-in .3s ease forwards;}
+  .console-line::before{content:"› ";color:var(--text-faint);}
+  @keyframes line-in{from{opacity:0;transform:translateX(-4px);}to{opacity:1;transform:translateX(0);}}
+  .console-empty{color:var(--text-faint);font-family:var(--mono);font-size:12.5px;}
+
+  /* variables */
+  .vars-body{padding:12px 16px 14px;display:flex;flex-direction:column;gap:8px;}
+  .var-row{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--panel-2);border:1px solid var(--border);border-radius:9px;
+    padding:9px 12px;font-family:var(--mono);font-size:13px;
+    transition:border-color .3s ease, background-color .3s ease;
+  }
+  .var-row .name{color:var(--text-dim);}
+  .var-row .name .t{color:var(--text-faint);font-size:11px;margin-right:6px;}
+  .var-row .val{color:var(--text-faint);}
+  .var-row.set .val{color:var(--teal);font-weight:600;}
+  .var-row.warn .val{color:var(--coral);font-weight:600;}
+  .var-row.flash{animation:var-flash .6s ease;}
+  @keyframes var-flash{0%{background:#3a2e14;border-color:var(--amber);}100%{}}
+  .warn-icon{margin-left:6px;font-size:11px;}
+
+  /* caption / callout */
+  .caption{margin-top:18px;}
+  .step-title{
+    font-family:var(--mono);font-weight:600;font-size:14px;color:var(--amber);margin:0 0 6px;
+  }
+  .step-note{
+    color:var(--text-dim);font-size:14.5px;line-height:1.6;margin:0;max-width:80ch;
+  }
+  .callout{
+    margin-top:12px;padding:11px 14px;border-radius:10px;font-size:13.5px;line-height:1.55;
+    border:1px solid; display:flex;gap:10px;align-items:flex-start;
+    font-family:var(--mono);
+  }
+  .callout .ic{font-size:15px;line-height:1.4;}
+  .callout.info{background:#132433;border-color:#284560;color:#a9cdf0;}
+  .callout.warning{background:#2c1717;border-color:#5c2e2e;color:#f3b3b1;}
+  .callout.good{background:#12241d;border-color:#2c5240;color:#a9e6cd;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+    .caret{animation:none;opacity:1;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Java Scanner step by step simulator</p>
+  <h1>Why does <code style="font-family:var(--mono);background:#1e2433;padding:1px 8px;border-radius:5px;">nextLine()</code> get skipped after <code style="font-family:var(--mono);background:#1e2433;padding:1px 8px;border-radius:5px;">nextInt()</code>?</h1>
+  <p class="sub">A full, runnable <code>package test;</code> program asks for an <b>age</b>, a <b>name</b>, and a <b>school</b>, printing each value right after it's read. Step through what actually happens in the input buffer, character by character — <code>nextInt()</code> only ever consumes digits, so the newline from pressing <b>Enter</b> is left behind, and the very next <code>nextLine()</code> reads that leftover newline instead of waiting for you.</p>
+
+  <p class="hint">👉 Use <kbd>←</kbd> / <kbd>→</kbd> to step. Click a dot to jump to any step.</p>
+
+  <div class="controls">
+    <div class="mode-toggle" id="modeToggle">
+      <button data-mode="buggy" class="active">Buggy version</button>
+      <button data-mode="fixed">Fixed version</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="step-nav">
+      <button class="nav-btn reset" id="resetBtn" title="Back to step 0">⟲ Reset</button>
+      <button class="nav-btn" id="prevBtn">← Rewind</button>
+      <span class="step-count" id="stepCount">Step 1 / 9</span>
+      <button class="nav-btn" id="nextBtn">Forward →</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-head"><span>Main.java</span><span class="tag" id="codeTag">buggy — no leftover-newline fix</span></div>
+      <div class="code-body" id="codeBody"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="panel">
+        <div class="panel-head"><span>Input buffer</span><span class="tag">the scanner's unread tape</span></div>
+        <div class="tape-outer">
+          <div class="tape-row" id="tapeRow">
+            <div class="caret" id="caret"></div>
+          </div>
+          <div class="tape-legend">
+            <span><i class="swatch sw-pending"></i> unread</span>
+            <span><i class="swatch sw-consumed"></i> already read</span>
+            <span><i class="swatch sw-nl"></i> ↵ newline char</span>
+            <span><i class="swatch sw-caret"></i> read pointer</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><span>Console</span></div>
+        <div class="console-body" id="consoleBody"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><span>Variables</span></div>
+        <div class="vars-body" id="varsBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption">
+    <p class="step-title" id="stepTitle"></p>
+    <p class="step-note" id="stepNote"></p>
+    <div class="callout" id="callout" style="display:none;"></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  const codeBuggy = [
+    {n:1,  html:'<span class="kw">package</span> test;'},
+    {n:2,  html:''},
+    {n:3,  html:'<span class="kw">import</span> java.util.Scanner;'},
+    {n:4,  html:''},
+    {n:5,  html:'<span class="kw">public</span> <span class="kw">class</span> <span class="ty">Main</span> {'},
+    {n:6,  html:'    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mt">main</span>(<span class="ty">String</span>[] args) {'},
+    {n:7,  html:'        <span class="ty">Scanner</span> input = <span class="kw">new</span> <span class="ty">Scanner</span>(System.in);'},
+    {n:8,  html:''},
+    {n:9,  html:'        System.out.<span class="mt">println</span>(<span class="st">"Enter your age"</span>);'},
+    {n:10, html:'        <span class="kw">int</span> age = input.<span class="mt">nextInt</span>();'},
+    {n:11, html:'        System.out.<span class="mt">println</span>(<span class="st">"Age: "</span> + age);'},
+    {n:12, html:''},
+    {n:13, html:'        System.out.<span class="mt">println</span>(<span class="st">"Enter your name"</span>);'},
+    {n:14, html:'        <span class="ty">String</span> name = input.<span class="mt">nextLine</span>(); <span class="cm">// gets skipped</span>'},
+    {n:15, html:'        System.out.<span class="mt">println</span>(<span class="st">"Name: "</span> + name);'},
+    {n:16, html:''},
+    {n:17, html:'        System.out.<span class="mt">println</span>(<span class="st">"Enter your school name"</span>);'},
+    {n:18, html:'        <span class="ty">String</span> school = input.<span class="mt">nextLine</span>();'},
+    {n:19, html:'        System.out.<span class="mt">println</span>(<span class="st">"School: "</span> + school);'},
+    {n:20, html:'    }'},
+    {n:21, html:'}'},
+  ];
+
+  const codeFixed = [
+    {n:1,  html:'<span class="kw">package</span> test;'},
+    {n:2,  html:''},
+    {n:3,  html:'<span class="kw">import</span> java.util.Scanner;'},
+    {n:4,  html:''},
+    {n:5,  html:'<span class="kw">public</span> <span class="kw">class</span> <span class="ty">Main</span> {'},
+    {n:6,  html:'    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> <span class="mt">main</span>(<span class="ty">String</span>[] args) {'},
+    {n:7,  html:'        <span class="ty">Scanner</span> input = <span class="kw">new</span> <span class="ty">Scanner</span>(System.in);'},
+    {n:8,  html:''},
+    {n:9,  html:'        System.out.<span class="mt">println</span>(<span class="st">"Enter your age"</span>);'},
+    {n:10, html:'        <span class="kw">int</span> age = input.<span class="mt">nextInt</span>();'},
+    {n:11, html:'        input.<span class="mt">nextLine</span>(); <span class="cm">// consume leftover newline</span>'},
+    {n:12, html:'        System.out.<span class="mt">println</span>(<span class="st">"Age: "</span> + age);'},
+    {n:13, html:''},
+    {n:14, html:'        System.out.<span class="mt">println</span>(<span class="st">"Enter your name"</span>);'},
+    {n:15, html:'        <span class="ty">String</span> name = input.<span class="mt">nextLine</span>();'},
+    {n:16, html:'        System.out.<span class="mt">println</span>(<span class="st">"Name: "</span> + name);'},
+    {n:17, html:''},
+    {n:18, html:'        System.out.<span class="mt">println</span>(<span class="st">"Enter your school name"</span>);'},
+    {n:19, html:'        <span class="ty">String</span> school = input.<span class="mt">nextLine</span>();'},
+    {n:20, html:'        System.out.<span class="mt">println</span>(<span class="st">"School: "</span> + school);'},
+    {n:21, html:'    }'},
+    {n:22, html:'}'},
+  ];
+
+  function V(age,name,school){ return {age,name,school}; }
+
+  const buggySteps = [
+    {activeLine:7, stream:'', pointer:0, console:[], vars:V(null,null,null),
+      title:'Start', note:'Scanner is created. Nothing has been typed yet — the buffer is empty.'},
+    {activeLine:9, stream:'', pointer:0, console:['Enter your age'], vars:V(null,null,null),
+      title:'println("Enter your age")', note:'The prompt prints, then the program blocks on nextInt(), waiting for input.'},
+    {activeLine:10, stream:'20\n', pointer:0, console:['Enter your age'], vars:V(null,null,null),
+      title:'User types "20" and presses Enter', note:'Enter appends a newline character. The buffer now holds the digits and the newline — nextInt() hasn\'t read anything yet.'},
+    {activeLine:10, stream:'20\n', pointer:2, console:['Enter your age'], vars:V({value:20},null,null),
+      title:'input.nextInt() reads the digits', note:'nextInt() stops at the first non-digit character. It takes "20" and leaves the pointer sitting right before the newline.',
+      callout:{type:'info', text:'The \\n is still unread in the buffer — nextInt() never touches it.'}},
+    {activeLine:11, stream:'20\n', pointer:2, console:['Enter your age','Age: 20'], vars:V({value:20},null,null),
+      title:'println("Age: " + age)', note:'age holds 20, so this prints correctly. The leftover \\n is still waiting at the pointer, untouched.'},
+    {activeLine:13, stream:'20\n', pointer:2, console:['Enter your age','Age: 20','Enter your name'], vars:V({value:20},null,null),
+      title:'println("Enter your name")', note:'The prompt prints. But there\'s already a lone newline sitting at the read pointer.'},
+    {activeLine:14, stream:'20\n', pointer:3, console:['Enter your age','Age: 20','Enter your name'], vars:V({value:20},{value:'',warn:true},null),
+      title:'name = input.nextLine()', note:'nextLine() reads up to the next newline — which is immediately at the cursor. It instantly returns an empty string and consumes that \\n, without ever pausing for your input.',
+      callout:{type:'warning', text:'This is the "skipped" line. It didn\'t skip — it read the leftover \\n in zero time.'}},
+    {activeLine:15, stream:'20\n', pointer:3, console:['Enter your age','Age: 20','Enter your name','Name: '], vars:V({value:20},{value:'',warn:true},null),
+      title:'println("Name: " + name)', note:'name is an empty string, so this prints "Name: " with nothing after it — visible proof that the read never happened the way you expected.'},
+    {activeLine:17, stream:'20\n', pointer:3, console:['Enter your age','Age: 20','Enter your name','Name: ','Enter your school name'], vars:V({value:20},{value:'',warn:true},null),
+      title:'println("Enter your school name")', note:'This prompt is the one that actually waits for you — which is why it seemed to appear right after you typed "20".'},
+    {activeLine:18, stream:'20\nAlice\n', pointer:3, console:['Enter your age','Age: 20','Enter your name','Name: ','Enter your school name'], vars:V({value:20},{value:'',warn:true},null),
+      title:'User types "Alice" and presses Enter', note:'This is the input you meant for name — but name has already been assigned.'},
+    {activeLine:18, stream:'20\nAlice\n', pointer:9, console:['Enter your age','Age: 20','Enter your name','Name: ','Enter your school name'], vars:V({value:20},{value:'',warn:true},{value:'Alice',warn:true}),
+      title:'school = input.nextLine()', note:'school grabs "Alice" — the value that was meant for name.'},
+    {activeLine:19, stream:'20\nAlice\n', pointer:9, console:['Enter your age','Age: 20','Enter your name','Name: ','Enter your school name','School: Alice'], vars:V({value:20},{value:'',warn:true},{value:'Alice',warn:true}),
+      title:'println("School: " + school)', note:'The console now shows "School: Alice" — proof the value leaked into the wrong field.',
+      callout:{type:'warning', text:'End result: name is empty, and school holds what you typed for the "name" prompt.'}},
+  ];
+
+  const fixedSteps = [
+    {activeLine:7, stream:'', pointer:0, console:[], vars:V(null,null,null),
+      title:'Start', note:'Scanner is created. Nothing has been typed yet.'},
+    {activeLine:9, stream:'', pointer:0, console:['Enter your age'], vars:V(null,null,null),
+      title:'println("Enter your age")', note:'The prompt prints, then the program blocks on nextInt().'},
+    {activeLine:10, stream:'20\n', pointer:0, console:['Enter your age'], vars:V(null,null,null),
+      title:'User types "20" and presses Enter', note:'The digits and the newline both land in the buffer.'},
+    {activeLine:10, stream:'20\n', pointer:2, console:['Enter your age'], vars:V({value:20},null,null),
+      title:'input.nextInt() reads the digits', note:'Same as before — nextInt() takes "20" and leaves the newline behind.',
+      callout:{type:'info', text:'The \\n is still unread — but this time the next line deals with it.'}},
+    {activeLine:11, stream:'20\n', pointer:3, console:['Enter your age'], vars:V({value:20},null,null),
+      title:'input.nextLine() — the fix', note:'This extra call exists purely to consume the leftover newline. Its return value (an empty string) is thrown away on purpose.',
+      callout:{type:'good', text:'Buffer is clean now. No stray characters left for the next nextLine() to trip over.'}},
+    {activeLine:12, stream:'20\n', pointer:3, console:['Enter your age','Age: 20'], vars:V({value:20},null,null),
+      title:'println("Age: " + age)', note:'Prints correctly, and this time there\'s nothing left behind in the buffer.'},
+    {activeLine:14, stream:'20\n', pointer:3, console:['Enter your age','Age: 20','Enter your name'], vars:V({value:20},null,null),
+      title:'println("Enter your name")', note:'The prompt prints, and this time nextLine() will genuinely wait for you to type something.'},
+    {activeLine:15, stream:'20\nAlice\n', pointer:3, console:['Enter your age','Age: 20','Enter your name'], vars:V({value:20},null,null),
+      title:'User types "Alice" and presses Enter', note:'New characters are appended to the buffer.'},
+    {activeLine:15, stream:'20\nAlice\n', pointer:9, console:['Enter your age','Age: 20','Enter your name'], vars:V({value:20},{value:'Alice'},null),
+      title:'name = input.nextLine()', note:'name correctly captures "Alice".'},
+    {activeLine:16, stream:'20\nAlice\n', pointer:9, console:['Enter your age','Age: 20','Enter your name','Name: Alice'], vars:V({value:20},{value:'Alice'},null),
+      title:'println("Name: " + name)', note:'Prints "Name: Alice" — exactly what you typed.'},
+    {activeLine:18, stream:'20\nAlice\n', pointer:9, console:['Enter your age','Age: 20','Enter your name','Name: Alice','Enter your school name'], vars:V({value:20},{value:'Alice'},null),
+      title:'println("Enter your school name")', note:'Prompt prints and waits, as expected.'},
+    {activeLine:19, stream:'20\nAlice\nMIT\n', pointer:9, console:['Enter your age','Age: 20','Enter your name','Name: Alice','Enter your school name'], vars:V({value:20},{value:'Alice'},null),
+      title:'User types "MIT" and presses Enter', note:'New characters are appended to the buffer.'},
+    {activeLine:19, stream:'20\nAlice\nMIT\n', pointer:13, console:['Enter your age','Age: 20','Enter your name','Name: Alice','Enter your school name'], vars:V({value:20},{value:'Alice'},{value:'MIT'}),
+      title:'school = input.nextLine()', note:'school correctly captures "MIT".'},
+    {activeLine:20, stream:'20\nAlice\nMIT\n', pointer:13, console:['Enter your age','Age: 20','Enter your name','Name: Alice','Enter your school name','School: MIT'], vars:V({value:20},{value:'Alice'},{value:'MIT'}),
+      title:'println("School: " + school)', note:'Prints "School: MIT" — every field landed where it should.',
+      callout:{type:'good', text:'Every prompt paused for input exactly as expected — no skipped reads.'}},
+  ];
+
+  const DATA = {
+    buggy: {code: codeBuggy, steps: buggySteps, tag:'buggy — no leftover-newline fix'},
+    fixed: {code: codeFixed, steps: fixedSteps, tag:'fixed — extra nextLine() eats the \\n'},
+  };
+
+  // ---- state ----
+  let mode = 'buggy';
+  let idx = 0;
+  let prevVars = {age:null,name:null,school:null};
+
+  // ---- DOM refs ----
+  const codeBody = document.getElementById('codeBody');
+  const codeTag = document.getElementById('codeTag');
+  const tapeRow = document.getElementById('tapeRow');
+  const caret = document.getElementById('caret');
+  const consoleBody = document.getElementById('consoleBody');
+  const varsBody = document.getElementById('varsBody');
+  const stepTitle = document.getElementById('stepTitle');
+  const stepNote = document.getElementById('stepNote');
+  const callout = document.getElementById('callout');
+  const stepCount = document.getElementById('stepCount');
+  const dotsWrap = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const modeToggle = document.getElementById('modeToggle');
+
+  // persistent char boxes for smooth diffing
+  let boxes = [];
+
+  function renderCode(){
+    codeBody.innerHTML = '';
+    DATA[mode].code.forEach(line=>{
+      const row = document.createElement('div');
+      row.className = 'code-line';
+      row.dataset.line = line.n;
+      row.innerHTML = '<span class="ln">' + line.n + '</span><span>' + (line.html || '&nbsp;') + '</span>';
+      codeBody.appendChild(row);
+    });
+    codeTag.textContent = DATA[mode].tag;
+  }
+
+  function renderDots(){
+    dotsWrap.innerHTML = '';
+    DATA[mode].steps.forEach((_,i)=>{
+      const b = document.createElement('button');
+      b.className = 'dot';
+      b.title = 'Step ' + (i+1);
+      b.addEventListener('click', ()=> goTo(i));
+      dotsWrap.appendChild(b);
+    });
+  }
+
+  function updateActiveLine(line){
+    codeBody.querySelectorAll('.code-line').forEach(el=>{
+      el.classList.toggle('active', Number(el.dataset.line) === line);
+    });
+  }
+
+  function syncTape(stream, pointer, animateNew){
+    while(boxes.length > stream.length){
+      boxes.pop().remove();
+    }
+    while(boxes.length < stream.length){
+      const ch = stream[boxes.length];
+      const el = document.createElement('div');
+      el.className = 'char-box' + (animateNew ? ' char-in' : '');
+      el.textContent = ch === '\n' ? '↵' : ch;
+      if(ch === '\n') el.classList.add('nl');
+      tapeRow.insertBefore(el, caret);
+      boxes.push(el);
+    }
+    boxes.forEach((b,i)=>{
+      b.classList.toggle('pending', i >= pointer);
+      b.classList.toggle('consumed', i < pointer);
+    });
+    // position caret
+    if(boxes.length === 0){
+      tapeRow.insertBefore(caret, tapeRow.firstChild);
+    } else if(pointer >= boxes.length){
+      tapeRow.appendChild(caret);
+    } else {
+      tapeRow.insertBefore(caret, boxes[pointer]);
+    }
+  }
+
+  function flashConsumed(lo, hi){
+    for(let i=lo;i<hi;i++){
+      const b = boxes[i];
+      if(!b) continue;
+      b.classList.remove('flash');
+      void b.offsetWidth; // restart animation
+      b.classList.add('flash');
+    }
+  }
+
+  function renderConsole(lines){
+    consoleBody.innerHTML = '';
+    if(lines.length === 0){
+      consoleBody.innerHTML = '<span class="console-empty">(nothing printed yet)</span>';
+      return;
+    }
+    lines.forEach(l=>{
+      const d = document.createElement('div');
+      d.className = 'console-line';
+      d.textContent = l;
+      consoleBody.appendChild(d);
+    });
+  }
+
+  function renderVars(vars){
+    varsBody.innerHTML = '';
+    const rows = [
+      {key:'age', label:'age', type:'int'},
+      {key:'name', label:'name', type:'String'},
+      {key:'school', label:'school', type:'String'},
+    ];
+    rows.forEach(r=>{
+      const v = vars[r.key];
+      const row = document.createElement('div');
+      row.className = 'var-row';
+      let valText = '—';
+      if(v){
+        valText = r.key === 'age' ? String(v.value) : (v.value === '' ? '"" (empty)' : '"' + v.value + '"');
+        row.classList.add(v.warn ? 'warn' : 'set');
+      }
+      row.innerHTML = '<span class="name"><span class="t">' + r.type + '</span>' + r.label + '</span><span class="val">' + valText + (v && v.warn ? '<span class="warn-icon">⚠</span>' : '') + '</span>';
+      const prev = prevVars[r.key];
+      const changed = (v && !prev) || (v && prev && v.value !== prev.value);
+      if(changed) row.classList.add('flash');
+      varsBody.appendChild(row);
+    });
+    prevVars = vars;
+  }
+
+  function renderCaption(step){
+    stepTitle.textContent = step.title;
+    stepNote.textContent = step.note;
+    if(step.callout){
+      callout.style.display = 'flex';
+      callout.className = 'callout ' + step.callout.type;
+      const icon = step.callout.type === 'warning' ? '⚠' : step.callout.type === 'good' ? '✓' : 'ℹ';
+      callout.innerHTML = '<span class="ic">' + icon + '</span><span>' + step.callout.text + '</span>';
+    } else {
+      callout.style.display = 'none';
+    }
+  }
+
+  function render(prevIdx){
+    const steps = DATA[mode].steps;
+    const step = steps[idx];
+    const prevStep = prevIdx !== null ? steps[prevIdx] : null;
+
+    updateActiveLine(step.activeLine);
+
+    const animateNew = prevStep ? step.stream.length > prevStep.stream.length : false;
+    syncTape(step.stream, step.pointer, animateNew);
+
+    if(prevStep && prevStep.pointer !== step.pointer && prevStep.stream === step.stream){
+      flashConsumed(Math.min(prevStep.pointer, step.pointer), Math.max(prevStep.pointer, step.pointer));
+    }
+
+    renderConsole(step.console);
+    if(!prevStep) prevVars = {age:null,name:null,school:null};
+    renderVars(step.vars);
+    renderCaption(step);
+
+    stepCount.textContent = 'Step ' + (idx+1) + ' / ' + steps.length;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === steps.length - 1;
+
+    dotsWrap.querySelectorAll('.dot').forEach((d,i)=>{
+      d.classList.toggle('active', i === idx);
+      d.classList.toggle('done', i < idx);
+    });
+  }
+
+  function goTo(newIdx){
+    const prevIdx = idx;
+    idx = Math.max(0, Math.min(DATA[mode].steps.length - 1, newIdx));
+    render(prevIdx === idx ? null : prevIdx);
+  }
+
+  function setMode(newMode){
+    if(newMode === mode) return;
+    mode = newMode;
+    idx = 0;
+    boxes = [];
+    tapeRow.innerHTML = '';
+    tapeRow.appendChild(caret);
+    modeToggle.querySelectorAll('button').forEach(b=> b.classList.toggle('active', b.dataset.mode === mode));
+    renderCode();
+    renderDots();
+    render(null);
+  }
+
+  prevBtn.addEventListener('click', ()=> goTo(idx - 1));
+  nextBtn.addEventListener('click', ()=> goTo(idx + 1));
+  resetBtn.addEventListener('click', ()=> goTo(0));
+  modeToggle.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-mode]');
+    if(btn) setMode(btn.dataset.mode);
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight') goTo(idx + 1);
+    if(e.key === 'ArrowLeft') goTo(idx - 1);
+  });
+
+  // init
+  renderCode();
+  renderDots();
+  render(null);
+
+})();
+</script>
+</body>
+</html>
