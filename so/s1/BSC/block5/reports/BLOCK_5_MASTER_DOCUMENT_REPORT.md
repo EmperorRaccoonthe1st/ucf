@@ -1,112 +1,56 @@
-# Block 5 Master Documents: Production & Verification Report
+# Block 5 Master Document: Production & Verification Report
 BSC2010C: General Biology I • Course Curriculum Integration (Exam 5)
 
-This report documents the directory organization, full-document conversion, visual verification, and PDF compilation for Block 5, covering **Chapter 14** ("Mendel & The Gene Idea") and **Chapter 15** ("The Chromosomal Basis of Inheritance"). Unlike summary-only builds, **100% of every `.html`, `.pptx`, `.docx`, and `.pdf` source document** held inside `/home/owen/ucf/so/s1/BSC/block5/` is embedded in full inside the compiled PDF deliverables.
+This report documents the directory organization, repository cleanup, full-document conversion, visual verification, and PDF compilation for Block 5, covering **Chapter 14** ("Mendel & The Gene Idea") and **Chapter 15** ("The Chromosomal Basis of Inheritance").
 
 ---
 
-## 1. Directory Structure Organization
+## 1. Directory Structure & Cleanup Summary
 
-The Block 5 workspace follows the standardized modular layout used across Blocks 3 and 4:
+To minimize Git repository footprint while preserving 100% of curriculum content:
+* Removed 16 MB of redundant Canvas Webcourses telemetry/UI boilerplate (`.js`, `.css`, `a_*.html`, `post_message_forwarding*`, avatars, and generic UI icons) from `*_files/`, retaining all 5 Canvas `.html` pages and all 11 biological diagram images.
+* Consolidated generated output into a single unified archive PDF ([Block 5 - Complete Master Reference (Chapters 14 & 15).pdf](file:///home/owen/ucf/so/s1/BSC/block5/generated/Block%205%20-%20Complete%20Master%20Reference%20(Chapters%2014%20%26%2015).pdf)), removing duplicate per-chapter subset PDFs (~14.8 MB saved).
+* Applied lossless `qpdf --object-streams=generate --recompress-flate` optimization (reducing final PDF size to 12.9 MiB / 13,529,953 bytes while keeping vector slides and outline bookmarks intact).
 
 ```text
 /home/owen/ucf/so/s1/BSC/block5/
 ├── documents/
 │   ├── chapter_14/
-│   │   ├── html/            # 4 Canvas modules & asset directories
+│   │   ├── html/            # 4 Canvas modules & 8 figure images
 │   │   ├── powerpoint/      # Chapter 14_student.pptx (58 slides)
-│   │   └── practice/        # Practice Questions.docx + Simple Mono/Dihybrid answers.pdf
+│   │   └── practice/        # Chapters 14 and 15 Practice Questions.docx + Simple Mono/Dihybrid PDF
 │   └── chapter_15/
-│       ├── html/            # 1 Canvas module & asset directory
+│       ├── html/            # 1 Canvas module & 3 figure images
 │       ├── powerpoint/      # Chapter 15_student.pptx (22 slides)
-│       └── practice/        # Practice Questions.docx + Practice Genetics answers.pdf
-├── generated/               # Compiled Master Reference PDFs
-└── reports/                 # Markdown production & audit report
+│       └── practice/        # Chapters 14 and 15 Practice Questions.docx + Practice Genetics PDF
+├── generated/
+│   └── Block 5 - Complete Master Reference (Chapters 14 & 15).pdf
+└── reports/
+    └── BLOCK_5_MASTER_DOCUMENT_REPORT.md
 ```
 
 ---
 
-## 2. Embedded Curriculum Inventory (100% Source Inclusion)
+## 2. Deliverable Features & Embedded Inventory
 
-Every file inside `block5/documents/` was converted and fused cleanly without omitting slides, pages, figures, or handwritten answer keys:
+* **Primary Deliverable:** [Block 5 - Complete Master Reference (Chapters 14 & 15).pdf](file:///home/owen/ucf/so/s1/BSC/block5/generated/Block%205%20-%20Complete%20Master%20Reference%20(Chapters%2014%20%26%2015).pdf)
+* **Compiled Volume:** 115 pages (12.9 MiB / 13,529,953 bytes)
+* **Visual Theme:** Flat pastel cornflower blue (`#6b93d6` primary / `#edf3fc` tint / `#3b5f9e` accent typography) with zero gradients.
+* **Firefox PDF.js Document Outline:** 129 nested hierarchical bookmarks across 3 levels:
+  * **Part I (Chapter 14):** Modules 14.1–14.4 with heading-level sub-bookmarks, all 58 individual titled slides from `Chapter 14_student.pptx`, and all 3 annotated solution pages from `Simple Mono and Dihybrid Crosses_Spring 2023_answers.pdf`.
+  * **Part II (Chapter 15):** Module 15.1 with sub-bookmarks, all 22 individual titled slides from `Chapter 15_student.pptx`, and all 6 annotated solution pages from `Practice Genetics Problems_Spring 2023_answers.pdf`.
+  * **Part III (Shared Practice Bank):** All 5 pages + official answer key from `Chapters 14 and 15 Practice Questions.docx`.
 
-### A. Unified Deliverable
-* **Document:** [Block 5 - Complete Master Reference (Chapters 14 & 15).pdf](file:///home/owen/ucf/so/s1/BSC/block5/generated/Block%205%20-%20Complete%20Master%20Reference%20(Chapters%2014%20%26%2015).pdf)
-* **Total Volume:** 115 pages (14.66 MB)
-* **Scope:** Single unified archive containing Cover/TOC + all Chapter 14 HTML modules (12 pages) + all 58 `Chapter 14_student.pptx` slides + all 3 pages of `Simple Mono and Dihybrid Crosses_Spring 2023_answers.pdf` + Chapter 15 HTML module (3 pages) + all 22 `Chapter 15_student.pptx` slides + all 6 pages of `Practice Genetics Problems_Spring 2023_answers.pdf` + all 5 pages of `Chapters 14 and 15 Practice Questions.docx` + section dividers with extracted XML speaker notes.
-
-### B. Chapter 14 Embedded Files
-* **Canvas Modules (4 HTML files, 12 rendered pages):**
-  * `Chapter 14 Content Introduction_ BSC2010C-26Fall 0001.html` (genes, alleles, loci diagram)
-  * `Chapter 14 Gregor Mendel's Experiments_ BSC2010C-26Fall 0001.html` (model system, Table 12.1)
-  * `Chapter 14 Laws of Inheritance_ BSC2010C-26Fall 0001.html` (segregation, independent assortment)
-  * `Chapter 14 Non-Mendelian Inheritance_ BSC2010C-26Fall 0001.html` (incomplete dominance, codominance, epistasis)
-* **PowerPoint Deck (58 vector slides):**
-  * `Chapter 14_student.pptx` converted via LibreOffice Impress headless -> US Letter Landscape framed vector pages, plus Slide 9 and Slide 19 XML speaker notes printed on the Section 14.5 divider page.
-* **Worked Answer Key PDF (3 scanned handwritten pages):**
-  * `Simple Mono and Dihybrid Crosses_Spring 2023_answers.pdf` framed in US Letter Portrait with zero cropping of handwritten Punnett squares or marginalia.
-
-### C. Chapter 15 Embedded Files
-* **Canvas Module (1 HTML file, 3 rendered pages):**
-  * `Chapter 15 Content Introduction_ BSC2010C-26Fall 0001.html` (SRY gene, PAR synapsis, X-Y and Z-W sex determination diagrams)
-* **PowerPoint Deck (22 vector slides):**
-  * `Chapter 15_student.pptx` converted via LibreOffice Impress headless -> US Letter Landscape framed vector pages.
-* **Worked Answer Key PDF (6 scanned handwritten pages):**
-  * `Practice Genetics Problems_Spring 2023_answers.pdf` framed in US Letter Portrait covering Drosophila sex-linked crosses, Golden Retriever MWD pedigree, ABO blood types, Rh factor, and inheritance problems.
-
-### D. Shared Word Practice Bank (Chapters 14 & 15)
-* **Word Document (5 rendered pages):**
-  * `Chapters 14 and 15 Practice Questions.docx` converted via LibreOffice Writer headless preserving exact formatting, highlighting, all practice questions, and the complete answer key.
+| Source Component | Format | Embedded Scope |
+|:-----------------|:-------|:---------------|
+| Ch 14 & Ch 15 Canvas Modules (5 files) | HTML | 15 pages verbatim + 11 diagrams + Table 12.1 |
+| Ch 14 & Ch 15 Lecture Decks (2 files) | PPTX | 80 vector slides in US Letter Landscape + XML speaker notes |
+| Worked Practice Answer Keys (2 files) | PDF | 9 scanned handwritten solution pages (Punnett squares & pedigrees) |
+| Practice Question Bank (1 file) | DOCX | 5 pages covering 28 practice items + complete answer key |
 
 ---
 
-## 3. Compiled Deliverables Catalog
-
-| Deliverable PDF | Volume | Location |
-|:----------------|:-------|:---------|
-| [Block 5 - Complete Master Reference (Chapters 14 & 15).pdf](file:///home/owen/ucf/so/s1/BSC/block5/generated/Block%205%20-%20Complete%20Master%20Reference%20(Chapters%2014%20%26%2015).pdf) | 115 pages (14.66 MB) | `block5/generated/` |
-| [Chapter 14 - Master Reference (Verbatim).pdf](file:///home/owen/ucf/so/s1/BSC/block5/generated/Chapter%2014%20-%20Master%20Reference%20(Verbatim).pdf) | 82 pages (8.71 MB) | `block5/generated/` |
-| [Chapter 15 - Master Reference (Verbatim).pdf](file:///home/owen/ucf/so/s1/BSC/block5/generated/Chapter%2015%20-%20Master%20Reference%20(Verbatim).pdf) | 40 pages (6.11 MB) | `block5/generated/` |
-
-> **Note:** Identical copies of all three compiled PDFs are also synchronized in `/home/owen/Downloads/tmp/web/generated/`.
-
----
-
-## 4. Pipeline & Verification Matrix
-
-```text
-+-------------------------------------------------------------------------------+
-| BLOCK 5 FULL-DOCUMENT EMBEDDING & VERIFICATION MATRIX                         |
-+-------------------------------------------------------------------------------+
-|                                                                               |
-|  [Canvas HTML Modules (5 files)]                                              |
-|   ├── Renderer: BeautifulSoup4 cleanup + WeasyPrint (US Letter Portrait)      |
-|   └── Status: [PASS] 12 pp (Ch 14) + 3 pp (Ch 15) with all local figures      |
-|                                                                               |
-|  [PowerPoint Slide Decks (.pptx, 80 slides total)]                            |
-|   ├── Renderer: LibreOffice Impress headless -> framed US Letter Landscape    |
-|   └── Status: [PASS] 58 slides (Ch 14) + 22 slides (Ch 15) + speaker notes    |
-|                                                                               |
-|  [Worked Practice PDFs (.pdf, 9 scanned pages total)]                         |
-|   ├── Renderer: pypdf scaling/framing onto US Letter Portrait                 |
-|   └── Status: [PASS] 3 pp (Simple Mono/Dihybrid) + 6 pp (Practice Genetics)   |
-|                                                                               |
-|  [Practice Question Bank (.docx, 5 pages)]                                    |
-|   ├── Renderer: LibreOffice Writer headless -> framed US Letter Portrait      |
-|   └── Status: [PASS] All 5 pages + highlighted header + full answer key       |
-|                                                                               |
-|  [Final Assembly & Visual QA]                                                 |
-|   ├── Features: Two-pass exact TOC page ranges, PDF bookmarks, page stamps    |
-|   └── Status: [PASS] Verified rendered PNGs across every document category    |
-|                                                                               |
-+-------------------------------------------------------------------------------+
-```
-
----
-
-## 5. Build Reproduction
-
-To regenerate all Block 5 PDFs from organized source documents:
+## 3. Build Reproduction
 
 ```bash
 cd /home/owen/Downloads/tmp/web/block5/build
