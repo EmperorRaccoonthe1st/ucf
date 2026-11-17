@@ -1,0 +1,201 @@
+{
+  "student_name": "Owen Lopez",
+  "ucf_id": "5699362",
+  "catalog_year": "2025-2026",
+  "layout_mode": "beziar",
+  "beziar_columns": 5,
+  "track_cpe_minor": false,
+  "start_semester": "fa25",
+  "graduation_semester": "sp29",
+  "already_taken": [
+    "MAC2311C",
+    "COP3223C",
+    "PHY2048",
+    "PHI2010",
+    "COP3502C",
+    "CDA3103C",
+    "STA2023",
+    "CHM2045C",
+    "COT3960",
+    "COP3330",
+    "MAC2312",
+    "BSC2010C",
+    "ENC3250"
+  ],
+  "schedule": {
+    "fa25": [
+      {
+        "id": "MAC2311C",
+        "already_taken": true
+      },
+      {
+        "id": "COP3223C",
+        "already_taken": true
+      },
+      {
+        "id": "PHY2048",
+        "already_taken": true
+      },
+      {
+        "id": "PHI2010",
+        "already_taken": true
+      }
+    ],
+    "sp26": [
+      {
+        "id": "COP3502C",
+        "already_taken": true
+      },
+      {
+        "id": "CDA3103C",
+        "already_taken": true
+      },
+      {
+        "id": "STA2023",
+        "already_taken": true
+      },
+      {
+        "id": "CHM2045C",
+        "already_taken": true
+      }
+    ],
+    "su26": [
+      {
+        "id": "COT3960",
+        "already_taken": true
+      }
+    ],
+    "fa26": [
+      {
+        "id": "COP3330",
+        "already_taken": true
+      },
+      {
+        "id": "MAC2312",
+        "already_taken": true
+      },
+      {
+        "id": "BSC2010C",
+        "already_taken": true
+      },
+      {
+        "id": "ENC3250",
+        "already_taken": true
+      }
+    ],
+    "sp27": [
+      {
+        "id": "COT3100C",
+        "already_taken": false
+      },
+      {
+        "id": "MAC2313",
+        "already_taken": false
+      },
+      {
+        "id": "PHY2049",
+        "already_taken": false
+      },
+      {
+        "id": "CIS3360",
+        "already_taken": false
+      }
+    ],
+    "su27": [
+      {
+        "id": null,
+        "already_taken": false
+      },
+      {
+        "id": null,
+        "already_taken": false
+      }
+    ],
+    "fa27": [
+      {
+        "id": "COP3503C",
+        "already_taken": false
+      },
+      {
+        "id": "COP3402",
+        "already_taken": false
+      },
+      {
+        "id": "CNT4704",
+        "already_taken": false
+      },
+      {
+        "id": "MAS3105",
+        "already_taken": false
+      }
+    ],
+    "sp28": [
+      {
+        "id": "COP4600",
+        "already_taken": false
+      },
+      {
+        "id": "COP4331C",
+        "already_taken": false
+      },
+      {
+        "id": "CAP4720",
+        "already_taken": false
+      },
+      {
+        "id": "CAP4453",
+        "already_taken": false
+      }
+    ],
+    "su28": [
+      {
+        "id": "COP4020",
+        "already_taken": false
+      },
+      {
+        "id": "COT4210",
+        "already_taken": false
+      },
+      {
+        "id": null,
+        "already_taken": false
+      }
+    ],
+    "fa28": [
+      {
+        "id": "COP4934",
+        "already_taken": false
+      },
+      {
+        "id": "CAP5115",
+        "already_taken": false
+      },
+      {
+        "id": "CAP5415",
+        "already_taken": false
+      },
+      {
+        "id": null,
+        "already_taken": false
+      }
+    ],
+    "sp29": [
+      {
+        "id": "COP4935",
+        "already_taken": false
+      },
+      {
+        "id": "CAP5725",
+        "already_taken": false
+      },
+      {
+        "id": "COP4520",
+        "already_taken": false
+      },
+      {
+        "id": null,
+        "already_taken": false
+      }
+    ]
+  }
+}
