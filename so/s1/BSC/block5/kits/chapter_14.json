@@ -1,0 +1,46 @@
+{
+  "id": "kit-10",
+  "title": "Chapter_14",
+  "creator": "owen",
+  "questions": [
+    {
+      "id": "q1",
+      "text": "Law of Independant Assortment",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q1-a1",
+          "text": "r allele equally likely y or Y",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "text": "Sharing between two dominant genes",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q2-a1",
+          "text": "Incomplete Dominance",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "text": "+ Superscript",
+      "type": "text",
+      "answers": [
+        {
+          "id": "q3-a1",
+          "text": "Wild Phenotype",
+          "correct": true,
+          "textType": "contains"
+        }
+      ]
+    }
+  ]
+}
